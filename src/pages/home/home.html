@@ -1,0 +1,35 @@
+<ion-content>
+	<div>
+		<ion-grid>
+			<ion-row>
+				<ion-col col-8>
+					<img class="logo" src="../../assets/imgs/bluetooth.png">	
+				</ion-col> 
+			</ion-row>
+			<ion-row>
+				<h1 text-align="center">Vincular</h1>
+			</ion-row>
+		</ion-grid>
+	</div>
+	<div>
+		<ion-card>
+			<ion-card-header text-align="center">
+				Lista de dispositivos
+			</ion-card-header>
+			<ion-list>
+				<button ion-item *ngFor="let device of devices" (click)="deviceSelected(device)">
+					<h2>{{ device.name || 'Sin nombre' }}</h2>
+					<p>{{ device.id }}</p>
+					<p>RSSI: {{ device.rssi }}</p>
+				</button>
+			</ion-list>
+		</ion-card>
+	</div>
+	<button ion-button color="dark" (click)="scan()">ESCANEAR</button>
+	<button ion-button color="dark" (click)="disconnect()">DESCONECTAR</button>
+</ion-content>
+<ion-footer>
+	<ion-toolbar color="dark">
+		<img class="footer" src="../../assets/imgs/logo_giot.png">
+	</ion-toolbar>
+</ion-footer>

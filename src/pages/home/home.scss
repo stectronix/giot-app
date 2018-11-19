@@ -1,0 +1,16 @@
+page-home {
+	ion-content{
+		background: url('../../assets/imgs/background.png') no-repeat;
+		background-size: cover;
+		padding: 24px;
+	}
+	.logo{
+		height: 80px;
+	}
+	.footer{
+		padding-top: 4px;
+		padding-bottom: 8px;
+		height: 80px;
+		text-align: center;
+	}
+}
