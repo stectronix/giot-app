@@ -2,15 +2,57 @@ page-home {
 	ion-content{
 		background: url('../../assets/imgs/background.png') no-repeat;
 		background-size: cover;
-		padding: 24px;
+		padding: 80px;
 	}
-	.logo{
-		height: 80px;
+	
+	ion-list{
+		height: 220px;
 	}
-	.footer{
-		padding-top: 4px;
+
+	ion-scroll{
+		height: 240px;
+	}
+
+	img{
+		height: 50px;
+	} 
+
+	.div-button{
+		padding-bottom: 16px;
+	}
+
+	.bluetooth{
+		text-align: center;	
+		padding-top: 24px;
+	}
+
+	.button{
+		border-radius: 24px;
+		height: 42px;
+		width: 140px;
+	}
+	.button-skip{
+		border-radius: 24px;
+		height: 32px;
+		width: 80px;
+		float: right;
+		font-size: 20px;
+		margin: 8px;
+	}
+
+	.devices{
+		padding-left: 16px;
+		padding-right: 16px;
 		padding-bottom: 8px;
-		height: 80px;
-		text-align: center;
 	}
+
+	.list{
+		padding-bottom: 8px;
+	}
+
+	.toolbar{
+		padding-top: 16px;
+		padding-bottom: 16px;
+	}
+	
 }

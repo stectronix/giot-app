@@ -1,5 +1,5 @@
 import { Component,NgZone } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 import { MainPage } from '../main/main';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
@@ -16,6 +16,7 @@ export class HomePage {
 
 	constructor(public navCtrl: NavController,
 				private androidPermissions: AndroidPermissions,
+				private loadingController: LoadingController,
 				private toastCtrl: ToastController,
 				private ble: BLE,
 				private ngZone: NgZone) {
@@ -24,6 +25,7 @@ export class HomePage {
 
   	ionViewDidEnter() {
   		console.log('ionViewDidEnter: HomePage');
+  		this.devices = [];
   	}
 
   	ionViewDidLeave(){
@@ -31,9 +33,10 @@ export class HomePage {
   	}
 
 	scan(){
-		this.checkPermissions();
-		this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH)
-		this.setStatus('Escaneando Dispositivos Bluetooth');
+		this.presentLoading();
+		// this.checkPermissions();
+		// this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH)
+		// this.setStatus('Escaneando Dispositivos Bluetooth');
 		this.devices = [];
 
 		this.ble.scan([],5).subscribe(
@@ -41,7 +44,7 @@ export class HomePage {
 			error => this.scanError(error)
 		);
 
-		setTimeout(this.setStatus.bind(this),10000,'Escaneo completo');
+		setTimeout(this.setStatus.bind(this),8000,'');
 	}
 
 	checkPermissions(){
@@ -63,9 +66,9 @@ export class HomePage {
 	disconnect(){
 		this.ble.isConnected('84:68:3E:03:8E:55').then(
 			success => {
-				console.log('Dispositivo ' + this.peripheral.name + ' está conectado');
-				this.ble.disconnect(this.peripheral.id)
-				this.setStatus(this.peripheral.id + 'Desconectado');
+				console.log('Dispositivo 84:68:3E:03:8E:55 está conectado');
+				this.ble.disconnect('84:68:3E:03:8E:55');
+				this.setStatus('Auxren Desconectado');
 			},
 			failure => {
 				console.log('No se encuentra conectado a ningún dispositivo');
@@ -111,4 +114,17 @@ export class HomePage {
 		});
 	}
 
+	presentLoading(){
+		let bleLoading = this.loadingController.create({
+			spinner: 'bubbles',
+			content: 'Escaneando dispositivos Bluetooth',
+			duration: 10000
+		});
+		bleLoading.present();
+	}
+
+	skip(){
+		this.navCtrl.push(MainPage);
+	}
+	
 }

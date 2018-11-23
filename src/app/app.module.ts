@@ -9,12 +9,14 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { MainPage } from '../pages/main/main';
+import { LoginPage } from '../pages/login/login';
 
 @NgModule({
    declarations: [
      MyApp,
      HomePage,
-     MainPage
+     MainPage,
+     LoginPage
    ],  
    imports: [
      BrowserModule,
@@ -24,7 +26,8 @@ import { MainPage } from '../pages/main/main';
    entryComponents: [
      MyApp,
      HomePage,
-     MainPage
+     MainPage,
+     LoginPage
    ],
    providers: [
      StatusBar,

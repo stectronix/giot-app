@@ -1,35 +1,34 @@
 <ion-content>
-	<div>
-		<ion-grid>
-			<ion-row>
-				<ion-col col-8>
-					<img class="logo" src="../../assets/imgs/bluetooth.png">	
-				</ion-col> 
-			</ion-row>
-			<ion-row>
-				<h1 text-align="center">Vincular</h1>
-			</ion-row>
-		</ion-grid>
+	<button class="button-skip" ion-button color="dark" (click)="skip()">OMITIR</button>
+	<br>
+	<br>
+	<div class="bluetooth">
+		<img src="../../assets/imgs/bluetooth.png">	
+		<h1>Vincular</h1>
 	</div>
-	<div>
-		<ion-card>
-			<ion-card-header text-align="center">
-				Lista de dispositivos
+	<div class="devices">
+		<ion-card class="list">
+			<ion-card-header align="center">
+				<b>Lista de dispositivos</b>
 			</ion-card-header>
 			<ion-list>
-				<button ion-item *ngFor="let device of devices" (click)="deviceSelected(device)">
-					<h2>{{ device.name || 'Sin nombre' }}</h2>
-					<p>{{ device.id }}</p>
-					<p>RSSI: {{ device.rssi }}</p>
-				</button>
+				<ion-scroll scrollY="true">
+					<button ion-item *ngFor="let device of devices" (click)="deviceSelected(device)"> 
+						<h2>{{ device.name || 'Sin nombre' }}</h2>
+						<p>{{ device.id }}</p>
+						<p>RSSI: {{ device.rssi }}</p>
+					</button>
+				</ion-scroll>
 			</ion-list>
 		</ion-card>
 	</div>
-	<button ion-button color="dark" (click)="scan()">ESCANEAR</button>
-	<button ion-button color="dark" (click)="disconnect()">DESCONECTAR</button>
+	<div class="div-button"align="center">
+		<button class="button" ion-button color="dark" (click)="scan()">ESCANEAR</button>
+		<button class="button "ion-button color="dark" (click)="disconnect()">DESCONECTAR</button>
+	</div>
 </ion-content>
 <ion-footer>
-	<ion-toolbar color="dark">
-		<img class="footer" src="../../assets/imgs/logo_giot.png">
+	<ion-toolbar class="toolbar" color="dark" align="center">
+		<img src="../../assets/imgs/logo_giot.png">
 	</ion-toolbar>
 </ion-footer>

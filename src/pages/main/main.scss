@@ -1,6 +1,11 @@
 page-main {
 	ion-content{
-		background: url('../../assets/imgs/background.png') no-repeat;
-		background-size: cover;
+		background-color: #000000 ;
+		//background-size: cover;
+	}
+
+	.toolbar{
+		text-align: center;
+		background-color: #858585;
 	}
 }

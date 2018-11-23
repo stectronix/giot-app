@@ -1,4 +1,4 @@
-import { Component,NgZone } from '@angular/core';
+import { Component,NgZone,Input } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 
@@ -57,10 +57,11 @@ export class MainPage {
 
 	// ASCII only
 	stringToBytes(string) {
+		console.log(string);
 		var array = new Uint8Array(2);
 		
 		array[0] = string.charCodeAt(0);
-		console.log(array);
+		console.log(array[0]);
 
 		return array.buffer;
 	}
