@@ -15,16 +15,20 @@ page-home {
 		padding: 12px 12px 0px 12px;
 	}
 
-	.div-buttons {
-		margin-bottom: 12px;
-	}
-
 	.icon-bluetooth {
 		width: 80px;
 		height: 80px;
 	}
 
 	.div-list {
-		padding: 0px 12px 12px 12px;
+		padding: 0px 12px 0px 12px;
+	}
+
+	.button {
+		border-radius: 12px;
+		width: 148px;
+		text-align: center;
+		margin-bottom: 0px;
+		margin-top: 12px;
 	}
 }

@@ -11,33 +11,36 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { MainPage } from '../pages/main/main';
 import { ScanQrPage } from '../pages/scan-qr/scan-qr';
+import { SignupPage } from '../pages/signup/signup';
 
 @NgModule({
    declarations: [
-     MyApp,
-     HomePage,
-     LoginPage,
-     MainPage,
-     ScanQrPage
-   ],  
+	 MyApp,
+	 HomePage,
+	 LoginPage,
+	 MainPage,
+	 ScanQrPage,
+	 SignupPage
+   ],
    imports: [
-     BrowserModule,
-     IonicModule.forRoot(MyApp)
+	 BrowserModule,
+	 IonicModule.forRoot(MyApp)
    ],
    bootstrap: [IonicApp],
    entryComponents: [
-     MyApp,
-     HomePage,
-     LoginPage,
-     MainPage,
-     ScanQrPage
+	 MyApp,
+	 HomePage,
+	 LoginPage,
+	 MainPage,
+	 ScanQrPage,
+	 SignupPage
    ],
    providers: [
-     StatusBar,
-     SplashScreen,
-     {provide: ErrorHandler, useClass: IonicErrorHandler},
-     BLE,
-     AndroidPermissions
+	 StatusBar,
+	 SplashScreen,
+	 {provide: ErrorHandler, useClass: IonicErrorHandler},
+	 BLE,
+	 AndroidPermissions
   ]
 })
 export class AppModule {}

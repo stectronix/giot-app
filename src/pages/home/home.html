@@ -1,6 +1,6 @@
-<ion-content>
+<ion-content padding>
 	<div class="div-link">
-		<img class="icon-bluetooth" src="../../assets/imgs/bluetooth.png">	
+		<img class="icon-bluetooth" src="../../assets/imgs/bluetooth.png">
 		<h1>Vincular</h1>
 	</div>
 	<div class="div-list">
@@ -10,7 +10,7 @@
 			</ion-card-header>
 			<ion-list>
 				<ion-scroll scrollY="true">
-					<button ion-item *ngFor="let device of devices" (click)="deviceSelected(device)"> 
+					<button ion-item *ngFor="let device of devices" (click)="deviceSelected(device)">
 						<h2>{{ device.name || 'Sin nombre' }}</h2>
 						<p>{{ device.id }}</p>
 						<p>RSSI: {{ device.rssi }}</p>
@@ -19,7 +19,7 @@
 			</ion-list>
 		</ion-card>
 	</div>
-	<div clas="div-buttons" align="center">
+	<div align="center">
 		<button class="button" ion-button color="dark" (click)="scan()">ESCANEAR</button>
 		<button class="button" ion-button color="dark" (click)="disconnect()">DESCONECTAR</button>
 		<button class="button" ion-button color="dark" (click)="skip()">OMITIR</button>

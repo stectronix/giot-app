@@ -2,20 +2,26 @@
 	<div align="center">
 		<img class="icon-giot" src="../../assets/imgs/icon_giot.png" alt="ícono GIOT">
 	</div>
-	<div class="input">
-		<div style="padding: 4px; margin-top: 8px;" align="center">
-			<img class="icon-input" src="../../assets/imgs/user.png" alt="ícono usuario">
+	<div class="div-input">
+		<div class="icon-input">
+			<img src="../../assets/imgs/user.png" alt="ícono usuario">
 		</div>
-		<ion-input style="margin-bottom: 8px;" placeholder="Nombre de usuario"></ion-input>
+		<ion-input placeholder="Nombre de usuario o E-mail"></ion-input>
 	</div>
-	<div class="input">
-		<div style="padding: 4px; margin-top: 8px">
-			<img class="icon-input" src="../../assets/imgs/password.png" alt="ícono password">
+	<div class="div-input">
+		<div class="icon-input">
+			<img src="../../assets/imgs/password.png" alt="ícono password">
 		</div>
-		<ion-input style="margin-bottom: 8px;" placeholder="Contraseña" clearInput></ion-input>
+		<ion-input placeholder="Contraseña" clearInput></ion-input>
 	</div>
 	<div align="center">
-		<button class="button" ion-button color="dark" (click)="login()">INICIA SESIÓN</button>	
+		<button class="button" ion-button color="dark" (click)="login()">INICIA SESIÓN</button>
 		<h5>¿Olvidó su contraseña?</h5>
-	</div>	
+	</div>
 </ion-content>
+<ion-footer>
+	<ion-toolbar color="dark" align="center">
+		<h6>¿No tienes cuenta? <b (click)="signup()">REGÍSTRATE</b></h6>
+		<img class="logo-footer" src="../../assets/imgs/logo_giot.png">
+	</ion-toolbar>
+</ion-footer>
