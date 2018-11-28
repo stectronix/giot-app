@@ -8,15 +8,17 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { MainPage } from '../pages/main/main';
 import { LoginPage } from '../pages/login/login';
+import { MainPage } from '../pages/main/main';
+import { ScanQrPage } from '../pages/scan-qr/scan-qr';
 
 @NgModule({
    declarations: [
      MyApp,
      HomePage,
+     LoginPage,
      MainPage,
-     LoginPage
+     ScanQrPage
    ],  
    imports: [
      BrowserModule,
@@ -26,8 +28,9 @@ import { LoginPage } from '../pages/login/login';
    entryComponents: [
      MyApp,
      HomePage,
+     LoginPage,
      MainPage,
-     LoginPage
+     ScanQrPage
    ],
    providers: [
      StatusBar,

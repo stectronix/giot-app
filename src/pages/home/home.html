@@ -1,13 +1,10 @@
 <ion-content>
-	<button class="button-skip" ion-button color="dark" (click)="skip()">OMITIR</button>
-	<br>
-	<br>
-	<div class="bluetooth">
-		<img src="../../assets/imgs/bluetooth.png">	
+	<div class="div-link">
+		<img class="icon-bluetooth" src="../../assets/imgs/bluetooth.png">	
 		<h1>Vincular</h1>
 	</div>
-	<div class="devices">
-		<ion-card class="list">
+	<div class="div-list">
+		<ion-card class="list-devices">
 			<ion-card-header align="center">
 				<b>Lista de dispositivos</b>
 			</ion-card-header>
@@ -22,13 +19,14 @@
 			</ion-list>
 		</ion-card>
 	</div>
-	<div class="div-button"align="center">
+	<div clas="div-buttons" align="center">
 		<button class="button" ion-button color="dark" (click)="scan()">ESCANEAR</button>
-		<button class="button "ion-button color="dark" (click)="disconnect()">DESCONECTAR</button>
+		<button class="button" ion-button color="dark" (click)="disconnect()">DESCONECTAR</button>
+		<button class="button" ion-button color="dark" (click)="skip()">OMITIR</button>
 	</div>
 </ion-content>
 <ion-footer>
-	<ion-toolbar class="toolbar" color="dark" align="center">
-		<img src="../../assets/imgs/logo_giot.png">
+	<ion-toolbar color="dark" align="center">
+		<img style="width: 220px; padding: 12px;" src="../../assets/imgs/logo_giot.png">
 	</ion-toolbar>
 </ion-footer>

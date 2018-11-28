@@ -1,58 +1,30 @@
 page-home {
-	ion-content{
-		background: url('../../assets/imgs/background.png') no-repeat;
-		background-size: cover;
-		padding: 80px;
-	}
-	
-	ion-list{
-		height: 220px;
+
+	ion-content {
+		background: url(../../assets/imgs/background.png) no-repeat;
+		size: cover;
 	}
 
-	ion-scroll{
+	.list-devices {
+		width: auto;
 		height: 240px;
 	}
 
-	img{
-		height: 50px;
-	} 
-
-	.div-button{
-		padding-bottom: 16px;
+	.div-link {
+		text-align: center;
+		padding: 12px 12px 0px 12px;
 	}
 
-	.bluetooth{
-		text-align: center;	
-		padding-top: 24px;
+	.div-buttons {
+		margin-bottom: 12px;
 	}
 
-	.button{
-		border-radius: 24px;
-		height: 42px;
-		width: 140px;
-	}
-	.button-skip{
-		border-radius: 24px;
-		height: 32px;
+	.icon-bluetooth {
 		width: 80px;
-		float: right;
-		font-size: 20px;
-		margin: 8px;
+		height: 80px;
 	}
 
-	.devices{
-		padding-left: 16px;
-		padding-right: 16px;
-		padding-bottom: 8px;
+	.div-list {
+		padding: 0px 12px 12px 12px;
 	}
-
-	.list{
-		padding-bottom: 8px;
-	}
-
-	.toolbar{
-		padding-top: 16px;
-		padding-bottom: 16px;
-	}
-	
 }

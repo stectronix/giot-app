@@ -1,20 +1,21 @@
 <ion-content padding>
-	<div>
-		<img src="../../assets/imgs/icon_giot.png" alt="">
+	<div align="center">
+		<img class="icon-giot" src="../../assets/imgs/icon_giot.png" alt="ícono GIOT">
 	</div>
-	<div>
-		<ion-item>
-			<img src="../../assets/imgs/user.png" alt="">
-			<ion-input placeholder="Nombre de usuario" clearInput></ion-input>
-		</ion-item>
+	<div class="input">
+		<div style="padding: 4px; margin-top: 8px;" align="center">
+			<img class="icon-input" src="../../assets/imgs/user.png" alt="ícono usuario">
+		</div>
+		<ion-input style="margin-bottom: 8px;" placeholder="Nombre de usuario"></ion-input>
 	</div>
-	<div>
-		<ion-item>
-			<img src="../../assets/imgs/password.png" alt="">
-			<ion-input placeholder="Contraseña" clearInput></ion-input>
-		</ion-item>
+	<div class="input">
+		<div style="padding: 4px; margin-top: 8px">
+			<img class="icon-input" src="../../assets/imgs/password.png" alt="ícono password">
+		</div>
+		<ion-input style="margin-bottom: 8px;" placeholder="Contraseña" clearInput></ion-input>
 	</div>
-	<div>
-		<button ion-button color="dark">INICIA SESIÓN</button>	
+	<div align="center">
+		<button class="button" ion-button color="dark" (click)="login()">INICIA SESIÓN</button>	
+		<h5>¿Olvidó su contraseña?</h5>
 	</div>	
 </ion-content>

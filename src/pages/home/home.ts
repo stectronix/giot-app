@@ -33,12 +33,11 @@ export class HomePage {
   	}
 
 	scan(){
-		this.presentLoading();
 		// this.checkPermissions();
 		// this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH)
 		// this.setStatus('Escaneando Dispositivos Bluetooth');
 		this.devices = [];
-
+		this.presentLoading();
 		this.ble.scan([],5).subscribe(
 			device => this.onDeviceDiscovered(device),
 			error => this.scanError(error)
@@ -64,10 +63,10 @@ export class HomePage {
 	}
 
 	disconnect(){
-		this.ble.isConnected('84:68:3E:03:8E:55').then(
+		this.ble.isConnected('84:68:3E:03:2C:9B').then(
 			success => {
-				console.log('Dispositivo 84:68:3E:03:8E:55 está conectado');
-				this.ble.disconnect('84:68:3E:03:8E:55');
+				console.log('Dispositivo 84:68:3E:03:2C:9B está conectado');
+				this.ble.disconnect('84:68:3E:03:2C:9B');
 				this.setStatus('Auxren Desconectado');
 			},
 			failure => {
@@ -108,7 +107,7 @@ export class HomePage {
 	}
 
 	deviceSelected(device){
-		console.log(JSON.stringify(device) + 'seleccionado');
+		console.log(JSON.stringify(device.name) + ' seleccionado');
 		this.navCtrl.push(MainPage,{
 			device: device
 		});

@@ -1,5 +1,5 @@
-import { Component,NgZone,Input } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { Component,NgZone } from '@angular/core';
+import { NavController, NavParams, AlertController,ToastController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
@@ -14,26 +14,39 @@ export class MainPage {
 	peripheral: any = {};
 	statusMessage: string;
 	repetitions: number;
+	pause: boolean;
+	sw: number;
+
 
 	constructor(public navCtrl: NavController, 
-					public navParams: NavParams,
-					private ble: BLE, 
-					private alertCtrl: AlertController,
-					private ngZone: NgZone) {
+				public toastCtrl: ToastController,
+				public navParams: NavParams,
+				private ble: BLE, 
+				private alertCtrl: AlertController,
+				private ngZone: NgZone) {
 
 		let device = navParams.get('device');
 
-		this.setStatus('Conectando a ' + device.name || device.id);
+		if (device == null) { 
+			this.showToast('No está conectado');
+			this.sw = 0;
+		} else {
+			this.setStatus('Conectando a ' + device.name || device.id);
 
-		this.ble.connect(device.id).subscribe(
-			peripheral => this.onConnected(peripheral),
-			peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
-		);
+			this.ble.connect(device.id).subscribe(
+				peripheral => this.onConnected(peripheral),
+				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+			);
+		}
+
 
 	}
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad MainPage');
+		this.pause = true;
+		this.sw = 0;
+		console.log(this.pause + ' ' + this.sw);
 	}
 
 	ionViewDidLeave(){
@@ -41,8 +54,26 @@ export class MainPage {
 		this.ble.disconnect(this.peripheral.id);
 	}
 
+	play(){
+		if (this.pause == true) { 
+			this.pause = false;
+			this.showToast('PLAY');
+
+			if (this.sw == 1) {
+				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
+			}
+		} else {
+			this.pause = true;
+			this.showToast('PAUSE');
+			if (this.sw == 1) {
+				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
+			}
+		}
+	}
+
 	onConnected(peripheral){
 		this.peripheral = peripheral;
+		this.sw = 1;
 		console.log(peripheral.id);
 		this.setStatus('Conectado a ' + (peripheral.name || peripheral.id));
 
@@ -50,8 +81,6 @@ export class MainPage {
 			data => this.onRepetitionsChange(data),
 			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
 		);
-
-		this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
 
 	}
 
@@ -93,6 +122,15 @@ export class MainPage {
 		this.ngZone.run( ()=>{
 			this.statusMessage = message;
 		});
+	}
+
+	showToast(message){
+		let toast = this.toastCtrl.create({
+			position: 'middle',
+			message: message,
+			duration: 2000
+		});
+		toast.present();
 	}
 
 	showAlert(title,message){
