@@ -15,4 +15,8 @@ export class SignupPage {
     console.log('ionViewDidLoad SignupPage');
   }
 
+  signup(){
+
+  }
+
 }

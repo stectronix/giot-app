@@ -43,7 +43,7 @@ export class HomePage {
 			error => this.scanError(error)
 		);
 
-		setTimeout(this.setStatus.bind(this),8000,'');
+		setTimeout(this.setStatus.bind(this),5000,'');
 	}
 
 	checkPermissions(){
@@ -125,5 +125,5 @@ export class HomePage {
 	skip(){
 		this.navCtrl.push(MainPage);
 	}
-	
+
 }

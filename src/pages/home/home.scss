@@ -5,7 +5,11 @@ page-home {
 		size: cover;
 	}
 
-	.list-devices {
+	ion-scroll{
+		height: 240px;
+	}
+
+	.list-devices{
 		width: auto;
 		height: 240px;
 	}
