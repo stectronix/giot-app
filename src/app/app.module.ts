@@ -7,20 +7,20 @@ import { BLE } from '@ionic-native/ble';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
-import { MainPage } from '../pages/main/main';
+import { BluetoothPage } from '../pages/bluetooth/bluetooth';
 import { ScanQrPage } from '../pages/scan-qr/scan-qr';
 import { SignupPage } from '../pages/signup/signup';
+import { HomePage } from '../pages/home/home';
 
 @NgModule({
    declarations: [
-	 MyApp,
-	 HomePage,
-	 LoginPage,
-	 MainPage,
-	 ScanQrPage,
-	 SignupPage
+   MyApp,
+   LoginPage,
+   BluetoothPage,
+   ScanQrPage,
+   SignupPage,
+   HomePage
    ],
    imports: [
 	 BrowserModule,
@@ -28,12 +28,12 @@ import { SignupPage } from '../pages/signup/signup';
    ],
    bootstrap: [IonicApp],
    entryComponents: [
-	 MyApp,
-	 HomePage,
-	 LoginPage,
-	 MainPage,
-	 ScanQrPage,
-	 SignupPage
+   MyApp,
+   LoginPage,
+   BluetoothPage,
+   ScanQrPage,
+   SignupPage,
+   HomePage
    ],
    providers: [
 	 StatusBar,

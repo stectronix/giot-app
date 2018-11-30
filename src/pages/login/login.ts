@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { HomePage } from '../home/home';
 import { SignupPage } from '../signup/signup';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { BluetoothPage } from '../bluetooth/bluetooth';
 
 @IonicPage()
 @Component({
@@ -10,19 +11,44 @@ import { SignupPage } from '../signup/signup';
 })
 export class LoginPage {
 
-	constructor(public navCtrl: NavController, public navParams: NavParams) {
+	private todo: FormGroup;
+	public passwordType: string = 'password';
+	public passwordShow: boolean = false;
+
+	constructor(public navCtrl: NavController,
+					public navParams: NavParams,
+					private formbuilder: FormBuilder) {
+
+		this.todo = this.formbuilder.group({
+			user: ['', [Validators.required, Validators.minLength(4)]],
+			password: ['', [Validators.required, Validators.minLength(4)]]
+		});
+
 	}
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad LoginPage');
 	}
 
-	login(){
-		this.navCtrl.push(HomePage);
+	logForm(){
+		this.navCtrl.push(BluetoothPage).then(() => {
+			const index = this.navCtrl.getActive().index;
+			this.navCtrl.remove(0,index);
+		});
 	}
 
-	signup(){
+	goToSignup(){
 		this.navCtrl.push(SignupPage);
+	}
+
+	public togglePassword(){
+		if (this.passwordShow) {
+			this.passwordShow = false;
+			this.passwordType = 'password';
+		} else {
+			this.passwordShow = true;
+			this.passwordType = 'password';
+		}
 	}
 
 }

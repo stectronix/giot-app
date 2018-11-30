@@ -5,6 +5,11 @@ page-signup {
 		padding: 24px;
 	}
 
+	ion-item{
+		border-radius: 15px;
+		opacity: 0.7;
+	}
+
 	h5{
 		font-size: 12px;
 		font-style: oblique;
@@ -23,33 +28,22 @@ page-signup {
 		padding: 16px;
 	}
 
-	.div-input{
-		display: flex;
-		background-color: #3e3d3d;
-		border-radius: 15px;
+	.div-item{
 		margin-top: 12px;
 		margin-bottom: 12px;
-		opacity: 0.8;
-	}
-
-	.icon-input{
-		width: 40px;
-		height: 40px;
-		padding: 4px;
-		margin-top: 2px;
 	}
 
 	.button {
 		border-radius: 12px;
 		width: 148px;
 		text-align: center;
-		margin-bottom: 0px;
+		margin-bottom: 8px;
 		margin-top: 8px;
 	}
 
 	.logo-footer{
 		width: 220px;
-		padding: 0px 12px 12px 12px;
+		padding: 8px 12px 12px 12px;
 		margin-top: 4px;
 	}
 }

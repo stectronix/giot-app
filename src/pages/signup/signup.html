@@ -8,43 +8,78 @@
 	<div align="center">
 		<img class="icon-giot" src="../../assets/imgs/icon_giot.png" alt="ícono GIOT">
 	</div>
-	<div class="div-input">
-		<div class="icon-input">
-			<img src="../../assets/imgs/user.png" alt="ícono usuario">
+	<form [formGroup]="todo" (ngSubmit)="registerForm()">
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/user.png" alt="ícono usuario">
+				</ion-avatar>
+				<ion-input type="text" formControlName="name" placeholder="Nombre"></ion-input>
+			</ion-item>
+			<div *ngIf="todo.get('name').errors && todo.get('name').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('name').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('name').hasError('minlength')">Mínimo 3 caracteres</p>
+			</div>
 		</div>
-		<ion-input placeholder="Nombre"></ion-input>
-	</div>
-	<div class="div-input">
-		<div class="icon-input">
-			<img src="../../assets/imgs/user.png" alt="ícono usuario">
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/user.png" alt="ícono usuario">
+				</ion-avatar>
+				<ion-input type="text" formControlName="lastName" placeholder="Apellidos"></ion-input>
+			</ion-item>
+			<div *ngIf="todo.get('lastName').errors && todo.get('lastName').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('lastName').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('lastName').hasError('minlength')">Mínimo 3 caracteres</p>
+			</div>
 		</div>
-		<ion-input placeholder="Apellidos"></ion-input>
-	</div>
-	<div class="div-input">
-		<div class="icon-input">
-			<img src="../../assets/imgs/email.png" alt="ícono usuario">
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/email.png" alt="ícono usuario">
+				</ion-avatar>
+				<ion-input type="email" formControlName="email" placeholder="Correo electrónico"></ion-input>
+			</ion-item>
+			<div *ngIf="todo.get('email').errors && todo.get('email').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('email').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('email').hasError('email')">Debe ingresar formato válido</p>
+			</div>
 		</div>
-		<ion-input placeholder="Correo electrónico"></ion-input>
-	</div>
-	<div class="div-input">
-		<div class="icon-input">
-			<img src="../../assets/imgs/password.png" alt="ícono usuario">
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/password.png" alt="ícono password">
+				</ion-avatar>
+				<ion-input [type]="passwordType" formControlName="password" placeholder="Contraseña"></ion-input>
+				<!-- <ion-icon name="eye" color="gray" (click)="togglePassword()" item-end></ion-icon> -->
+			</ion-item>
+			<div *ngIf="todo.get('password').errors && todo.get('password').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('password').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('password').hasError('minlength')">Mínimo 4 caracteres</p>
+			</div>
 		</div>
-		<ion-input placeholder="Contraseña"></ion-input>
-	</div>
-	<div class="div-input">
-		<div class="icon-input">
-			<img src="../../assets/imgs/password.png" alt="ícono usuario">
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/password.png" alt="ícono password">
+				</ion-avatar>
+				<ion-input [type]="passwordType" formControlName="confirmPassword" placeholder="Confirm contraseña"></ion-input>
+				<!-- <ion-icon name="eye" color="gray" (click)="togglePassword()" item-end></ion-icon> -->
+			</ion-item>
+			<div *ngIf="todo.get('confirmPassword').errors && todo.get('confirmPassword').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('confirmPassword').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('confirmPassword').hasError('minlength')">Mínimo 4 caracteres</p>
+			</div>
+			<p color="danger" ion-text>{{ notMatch }}</p>
 		</div>
-		<ion-input placeholder="Confirmar contraseña"></ion-input>
-	</div>
-	<div align="center">
-		<h5>Haciendo click sobre el botón
-			REGÍSTRATE, también acepto los <b>términos &
-			condiciones y política de privacidad.</b>
-		</h5>
-		<button class="button" ion-button color="dark" (click)="signup()">REGÍSTRATE</button>
-	</div>
+		<div align="center">
+			<h5>Haciendo click sobre el botón
+				REGÍSTRATE, también acepto los <b>términos &
+				condiciones y política de privacidad.</b>
+			</h5>
+			<button type="submit" [disabled]="!todo.valid" class="button" ion-button color="dark">REGÍSTRATE</button>
+		</div>
+	</form>
 </ion-content>
 <ion-footer>
 	<ion-toolbar color="dark" align="center">

@@ -2,26 +2,41 @@
 	<div align="center">
 		<img class="icon-giot" src="../../assets/imgs/icon_giot.png" alt="ícono GIOT">
 	</div>
-	<div class="div-input">
-		<div class="icon-input">
-			<img src="../../assets/imgs/user.png" alt="ícono usuario">
+	<form [formGroup]="todo" (ngSubmit)="logForm()">
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/user.png" alt="ícono usuario">
+				</ion-avatar>
+				<ion-input type="text" formControlName="user" placeholder="Nombre de usuario o E-mail"></ion-input>
+			</ion-item>
+			<div *ngIf="todo.get('user').errors && todo.get('user').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('user').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('user').hasError('minlength')">Mínimo 4 caracteres</p>
+			</div>
 		</div>
-		<ion-input placeholder="Nombre de usuario o E-mail"></ion-input>
-	</div>
-	<div class="div-input">
-		<div class="icon-input">
-			<img style="color: #FEEE00;" src="../../assets/imgs/password.png" alt="ícono password">
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/password.png" alt="ícono password">
+				</ion-avatar>
+				<ion-input [type]="passwordType" formControlName="password" placeholder="Contraseña"></ion-input>
+				<!-- <ion-icon name="eye" color="gray" (click)="togglePassword()" item-end></ion-icon> -->
+			</ion-item>
+			<div *ngIf="todo.get('password').errors && todo.get('password').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('password').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('password').hasError('minlength')">Mínimo 4 caracteres</p>
+			</div>
 		</div>
-		<ion-input placeholder="Contraseña" clearInput></ion-input>
-	</div>
-	<div align="center">
-		<button class="button" ion-button color="dark" (click)="login()">INICIA SESIÓN</button>
-		<h5>¿Olvidó su contraseña?</h5>
-	</div>
+		<div align="center">
+			<button type="submit" [disabled]="!todo.valid" class="button" ion-button color="dark">INICIA SESIÓN</button>
+			<h5>¿Olvidó su contraseña?</h5>
+		</div>
+	</form>
 </ion-content>
 <ion-footer>
 	<ion-toolbar color="dark" align="center">
-		<h6>¿No tienes cuenta? <b (click)="signup()">REGÍSTRATE</b></h6>
+		<h6>¿No tienes cuenta? <b (click)="goToSignup()">REGÍSTRATE</b></h6>
 		<img class="logo-footer" src="../../assets/imgs/logo_giot.png">
 	</ion-toolbar>
 </ion-footer>

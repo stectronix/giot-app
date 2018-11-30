@@ -1,32 +1,38 @@
-<ion-content padding>
-	<div class="div-link">
-		<img class="icon-bluetooth" src="../../assets/imgs/bluetooth.png">
-		<h1>Vincular</h1>
+<ion-header>
+  <ion-navbar>
+	 <ion-title>home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content style="background: black;">
+	<div class="div-profile">
+		<div class="img"></div>
+		<div class="info">
+			<p><b>Juan Torres</b></p>
+			<p>Deportista</p>
+		</div>
+		<button class="button-edit" ion-button>EDITAR</button>
 	</div>
-	<div class="div-list">
-		<ion-card>
-			<ion-card-header align="center">
-				<b>Lista de dispositivos</b>
-			</ion-card-header>
-			<ion-list>
-				<ion-scroll scrollY="true">
-					<button ion-item *ngFor="let device of devices" (click)="deviceSelected(device)">
-						<h2>{{ device.name || 'Sin nombre' }}</h2>
-						<p>{{ device.id }}</p>
-						<p>RSSI: {{ device.rssi }}</p>
-					</button>
-				</ion-scroll>
-			</ion-list>
-		</ion-card>
-	</div>
-	<div align="center">
-		<button class="button" ion-button color="dark" (click)="scan()">ESCANEAR</button>
-		<button class="button" ion-button color="dark" (click)="disconnect()">DESCONECTAR</button>
-		<button class="button" ion-button color="dark" (click)="skip()">OMITIR</button>
+	<div class="div-buttons">
+		<div>
+			<button class="button-nav" ion-button (click)="goToTrain()">
+				<div>
+					<img src="../../assets/imgs/icon_train.png" alt="">
+					<p>ENTRENAR</p>
+				</div>
+			</button>
+			<button class="button-nav" ion-button (click)="GoToPlan()">
+				<div>
+					<img src="../../assets/imgs/icon_plan.png" alt="">
+					<p>PLANIFICAR</p>
+				</div>
+			</button>
+		</div>
+		<button class="button-nav" ion-button (click)=goToLink()>
+			<div>
+				<img src="../../assets/imgs/icon_link.png" alt="">
+				<p>VINCULAR</p>
+			</div>
+		</button>
 	</div>
 </ion-content>
-<ion-footer>
-	<ion-toolbar color="dark" align="center">
-		<img style="width: 220px; padding: 12px;" src="../../assets/imgs/logo_giot.png">
-	</ion-toolbar>
-</ion-footer>

@@ -1,38 +1,54 @@
 page-home {
-
-	ion-content {
-		background: url(../../assets/imgs/background.png) no-repeat;
-		size: cover;
+	p{
+		font-size: 16px;
+		margin: 4px 0px 4px 0px;
 	}
 
-	ion-scroll{
-		height: 240px;
-	}
-
-	.list-devices{
-		width: auto;
-		height: 240px;
-	}
-
-	.div-link {
-		text-align: center;
-		padding: 12px 12px 0px 12px;
-	}
-
-	.icon-bluetooth {
+	img{
 		width: 80px;
 		height: 80px;
 	}
 
-	.div-list {
-		padding: 0px 12px 0px 12px;
+	.div-profile{
+		height: auto;
+		background: white;
+		padding: 12px;
+		display: flex;
 	}
 
-	.button {
-		border-radius: 12px;
-		width: 148px;
+	.div-buttons{
+		background: #3e3d3d;
+		height: 360px;
+		margin-top: 140px;
+		padding: 12px;
 		text-align: center;
-		margin-bottom: 0px;
-		margin-top: 12px;
+	}
+
+	.img{
+		width: 80px;
+		height: 80px;
+		border-radius: 12px;
+		background: grey;
+	}
+
+	.info{
+		height: auto;
+		width: 180px;
+		padding-left: 16px;
+	}
+
+	.button-edit{
+		background: #3e3d3d;
+		font-size: 12px;
+		border-radius: 8px;
+		height: 32px;
+	}
+
+	.button-nav{
+		width: 150px;
+		height: 150px;
+		border-radius: 12px;
+		background: white;
+		color: black;
 	}
 }
