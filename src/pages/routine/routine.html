@@ -1,0 +1,76 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Routine</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content style="background: #858585;">
+	<div style="background: #3e3d3d; margin: 24px; padding: 16px; border-radius: 8px;">
+		<div style="display: flex; margin: 12px 0px 12px 0px;">
+			<ion-label color="light">Máquina:</ion-label>
+			<div style="padding: 4px; border-radius: 8px; background: #312f2f; width: 164px; margin-right: 4px">
+				<ion-label color="giot">{{ code + ' ' + name }}</ion-label>
+			</div>
+		</div>
+		<form [formGroup]="todo" (ngSubmit)="startRoutine()">
+			<div style="margin: 12px 0px 12px 0px; display: flex;">
+				<ion-label color="light">Ejercicio:</ion-label>
+				<div style="width: 200px;">
+					<ion-item color="grayDark">
+						<ion-select (ionChange)="exerciseSelected()" [(ngModel)]="getSelectedValue" formControlName="exercise" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 16px; color: #FEE000;">
+							<ion-option *ngFor="let exercise of exercises" color="giot" value="{{ exercise.id }}">{{ exercise.name }}</ion-option>
+						</ion-select>
+					</ion-item>
+				</div>
+			</div>
+			<div *ngIf="todo.get('exercise').errors && todo.get('exercise').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('exercise').hasError('required')">Campo es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Series:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
+					<ion-input type="number" formControlName="series"></ion-input>
+				</div>
+			</div>
+			<div *ngIf="todo.get('series').errors && todo.get('series').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('series').hasError('required')">Campo es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Repeticiones:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
+					<ion-input type="number" formControlName="repetitions"></ion-input>
+				</div>
+			</div>
+			<div *ngIf="todo.get('repetitions').errors && todo.get('repetitions').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('repetitions').hasError('required')">Campo es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Peso:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
+					<ion-input type="number" formControlName="weight"></ion-input>
+				</div>
+			</div>
+			<div *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')">Campo es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Descanso:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
+					<ion-input type="number" formControlName="rest"></ion-input>
+				</div>
+			</div>
+			<div *ngIf="todo.get('rest').errors && todo.get('rest').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('rest').hasError('required')">Campo es requerido</p>
+			</div>
+		</form>
+	</div>
+</ion-content>
+
+<ion-footer>
+	<div class="div-footer">
+		<button type="submit" [disabled]="!todo.valid" ion-button clear="true" class="button-play" (click)="startRoutine()">
+			<img class="img-footer" src="../../assets/imgs/icon_play.png" alt="">
+			COMENZAR
+		</button>
+	</div>
+</ion-footer>

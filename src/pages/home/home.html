@@ -4,14 +4,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content style="background: black;">
+<ion-content style="background: #3e3d3d;">
 	<div class="div-profile">
-		<div class="img"></div>
+		<div class="img">
+			<img src="../../assets/imgs/profile_default.png" alt="">
+		</div>
 		<div class="info">
 			<p><b>Juan Torres</b></p>
 			<p>Deportista</p>
 		</div>
-		<button class="button-edit" ion-button>EDITAR</button>
+		<button class="button-edit" ion-button (click)="goToProfile()">EDITAR</button>
 	</div>
 	<div class="div-buttons">
 		<div>
@@ -28,7 +30,7 @@
 				</div>
 			</button>
 		</div>
-		<button class="button-nav" ion-button (click)=goToLink()>
+		<button class="button-only" ion-button (click)=goToLink()>
 			<div>
 				<img src="../../assets/imgs/icon_link.png" alt="">
 				<p>VINCULAR</p>

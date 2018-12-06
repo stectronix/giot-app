@@ -1,8 +1,28 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>home</ion-title>
+		<ion-title>Scan QR</ion-title>
 	</ion-navbar>
 </ion-header>
-<ion-content padding>
-
+<ion-content style="background: black;">
+	<div class="div-button">
+		<p class="p-scan">Escanea el código QR de la máquina</p>
+		<button class="button-scan" ion-button (click)="scanBarcode()">
+			<div>
+				<img src="../../assets/imgs/icon_barcode.png" alt="">
+				<p class="p-button">Escanear QR</p>
+			</div>
+		</button>
+	</div>
+	<div class="div-select">
+		<p class="p-select">También la puedes seleccionar</p>
+		<ion-item color="grayDark">
+			<ion-label color="light">Ejercicio:</ion-label>
+			<ion-select (ionChange)="machineSelected()" [(ngModel)]="getSelectedValue">
+				<ion-option *ngFor="let machine of machines" value="{{ machine.code }}">{{ machine.name }}</ion-option>
+			</ion-select>
+		</ion-item>
+	</div>
+	<div class="div-button">
+		<button class="btn-next" ion-button (click)="goToRoutine()">SIGUIENTE</button>
+	</div>
 </ion-content>

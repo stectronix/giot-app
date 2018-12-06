@@ -17,9 +17,9 @@ export class LoginPage {
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
-					private formbuilder: FormBuilder) {
+					private formBuilder: FormBuilder) {
 
-		this.todo = this.formbuilder.group({
+		this.todo = this.formBuilder.group({
 			user: ['', [Validators.required, Validators.minLength(4)]],
 			password: ['', [Validators.required, Validators.minLength(4)]]
 		});
@@ -31,10 +31,12 @@ export class LoginPage {
 	}
 
 	logForm(){
-		this.navCtrl.push(BluetoothPage).then(() => {
-			const index = this.navCtrl.getActive().index;
-			this.navCtrl.remove(0,index);
-		});
+		if (this.todo.valid) {
+			this.navCtrl.push(BluetoothPage).then(() => {
+				const index = this.navCtrl.getActive().index;
+				this.navCtrl.remove(0,index);
+			});
+		}
 	}
 
 	goToSignup(){

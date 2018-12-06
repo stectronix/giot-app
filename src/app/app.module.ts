@@ -12,35 +12,52 @@ import { BluetoothPage } from '../pages/bluetooth/bluetooth';
 import { ScanQrPage } from '../pages/scan-qr/scan-qr';
 import { SignupPage } from '../pages/signup/signup';
 import { HomePage } from '../pages/home/home';
+import { ProfilePage } from '../pages/profile/profile';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { RoutinePage } from '../pages/routine/routine';
+import { WorkoutPage } from '../pages/workout/workout';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
+import { AboutPage } from '../pages/about/about';
 
 @NgModule({
-   declarations: [
-   MyApp,
-   LoginPage,
-   BluetoothPage,
-   ScanQrPage,
-   SignupPage,
-   HomePage
-   ],
-   imports: [
-	 BrowserModule,
-	 IonicModule.forRoot(MyApp)
-   ],
-   bootstrap: [IonicApp],
-   entryComponents: [
-   MyApp,
-   LoginPage,
-   BluetoothPage,
-   ScanQrPage,
-   SignupPage,
-   HomePage
-   ],
-   providers: [
-	 StatusBar,
-	 SplashScreen,
-	 {provide: ErrorHandler, useClass: IonicErrorHandler},
-	 BLE,
-	 AndroidPermissions
+	declarations: [
+		MyApp,
+		LoginPage,
+		BluetoothPage,
+		ScanQrPage,
+		SignupPage,
+		HomePage,
+		ProfilePage,
+		RoutinePage,
+		WorkoutPage,
+		EditProfilePage,
+		AboutPage
+	],
+	imports: [
+		BrowserModule,
+		IonicModule.forRoot(MyApp)
+	],
+	bootstrap: [IonicApp],
+	entryComponents: [
+		MyApp,
+		LoginPage,
+		BluetoothPage,
+		ScanQrPage,
+		SignupPage,
+		HomePage,
+		ProfilePage,
+		RoutinePage,
+		WorkoutPage,
+		EditProfilePage,
+		AboutPage
+	],
+	providers: [
+		StatusBar,
+		SplashScreen,
+		{provide: ErrorHandler, useClass: IonicErrorHandler},
+		BLE,
+		AndroidPermissions,
+		BarcodeScanner
   ]
 })
 export class AppModule {}

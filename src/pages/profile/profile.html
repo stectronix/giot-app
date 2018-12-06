@@ -1,0 +1,37 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Perfil</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<div style="text-align: center; margin-top: 12px;">
+		<img style="height: 80px;" src="../../assets/imgs/profile_default.png" alt="">
+		<ion-label><b>Juan Torres Ramirez</b></ion-label>
+		<ion-label>jtorresramirez.19@gmail.com</ion-label>
+		<ion-label>26 años</ion-label>
+		<ion-label>19/09/1992</ion-label>
+		<ion-label>Peso: 68 Kg.</ion-label>
+		<ion-label>Género: Masculino</ion-label>
+		<ion-label>Altura: 170 Cm.</ion-label>
+	</div>
+	<div style="text-align: center">
+		<button style="border-radius: 8px; margin: 20px 16px 0px 0px; padding: 12px; height: 36px;" ion-button color="dark" (click)="goBack()">VOLVER</button>
+		<button style="border-radius: 8px; margin: 20px 0px 0px 16px; padding: 12px; height: 36px;" ion-button color="dark" (click)="goToEditProfile()">EDITAR</button>
+	</div>
+	<div style="text-align: center; margin-top: 12px;">
+		<button style="font-size: 12px; border: 2px solid black; padding: 4px 4px 4px 4px; margin: 20px 20px 20px 0px; border-radius: 8px;" ion-button color="light" (click)="goToAboutGiot()">
+			<img style="height: 40px;" src="../../assets/imgs/about.png" alt="">
+			ACERCA DE GIOT
+		</button>
+		<button style="font-size: 12px; border: 2px solid black; padding: 8px; margin: 20px 0px 20px 20px; border-radius: 8px;" ion-button color="light" (click)="logout()">
+			<img style="height: 40px;" src="../../assets/imgs/logout.png" alt="">
+			CERRAR SESIÓN
+		</button>
+	</div>
+</ion-content>
+<ion-footer>
+	<ion-toolbar color="dark" align="center">
+		<img class="logo-footer" src="../../assets/imgs/logo_giot.png">
+	</ion-toolbar>
+</ion-footer>
