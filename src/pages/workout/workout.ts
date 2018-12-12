@@ -16,7 +16,7 @@ export class WorkoutPage {
 	button;
 	countRepetitions: number;
 	countSeries: number = 1;
-	pause: boolean;
+	pause;
 	sw;
 	series: number;
 	repetitions: number;
@@ -49,34 +49,30 @@ export class WorkoutPage {
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad WorkoutPage');
-		this.pause = false;
+		this.pause = 0;
 		this.sw = 0;
 		console.log(this.pause + ' ' + this.sw);
 		this.ngZone.run(() => {
-			let series = this.series
-			let repetitions = this.repetitions
-			let weight = this.weight
+			this.series
+			this.repetitions
+			this.weight
 			this.button = 'COMENZAR';
 		});
 	}
 
 	play(){
-		if (this.pause == true) {
-			this.pause = true;
+		if (this.pause == 0) {
+			this.pause = 1;
 			this.ngZone.run(() => {
 				this.button = 'PAUSAR';
-				this.countRepetitions = 1;
-				this.countSeries = 1;
 			});
 			if (this.sw == 1) {
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
 			}
 		} else {
-			this.pause = false;
+			this.pause = 0;
 			this.ngZone.run(() => {
 				this.button = 'COMENZAR';
-				this.countRepetitions = 1;
-				this.countSeries = 1;
 			});
 			if (this.sw == 1) {
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
@@ -109,16 +105,21 @@ export class WorkoutPage {
 	}
 
 	onRepetitionsChange(buffer: ArrayBuffer){
-
 		var data = new Uint8Array(buffer);
 		this.countRepetitions = String.fromCharCode.apply(null, new Uint8Array(data));
-		console.log('contador de repeticiones: ' + String.fromCharCode.apply(null, new Uint8Array(data)) + ' repeticiones: ' + this.repetitions);
-		console.log('contador de series: ' + this.countSeries + ' series: ' + this.series);
-		this.ngZone.run(() => {
-			this.countRepetitions = String.fromCharCode.apply(null, new Uint8Array(data));
-		});
 
-		return this.countRepetitions;
+		for (let j = 1; j <= this.repetitions; j++) {
+			if (this.countRepetitions.valueOf() == j) {
+				console.log('repeticiones: ' + this.countRepetitions);
+				this.ngZone.run(() => {
+					this.countRepetitions;
+				});
+			}
+			if(j > this.repetitions){
+				this.showToast('Descanso!!! repeticiones terminadas en esta serie');
+			}
+		}
+
 	}
 
 	showToast(message){

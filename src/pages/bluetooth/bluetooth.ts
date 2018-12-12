@@ -1,7 +1,10 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController,LoadingController,ToastController } from 'ionic-angular';
+import { IonicPage, NavController,LoadingController,ToastController, NavParams, AlertController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 import { HomePage } from '../home/home';
+
+const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
+const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 
 @IonicPage()
 @Component({
@@ -14,21 +17,35 @@ export class BluetoothPage {
   	statusMessage: string;
 	peripheral: any = {};
 	mobilePatform = 'android';
+	device;
+	sw;
 
 	constructor(public navCtrl: NavController,
+					public navParams: NavParams,
+					public alertCtrl: AlertController,
 					private loadingController: LoadingController,
 					private toastCtrl: ToastController,
 					private ble: BLE,
 					private ngZone: NgZone) {
+
+		this.device = navParams.get('device');
+
+		if (this.device == null) {
+			console.log('No está conectado');
+			this.sw = 0;
+		} else {
+			console.log('Conectando a ' + this.device.name || this.device.id);
+			this.ble.connect(this.device.id).subscribe(
+				peripheral => this.onConnected(peripheral),
+				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+			);
+		}
+
   }
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad BluetoothPage');
-	}
-
-	ionViewDidEnter() {
-		console.log('ionViewDidEnter: BluetoothPage');
-	this.devices = [];
+		this.devices = [];
 	}
 
 	initializeBle(){
@@ -46,6 +63,7 @@ export class BluetoothPage {
 				console.log('Bluetooth is *not* enabled');
 				this.ble.enable().then( success =>
 				{
+					console.log('Bluetooth activado');
 					this.presentLoading();
 					this.scan();
 				},
@@ -66,17 +84,15 @@ export class BluetoothPage {
 	}
 
 	disconnect(){
-		this.ble.isConnected('84:68:3E:03:2C:9B').then(
-			success => {
-				console.log('Dispositivo 84:68:3E:03:2C:9B está conectado');
-				this.ble.disconnect('84:68:3E:03:2C:9B');
-				this.showToast('Auxren Desconectado');
-			},
-			failure => {
-				console.log('No se encuentra conectado a ningún dispositivo');
-				this.showToast('No se encuentra conectado a ningún dispositivo');
-			}
-		);
+		if (this.device == null) {
+			this.showToast('No se encuentra conectado a ningún dispositivo');
+		}else{
+			this.ble.isConnected(this.device.id).then(
+				success => {
+					this.ble.disconnect(this.device.id);
+					this.showToast((this.device.name || this.device.id) + ' Desconectado');
+				});
+		}
 	}
 
 	onDeviceDiscovered(device){
@@ -84,6 +100,29 @@ export class BluetoothPage {
 		this.ngZone.run(() => {
 			this.devices.push(device);
 		});
+	}
+
+	onConnected(peripheral){
+		this.peripheral = peripheral;
+		this.sw = 1;
+		console.log(peripheral.id);
+		console.log('Conectado a ' + (peripheral.name || peripheral.id));
+
+		this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
+			data => this.onRepetitionsChange(data),
+			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
+		);
+
+	}
+
+	onRepetitionsChange(buffer: ArrayBuffer){
+
+		var data = new Uint8Array(buffer);
+
+		String.fromCharCode.apply(null, new Uint8Array(data));
+
+		//console.log(String.fromCharCode.apply(null, new Uint8Array(data)));
+
 	}
 
 	scanError(error){
@@ -129,10 +168,28 @@ export class BluetoothPage {
 	}
 
 	skip(){
-		this.navCtrl.push(HomePage).then(() => {
-			const index = this.navCtrl.getActive().index;
-			this.navCtrl.remove(0,index);
+		if (this.device == null) {
+			this.navCtrl.push(HomePage).then(() => {
+				const index = this.navCtrl.getActive().index;
+				this.navCtrl.remove(0,index);
+			});
+		} else {
+			this.navCtrl.push(HomePage,{
+				device: this.device
+			}).then(() => {
+				const index = this.navCtrl.getActive().index;
+				this.navCtrl.remove(0,index);
+			});
+		}
+	}
+
+	showAlert(title,message){
+		let alert = this.alertCtrl.create({
+			title: title,
+			subTitle: message,
+			buttons: ['OK']
 		});
+		alert.present();
 	}
 
 }

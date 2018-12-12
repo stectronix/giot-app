@@ -73,6 +73,7 @@ export class ScanQrPage {
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad ScanQrPage');
+		console.log('Conectando a ' + this.device.name || this.device.id);
 	}
 
 	async scanBarcode(){
@@ -83,7 +84,8 @@ export class ScanQrPage {
 			}
 			this.result = await this.barcode.scan(option);
 			this.navCtrl.push(RoutinePage,{
-				barcode: this.result
+				barcode: this.result,
+				device: this.device
 			});
 		} catch (error) {
 			console.error(error);

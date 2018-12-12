@@ -44,6 +44,15 @@ export class HomePage {
 		console.log('ionViewDidLoad HomePage');
 	}
 
+	ionViewWillUnload(){
+		console.log('ionViewWillUnload HomePage');
+		if (this.device != null) {
+			this.ble.disconnect(this.device.id).then(() => {
+				console.log('desconectado de ' + this.device.name || this.device.id)
+			});
+		}
+	}
+
 	goToTrain(){
 		this.navCtrl.push(ScanQrPage,{
 			device: this.device
@@ -55,7 +64,13 @@ export class HomePage {
 	}
 
 	goToLink(){
-		this.navCtrl.push(BluetoothPage);
+		if (this.device == null) {
+			this.navCtrl.push(BluetoothPage);
+		} else {
+			this.navCtrl.push(BluetoothPage,{
+				device: this.device
+			})
+		}
 	}
 
 	goToProfile(){

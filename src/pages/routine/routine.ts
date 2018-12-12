@@ -83,14 +83,14 @@ export class RoutinePage {
 	}
 
 	startRoutine(){
-		if (this.todo.valid) {
+		// if (this.todo.valid) {
 			this.navCtrl.push(WorkoutPage,{
 				device: this.device,
 				series: this.todo.value.series,
 				repetitions: this.todo.value.repetitions,
 				weight: this.todo.value.weight
 			});
-		}
+		// }
 	}
 
 	ionViewDidLoad() {
