@@ -18,6 +18,8 @@ import { RoutinePage } from '../pages/routine/routine';
 import { WorkoutPage } from '../pages/workout/workout';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 import { AboutPage } from '../pages/about/about';
+import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
 	declarations: [
@@ -31,10 +33,11 @@ import { AboutPage } from '../pages/about/about';
 		RoutinePage,
 		WorkoutPage,
 		EditProfilePage,
-		AboutPage
+		AboutPage,
 	],
 	imports: [
 		BrowserModule,
+		HttpClientModule,
 		IonicModule.forRoot(MyApp)
 	],
 	bootstrap: [IonicApp],
@@ -57,7 +60,8 @@ import { AboutPage } from '../pages/about/about';
 		{provide: ErrorHandler, useClass: IonicErrorHandler},
 		BLE,
 		AndroidPermissions,
-		BarcodeScanner
+		BarcodeScanner,
+		AuthServiceProvider,
   ]
 })
 export class AppModule {}

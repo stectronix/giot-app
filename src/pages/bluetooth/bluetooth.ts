@@ -160,9 +160,10 @@ export class BluetoothPage {
 
 	presentLoading(){
 		let bleLoading = this.loadingController.create({
-			spinner: 'bubbles',
-			content: 'Escaneando dispositivos Bluetooth',
-			duration: 10000
+			spinner: 'hide',
+			content: `<img src="../../assets/imgs/icon_giot.png" />`,
+			cssClass: 'loading',
+			duration: 5000
 		});
 		bleLoading.present();
 	}

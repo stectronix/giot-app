@@ -14,3 +14,19 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+ion-loading.loading{
+   img{
+      width: 80px;
+      height: 80px;
+      -webkit-animation: 1s rotate linear infinite;
+      animation: 1s rotate linear infinite;
+      -webkit-transform-origin: 50% 50%;
+      transform-origin: 50% 50%;
+   }
+
+   @keyframes rotate {from {transform: rotate(0deg);}
+      to {transform: rotate(360deg);}}
+   @-webkit-keyframes rotate {from {-webkit-transform: rotate(0deg);}
+      to {-webkit-transform: rotate(360deg);}}
+}

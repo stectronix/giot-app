@@ -1,6 +1,8 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -17,10 +19,18 @@ export class WorkoutPage {
 	countRepetitions: number;
 	countSeries: number = 1;
 	pause;
+	icon;
 	sw;
 	series: number;
 	repetitions: number;
 	weight;
+	timerVar;
+	mili = '00';
+	sec = '00';
+	min = '00';
+	contSec = 0;
+	contMin = 0;
+	array;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
@@ -53,26 +63,41 @@ export class WorkoutPage {
 		this.sw = 0;
 		console.log(this.pause + ' ' + this.sw);
 		this.ngZone.run(() => {
-			this.series
-			this.repetitions
-			this.weight
-			this.button = 'COMENZAR';
+			this.icon = 'icon_play';
+			this.series;
+			this.repetitions;
+			this.weight;
+			this.button = 'COMENZAR';;
 		});
 	}
 
 	play(){
 		if (this.pause == 0) {
 			this.pause = 1;
+			this.startTimer();
 			this.ngZone.run(() => {
 				this.button = 'PAUSAR';
+				this.icon = 'icon_pause';
+				this.countRepetitions = 1;
+				this.mili;
+				this.sec;
+				this.min;
 			});
 			if (this.sw == 1) {
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
 			}
 		} else {
 			this.pause = 0;
+			this.timerVar.unsubscribe();
+			this.contSec = 0;
+			this.contMin = 0;
 			this.ngZone.run(() => {
 				this.button = 'COMENZAR';
+				this.icon = 'icon_play';
+				this.countRepetitions = 1;
+				this.mili = '00';
+				this.sec = '00';
+				this.min = '00';
 			});
 			if (this.sw == 1) {
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
@@ -83,12 +108,12 @@ export class WorkoutPage {
 	// ASCII only
 	stringToBytes(string) {
 		console.log(string);
-		var array = new Uint8Array(2);
+		this.array = new Uint8Array(2);
 
-		array[0] = string.charCodeAt(0);
-		console.log(array[0]);
+		this.array[0] = string.charCodeAt(0);
+		console.log(this.array[0]);
 
-		return array.buffer;
+		return this.array.buffer;
 	}
 
 	onConnected(peripheral){
@@ -107,19 +132,49 @@ export class WorkoutPage {
 	onRepetitionsChange(buffer: ArrayBuffer){
 		var data = new Uint8Array(buffer);
 		this.countRepetitions = String.fromCharCode.apply(null, new Uint8Array(data));
-
-		for (let j = 1; j <= this.repetitions; j++) {
-			if (this.countRepetitions.valueOf() == j) {
-				console.log('repeticiones: ' + this.countRepetitions);
+		if(parseInt(this.countSeries.toString()) <= parseInt(this.series.toString())) {
+			console.log(this.countSeries);
+			if (parseInt(this.countRepetitions.toString()) <= parseInt(this.repetitions.toString())) {
+				console.log(this.countRepetitions);
 				this.ngZone.run(() => {
 					this.countRepetitions;
 				});
+			}else{
+				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
+				this.showToast('Descanso!!! finalizó las repeticiones en esta serie');
+				this.pause = 0;
+				this.timerVar.unsubscribe();
+				this.ngZone.run(() => {
+					this.button = 'COMENZAR';
+					this.icon = 'icon_play'
+					this.countRepetitions = 1;
+					this.countSeries;
+				});
+				if(parseInt(this.array[0]) == 48){
+					this.countSeries++;
+					console.log('arr: ' + this.array[0] + ' serie: ' + this.countSeries);
+					this.array[0] = "l";
+					console.log('after: ' + this.array[0]);
+				}
 			}
-			if(j > this.repetitions){
-				this.showToast('Descanso!!! repeticiones terminadas en esta serie');
+		}else {
+			this.showToast('Felicitaciones!!! finalizó este ejercicio');
+			this.pause = 0;
+			this.contSec = 0;
+			this.contMin = 0;
+			this.timerVar.unsubscribe();
+				this.ngZone.run(() => {
+					this.button = 'COMENZAR';
+					this.icon = 'icon_play'
+					this.countRepetitions = 1;
+					this.mili = '00';
+					this.sec = '00';
+					this.min = '00';
+			});
+			if (this.sw == 1) {
+				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
 			}
 		}
-
 	}
 
 	showToast(message){
@@ -138,6 +193,34 @@ export class WorkoutPage {
 			buttons: ['OK']
 		});
 		alert.present();
+	}
+
+	startTimer(){
+		this.timerVar = Observable.interval(10).subscribe(x => {
+			if (x.toString().length > 2) {
+				this.mili = x.toString().substr(-2,2);
+			}
+			if (this.mili == '99') {
+				this.contSec++;
+				if (this.contSec < 10) {
+					this.sec = '0' + this.contSec.toString();
+				}else if(this.contSec >= 10 && this.contSec < 60){
+					this.sec = this.contSec.toString();
+				}else{
+					this.contSec = 0;
+				}
+			}
+			if (this.sec == '59' && this.mili == '99') {
+				this.contMin++;
+				if (this.contMin < 10) {
+					this.min = '0' + this.contMin.toString();
+				}else if(this.contMin >= 10 && this.contMin < 60){
+					this.min = this.contMin.toString();
+				}else{
+					this.contMin = 0;
+				}
+			}
+		});
 	}
 
 }

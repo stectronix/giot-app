@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { BluetoothPage } from '../bluetooth/bluetooth';
+import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,8 @@ export class LoginPage {
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
-					private formBuilder: FormBuilder) {
+					private formBuilder: FormBuilder,
+					private authService: AuthServiceProvider) {
 
 		this.todo = this.formBuilder.group({
 			user: ['', [Validators.required, Validators.minLength(4)]],
@@ -32,6 +34,7 @@ export class LoginPage {
 
 	logForm(){
 		if (this.todo.valid) {
+			this.authService.setLoggedIn(true);
 			this.navCtrl.push(BluetoothPage).then(() => {
 				const index = this.navCtrl.getActive().index;
 				this.navCtrl.remove(0,index);
