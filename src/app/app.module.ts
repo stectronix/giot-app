@@ -20,6 +20,7 @@ import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 import { AboutPage } from '../pages/about/about';
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 import { HttpClientModule } from '@angular/common/http';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 @NgModule({
 	declarations: [
@@ -62,6 +63,7 @@ import { HttpClientModule } from '@angular/common/http';
 		AndroidPermissions,
 		BarcodeScanner,
 		AuthServiceProvider,
+		InAppBrowser
   ]
 })
 export class AppModule {}

@@ -4,6 +4,21 @@
 	</ion-navbar>
 </ion-header> -->
 
-<ion-content padding>
-
+<ion-content align="center" padding>
+	<p><b>ACERCA DE GIOT</b></p>
+	<div style="margin-top: 60px;">
+		<button style="margin: 42px 0px 42px 0px; color: black; padding: 0px;" ion-button clear full (click)="browseTo('website')">
+			<img style="width: 32px; height: 32px; margin-right: 12px;" src="../../assets/imgs/icon_web.png" alt="">
+			www.giot.cl
+		</button>
+		<button style="margin: 42px 0px 42px 0px; color: black; padding: 0px;" ion-button clear full (click)="browseTo('facebook')">
+			<img style="width: 32px; height: 32px; margin-right: 12px;" src="../../assets/imgs/icon_facebook_about.png" alt="">
+			www.facebook.com/Giot
+		</button>
+		<button style="margin: 42px 0px 42px 0px; color: black; padding: 0px;" ion-button clear full (click)="browseTo('instagram')">
+			<img style="width: 32px; height: 32px; margin-right: 12px;" src="../../assets/imgs/icon_instagram_about.png" alt="">
+			www.facebook.com/Giot
+		</button>
+	</div>
+	<button style="margin-top: 120px; border-radius: 16px; background: black;" ion-button (click)="goBack()">VOLVER</button>
 </ion-content>

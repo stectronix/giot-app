@@ -31,6 +31,7 @@ export class WorkoutPage {
 	contSec = 0;
 	contMin = 0;
 	array;
+	cont = 0;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
@@ -143,6 +144,10 @@ export class WorkoutPage {
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
 				this.showToast('Descanso!!! finalizó las repeticiones en esta serie');
 				this.pause = 0;
+				this.cont++;
+				if (this.cont < 2) {
+					this.countSeries++;
+				}
 				this.timerVar.unsubscribe();
 				this.ngZone.run(() => {
 					this.button = 'COMENZAR';
