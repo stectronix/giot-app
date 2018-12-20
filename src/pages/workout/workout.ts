@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, LoadingController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
@@ -24,26 +24,35 @@ export class WorkoutPage {
 	series: number;
 	repetitions: number;
 	weight;
+	restLoad;
+	rest;
 	timerVar;
 	mili = '00';
 	sec = '00';
 	min = '00';
+	mili2;
+	sec2;
+	min2;
+	resume;
 	contSec = 0;
 	contMin = 0;
 	array;
 	cont = 0;
+	count;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
 					public toastCtrl: ToastController,
 					private ble: BLE,
 					private alertCtrl: AlertController,
-					private ngZone: NgZone) {
+					private ngZone: NgZone,
+					private loadingController: LoadingController) {
 
 		let device = navParams.get('device');
 		this.series = navParams.get('series');
 		this.repetitions = navParams.get('repetitions');
 		this.weight = navParams.get('weight');
+		this.rest = navParams.get('rest');
 
 		if (device == null) {
 			this.showToast('No está conectado');
@@ -62,7 +71,7 @@ export class WorkoutPage {
 		console.log('ionViewDidLoad WorkoutPage');
 		this.pause = 0;
 		this.sw = 0;
-		console.log(this.pause + ' ' + this.sw);
+		console.log('rest:' + this.rest)
 		this.ngZone.run(() => {
 			this.icon = 'icon_play';
 			this.series;
@@ -75,17 +84,27 @@ export class WorkoutPage {
 	play(){
 		if (this.pause == 0) {
 			this.pause = 1;
-			this.startTimer();
+			this.cont = 0;
+			this.countLoading();
+			setTimeout(() => {
+				this.startTimer();
+			}, 5000);
 			this.ngZone.run(() => {
 				this.button = 'PAUSAR';
 				this.icon = 'icon_pause';
-				this.countRepetitions = 1;
+				this.countRepetitions = 0;
 				this.mili;
 				this.sec;
 				this.min;
+				this.mili2 = '';
+				this.sec2 = '';
+				this.min2 = '';
+				this.resume = '';
 			});
 			if (this.sw == 1) {
-				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
+				setTimeout(() => {
+					this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
+				}, 5000);
 			}
 		} else {
 			this.pause = 0;
@@ -95,7 +114,7 @@ export class WorkoutPage {
 			this.ngZone.run(() => {
 				this.button = 'COMENZAR';
 				this.icon = 'icon_play';
-				this.countRepetitions = 1;
+				this.countRepetitions = 0;
 				this.mili = '00';
 				this.sec = '00';
 				this.min = '00';
@@ -135,7 +154,7 @@ export class WorkoutPage {
 		this.countRepetitions = String.fromCharCode.apply(null, new Uint8Array(data));
 		if(parseInt(this.countSeries.toString()) <= parseInt(this.series.toString())) {
 			console.log(this.countSeries);
-			if (parseInt(this.countRepetitions.toString()) <= parseInt(this.repetitions.toString())) {
+			if (parseInt(this.countRepetitions.toString()) < parseInt(this.repetitions.toString())) {
 				console.log(this.countRepetitions);
 				this.ngZone.run(() => {
 					this.countRepetitions;
@@ -145,22 +164,21 @@ export class WorkoutPage {
 				this.showToast('Descanso!!! finalizó las repeticiones en esta serie');
 				this.pause = 0;
 				this.cont++;
-				if (this.cont < 2) {
+				if (this.cont == 1) {
 					this.countSeries++;
+					if (this.countSeries <= this.series) {
+						this.restLoading();
+					}
 				}
 				this.timerVar.unsubscribe();
 				this.ngZone.run(() => {
 					this.button = 'COMENZAR';
 					this.icon = 'icon_play'
-					this.countRepetitions = 1;
-					this.countSeries;
+					this.countRepetitions = 0;
+					if (this.countSeries < this.series) {
+						this.countSeries;
+					}
 				});
-				if(parseInt(this.array[0]) == 48){
-					this.countSeries++;
-					console.log('arr: ' + this.array[0] + ' serie: ' + this.countSeries);
-					this.array[0] = "l";
-					console.log('after: ' + this.array[0]);
-				}
 			}
 		}else {
 			this.showToast('Felicitaciones!!! finalizó este ejercicio');
@@ -171,7 +189,12 @@ export class WorkoutPage {
 				this.ngZone.run(() => {
 					this.button = 'COMENZAR';
 					this.icon = 'icon_play'
-					this.countRepetitions = 1;
+					this.countRepetitions = 0;
+					this.countSeries = 1;
+					this.resume = 'Tiempo total del ejercicio: ';
+					this.mili2 = this.mili;
+					this.sec2 = this.sec + ':';
+					this.min2 = this.min + ':';
 					this.mili = '00';
 					this.sec = '00';
 					this.min = '00';
@@ -227,5 +250,35 @@ export class WorkoutPage {
 			}
 		});
 	}
+
+	countLoading(){
+		this.count = this.loadingController.create({
+			spinner: 'hide',
+			content: `<div>
+							<p class="title">PREPÁRATE!</p>
+							<img src="../../assets/imgs/icon-giot-yellow.png" alt="">
+							<p class="subtitle">El Ejercicio Comenzará en 5 segundos</p>
+						</div>`,
+			duration: 5000,
+			cssClass: 'count'
+		});
+		this.count.present();
+	}
+
+	restLoading(){
+		this.restLoad = this.loadingController.create({
+			spinner: 'hide',
+			content: `<div>
+							<p class="title">DESCANSO</p>
+							<div class="circle">
+								<p class="time">this.rest</p>
+							</div>
+						</div>`,
+			cssClass: 'rest',
+			duration: this.rest * 1000
+		});
+		this.restLoad.present();
+	}
+
 
 }

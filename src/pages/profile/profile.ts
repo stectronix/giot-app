@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EditProfilePage } from '../edit-profile/edit-profile';
 import { AboutPage } from '../about/about';
+import { ApiProvider } from '../../providers/api/api';
+import { LoginPage } from '../login/login';
 
 @IonicPage()
 @Component({
@@ -11,7 +13,8 @@ import { AboutPage } from '../about/about';
 export class ProfilePage {
 
 	constructor(public navCtrl: NavController,
-					public navParams: NavParams) {
+					public navParams: NavParams,
+					public api: ApiProvider) {
 	}
 
 	ionViewDidLoad() {
@@ -31,7 +34,9 @@ export class ProfilePage {
 	}
 
 	logout(){
-
+		this.api.logout();
+		this.navCtrl.setRoot(LoginPage);
+		this.navCtrl.popToRoot();
 	}
 
 }

@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -18,9 +17,14 @@ import { RoutinePage } from '../pages/routine/routine';
 import { WorkoutPage } from '../pages/workout/workout';
 import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 import { AboutPage } from '../pages/about/about';
-import { AuthServiceProvider } from '../providers/auth-service/auth-service';
-import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { DatePicker } from '@ionic-native/date-picker';
+import { Camera } from '@ionic-native/camera';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage';
+import { ApiProvider } from '../providers/api/api';
 
 @NgModule({
 	declarations: [
@@ -38,8 +42,10 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 	],
 	imports: [
 		BrowserModule,
+		HttpModule,
 		HttpClientModule,
-		IonicModule.forRoot(MyApp)
+		IonicModule.forRoot(MyApp),
+		IonicStorageModule.forRoot()
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [
@@ -62,8 +68,10 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 		BLE,
 		AndroidPermissions,
 		BarcodeScanner,
-		AuthServiceProvider,
-		InAppBrowser
+		InAppBrowser,
+		DatePicker,
+		Camera,
+		ApiProvider
   ]
 })
 export class AppModule {}

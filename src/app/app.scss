@@ -16,17 +16,84 @@
 // automatically applied to the <body> element in the app.
 
 ion-loading.loading{
-   img{
-      width: 80px;
-      height: 80px;
-      -webkit-animation: 1s rotate linear infinite;
-      animation: 1s rotate linear infinite;
-      -webkit-transform-origin: 50% 50%;
-      transform-origin: 50% 50%;
-   }
+	img{
+		width: 80px;
+		height: 80px;
+		-webkit-animation: 1s rotate linear infinite;
+		animation: 1s rotate linear infinite;
+		-webkit-transform-origin: 50% 50%;
+		transform-origin: 50% 50%;
+	}
 
-   @keyframes rotate {from {transform: rotate(0deg);}
-      to {transform: rotate(360deg);}}
-   @-webkit-keyframes rotate {from {-webkit-transform: rotate(0deg);}
-      to {-webkit-transform: rotate(360deg);}}
+	div{
+		text-align: center;
+	}
+
+	p{
+		color: white;
+	}
+
+	@keyframes rotate {from {transform: rotate(0deg);}
+		to {transform: rotate(360deg);}}
+	@-webkit-keyframes rotate {from {-webkit-transform: rotate(0deg);}
+		to {-webkit-transform: rotate(360deg);}}
+}
+
+ion-loading.count{
+	background: black;
+
+	p{
+		color: #FEE000;
+		font-weight: bold;
+	}
+
+	div{
+		text-align: center;
+	}
+
+	img{
+		width: 120px;
+		height: 120px;
+	}
+
+	.title{
+		font-size: 36px;
+		margin-bottom: 32px;
+	}
+
+	.subtitle{
+		font-size: 20px;
+		margin-top: 32px;
+	}
+
+}
+
+ion-loading.rest{
+	background: black;
+	text-align: center;
+
+	.title{
+		color: #FEE000;
+		font-weight: bold;
+		font-size: 36px;
+		margin-bottom: 32px;
+
+	}
+
+	.time{
+		margin-top: 60px;
+		font-size: 36px;
+		color: #FEE000;
+	}
+
+	div{
+		text-align: center;
+	}
+
+	.circle{
+		width: 180px;
+		height: 180px;
+		border-radius: 2000px;
+		border: 2px solid #FEE000;
+	}
 }

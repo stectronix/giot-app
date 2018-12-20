@@ -19,6 +19,7 @@ export class BluetoothPage {
 	mobilePatform = 'android';
 	device;
 	sw;
+	bleLoading;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
@@ -37,7 +38,7 @@ export class BluetoothPage {
 			console.log('Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
 			);
 		}
 
@@ -62,13 +63,13 @@ export class BluetoothPage {
 			() => {
 				console.log('Bluetooth is *not* enabled');
 				this.ble.enable().then( success =>
-				{
-					console.log('Bluetooth activado');
-					this.presentLoading();
-					this.scan();
+					{
+						console.log('Bluetooth activado');
+						this.presentLoading();
+						this.scan();
 				},
 				failure => {
-					this.showToast('Encendido de bluetooth fue rechazado por el usuario, intente de nuevo');
+					this.showToast('Bluetooth no disponible, intente de nuevo');
 				});
 			});
 		}
@@ -159,13 +160,13 @@ export class BluetoothPage {
 	}
 
 	presentLoading(){
-		let bleLoading = this.loadingController.create({
+		this.bleLoading = this.loadingController.create({
 			spinner: 'hide',
 			content: `<img src="../../assets/imgs/icon_giot.png" />`,
 			cssClass: 'loading',
 			duration: 5000
 		});
-		bleLoading.present();
+		this.bleLoading.present();
 	}
 
 	skip(){

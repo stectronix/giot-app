@@ -5,6 +5,62 @@
 </ion-header> -->
 
 <ion-content align="center" padding>
-	<img style="width: 80px; height: 80px; border: 2px solid black; margin: 0px" src="../../assets/imgs/profile_default.png" alt="">
-	<p style="color: gray; border: 2px solid black; margin: 0px;">Cambiar Foto</p>
+	<img style="border-radius: 40px; height: 80px;" [src]="photo" alt="">
+	<p style="color: gray;" (click)="selectPhoto()">Cambiar Foto</p>
+	<form [formGroup]="todo" (ngSubmit)="updateForm()">
+		<div style="margin: 20px 0px 20px 0px; background: gray; border-radius: 8px;">
+			<ion-input type="text" formControlName="name" placeholder="Nombre"></ion-input>
+		</div>
+		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('name').errors && todo.get('name').dirty">
+			<p color="danger" ion-text *ngIf="todo.get('name').hasError('required')"><b>Nombre</b> es requerido</p>
+		</div>
+		<div style="margin: 20px 0px 20px 0px; background: gray; border-radius: 8px;">
+			<ion-input type="text" formControlName="lastName" placeholder="Apellidos"></ion-input>
+		</div>
+		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('lastName').errors && todo.get('lastName').dirty">
+			<p color="danger" ion-text *ngIf="todo.get('lastName').hasError('required')"><b>Apellido</b> es requerido</p>
+		</div>
+		<div style="display: flex; margin: 20px 0px 20px 0px;">
+			<p style="width: 180px;" >Fecha de nacimiento:</p>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; background: gray; width: 120px; height: 40px; border-radius: 8px" value="{{ selectedDate }}" formControlName="birthday" disabled></ion-input>
+			<button style="margin: 0px; height: 40px; width: 40px;" ion-button color="light" clear icon-only (click)="showDatePicker()">
+				<img style="height: 24px; width: 24px; margin: 0px;" src="../../assets/imgs/icon_calendar.png" alt="">
+			</button>
+		</div>
+		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('birthday').errors && todo.get('birthday').dirty">
+			<p color="danger" ion-text *ngIf="todo.get('birthday').hasError('required')">Campo es requerido</p>
+		</div>
+		<div style="display: flex; margin: 20px 0px 20px 0px">
+			<p style="width: 168px; text-align: right">Peso:</p>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="number" formControlName="weight" placeholder="Peso"></ion-input>
+			<p>[Kg]</p>
+		</div>
+		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
+			<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')"><b>Peso</b> es requerido</p>
+		</div>
+		<div style="display: flex; margin: 20px 0px 20px 0px;">
+			<p style="width: 168px; text-align: right">Estatura:</p>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="number" formControlName="height" placeholder="Altura"></ion-input>
+			<p>[Cm]</p>
+		</div>
+		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('height').errors && todo.get('height').dirty">
+			<p color="danger" ion-text *ngIf="todo.get('height').hasError('required')"><b>Estatura</b> es requerido</p>
+		</div>
+		<div radio-group style="display: flex; margin: 20px 0px 20px 0px;">
+			<p style="width: 168px; text-align: right; margin-right: 8px;">Género:</p>
+			<div>
+				<input value="F" formControlName="gender" type="radio">
+				<ion-label style="font-size: 16px">Femenino</ion-label>
+			</div>
+			<div>
+				<input value="M" formControlName="gender" type="radio">
+				<ion-label style="font-size: 16px">Masculino</ion-label>
+			</div>
+		</div>
+		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('gender').errors && todo.get('gender').dirty">
+			<p color="danger" ion-text *ngIf="todo.get('gender').hasError('required')"><b>Género</b> es requerido</p>
+		</div>
+		<button class="button" ion-button color="dark" (click)="goBack()">VOLVER</button>
+		<button type="submit" [disabled]="!todo.valid" class="button" ion-button color="dark">GUARDAR</button>
+	</form>
 </ion-content>

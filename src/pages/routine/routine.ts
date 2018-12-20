@@ -16,7 +16,7 @@ export class RoutinePage {
 
 	select: any[];
 	code;
-	name;
+	machine;
 	barcode;
 	private todo: FormGroup;
 	exercises: any[] = [];
@@ -68,7 +68,7 @@ export class RoutinePage {
 			console.log('Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
 			);
 		}
 
@@ -88,7 +88,8 @@ export class RoutinePage {
 				device: this.device,
 				series: this.todo.value.series,
 				repetitions: this.todo.value.repetitions,
-				weight: this.todo.value.weight
+				weight: this.todo.value.weight,
+				rest: this.todo.value.rest
 			});
 		// }
 	}
@@ -98,14 +99,13 @@ export class RoutinePage {
 		if (this.select == null) {
 			console.log(this.barcode);
 			this.ngZone.run(() => {
-				this.name = this.barcode.text
-				this.code = 0;
+				this.machine = this.barcode.text
 			});
 		} else {
 			console.log(this.select[0].code + ' ' + this.select[0].name);
 			this.ngZone.run(() => {
 				this.code = this.select[0].code,
-				this.name = this.select[0].name
+				this.machine = this.select[0].name
 			});
 		}
 

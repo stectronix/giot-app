@@ -34,7 +34,7 @@ export class HomePage {
 			console.log('Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
 			);
 		}
 
@@ -54,9 +54,13 @@ export class HomePage {
 	}
 
 	goToTrain(){
-		this.navCtrl.push(ScanQrPage,{
-			device: this.device
-		});
+		if (this.device == null) {
+			this.navCtrl.push(ScanQrPage);
+		} else {
+			this.navCtrl.push(ScanQrPage,{
+				device: this.device
+			})
+		}
 	}
 
 	GoToPlan(){

@@ -65,7 +65,7 @@ export class ScanQrPage {
 			console.log('Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
 			);
 		}
 
@@ -73,7 +73,6 @@ export class ScanQrPage {
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad ScanQrPage');
-		console.log('Conectando a ' + this.device.name || this.device.id);
 	}
 
 	async scanBarcode(){
