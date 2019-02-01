@@ -12,9 +12,38 @@ import { LoginPage } from '../login/login';
 })
 export class ProfilePage {
 
+	resposeData: any;
+	name;
+	email;
+	birthday;
+	weight;
+	gender;
+	height;
+
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
 					public api: ApiProvider) {
+
+	}
+
+	ionViewWillEnter(){
+		this.api.getUser().then((user) => {
+			// console.log('user: ' + JSON.stringify(user));
+			var data = {'usuario':user['usuario']};
+			this.api.getDataClient(data).then((result) => {
+				this.resposeData = result[0];
+				this.name = this.resposeData['nombre'];
+				this.email = this.resposeData['email'];
+				this.birthday = this.resposeData['fecha_nacimiento'];
+				this.weight = this.resposeData['peso'];
+				if (this.resposeData['genero'] == 'F') {
+					this.gender = 'FEMENINO';
+				} else {
+					this.gender = 'MASCULINO';
+				}
+				this.height = this.resposeData['altura'];
+			});
+		});
 	}
 
 	ionViewDidLoad() {

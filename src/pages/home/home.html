@@ -10,8 +10,8 @@
 			<img src="../../assets/imgs/profile_default.png" alt="">
 		</div>
 		<div class="info">
-			<p><b>Juan Torres</b></p>
-			<p>Deportista</p>
+			<p><b>{{ name }}</b></p>
+			<p>{{ typeClient }}</p>
 		</div>
 		<button class="button-edit" ion-button (click)="goToProfile()">EDITAR</button>
 	</div>
@@ -36,5 +36,17 @@
 				<p>VINCULAR</p>
 			</div>
 		</button>
+		<button class="button-only" ion-button (click)=goToPerformance()>
+			<div>
+				<img src="../../assets/imgs/icon_performance.png" alt="">
+				<p>ESTADISTICAS</p>
+			</div>
+		</button>
 	</div>
 </ion-content>
+
+<ion-footer>
+	<ion-toolbar color="dark" align="center">
+		<img class="logo-footer" src="../../assets/imgs/logo_giot.png">
+	</ion-toolbar>
+</ion-footer>

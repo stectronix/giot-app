@@ -43,7 +43,7 @@ export class LoginPage {
 		if (this.todo.valid) {
 			this.authenticationLoading();
 			var data = { 'usuario': this.todo.value.user, 'contrasena': this.todo.value.password};
-			this.api.postData(data).then((result) => {
+			this.api.postLogin(data).then((result) => {
 				this.resposeData = result;
 				console.log('resposeData',this.resposeData);
 				if (parseInt(this.resposeData) > 0) {

@@ -1,0 +1,20 @@
+<ion-content padding style="background: #000000">
+	<div style="height: 400px;">
+		<ion-card color="dark">
+			<div style="display: flex">
+				<ion-card-header style="color: #FEEE00; padding-left: 32px;">RUTINAS</ion-card-header>
+				<ion-fab style="margin-left: 240px;">
+					<button ion-fab mini style="background: #FEEE00" (click)="goToPlan()"><ion-icon name="add" color="dark"></ion-icon></button>
+				</ion-fab>
+			</div>
+			<ion-list inset>
+				<button style="background: #000000; color: #ffffff" ion-item *ngFor="let exercise of exercises" (click)="exerciseSelected(exercise)">
+					{{ exercise.id }}
+				</button>
+			</ion-list>
+		</ion-card>
+	</div>
+	<div align="center">
+		<button ion-button style="border-radius: 8px; background: #FEEE00; color: #000000;" (click)="goBack()">VOLVER</button>
+	</div>
+</ion-content>

@@ -8,28 +8,21 @@
 	<div style="background: #3e3d3d; margin: 24px; padding: 16px; border-radius: 8px;">
 		<div style="display: flex; margin: 12px 0px 12px 0px;">
 			<ion-label color="light">Máquina:</ion-label>
-			<div style="padding: 4px; border-radius: 8px; background: #312f2f; width: 164px; margin-right: 4px">
-				<ion-label color="giot">{{ machine }}</ion-label>
+			<div style="width: 200px;">
+					<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" class="form-control" id="machine" name="machine"><option value="0">-- SELECCIONE --</option></select>
+			</div>
+		</div>
+		<div style="margin: 12px 0px 12px 0px; display: flex;">
+			<ion-label color="light">Ejercicio:</ion-label>
+			<div style="width: 200px;">
+				<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" class="form-control" id="exercise" name="exercise"><option value="0">-- SELECCIONE --</option></select>
 			</div>
 		</div>
 		<form [formGroup]="todo" (ngSubmit)="startRoutine()">
-			<div style="margin: 12px 0px 12px 0px; display: flex;">
-				<ion-label color="light">Ejercicio:</ion-label>
-				<div style="width: 200px;">
-					<ion-item color="grayDark">
-						<ion-select (ionChange)="exerciseSelected()" [(ngModel)]="getSelectedValue" formControlName="exercise" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 16px; color: #FEE000;">
-							<ion-option *ngFor="let exercise of exercises" color="giot" value="{{ exercise.id }}">{{ exercise.name }}</ion-option>
-						</ion-select>
-					</ion-item>
-				</div>
-			</div>
-			<div *ngIf="todo.get('exercise').errors && todo.get('exercise').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('exercise').hasError('required')">Campo es requerido</p>
-			</div>
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Series:</ion-label>
 				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
-					<ion-input type="number" formControlName="series"></ion-input>
+					<ion-input type="number" formControlName="series" value="{{ serie }}"></ion-input>
 				</div>
 			</div>
 			<div *ngIf="todo.get('series').errors && todo.get('series').dirty">
@@ -38,7 +31,7 @@
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Repeticiones:</ion-label>
 				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
-					<ion-input type="number" formControlName="repetitions"></ion-input>
+					<ion-input type="number" formControlName="repetitions" value="{{ repeticion }}"></ion-input>
 				</div>
 			</div>
 			<div *ngIf="todo.get('repetitions').errors && todo.get('repetitions').dirty">
@@ -46,8 +39,9 @@
 			</div>
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Peso:</ion-label>
-				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
-					<ion-input type="number" formControlName="weight"></ion-input>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px; display: flex;">
+					<ion-input type="number" formControlName="weight" value="{{ peso }}"></ion-input>
+					<h1 style="font-size: 12px; padding: 0px; margin: 16px 8px 0px 8px;">KGS</h1>
 				</div>
 			</div>
 			<div *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
@@ -55,8 +49,9 @@
 			</div>
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Descanso:</ion-label>
-				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
-					<ion-input type="number" formControlName="rest"></ion-input>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px; display: flex;">
+					<ion-input type="number" formControlName="rest" value="{{ descanso }}"></ion-input>
+					<h1 style="font-size: 12px; padding: 0px; margin: 16px 8px 0px 8px;">SEG</h1>
 				</div>
 			</div>
 			<div *ngIf="todo.get('rest').errors && todo.get('rest').dirty">

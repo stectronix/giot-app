@@ -1,36 +1,36 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
-import { ScanQrPage } from '../scan-qr/scan-qr';
-import { BluetoothPage } from '../bluetooth/bluetooth';
-import { ProfilePage } from '../profile/profile';
-import { BLE } from '@ionic-native/ble';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
-import { PlanPage } from '../plan/plan';
+import { RoutinePage } from '../routine/routine';
+import { BLE } from '@ionic-native/ble';
+import { ExercisePage } from '../exercise/exercise';
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 
 @IonicPage()
 @Component({
-	selector: 'page-home',
-	templateUrl: 'home.html',
+	selector: 'page-plan',
+	templateUrl: 'plan.html',
 })
-export class HomePage {
+export class PlanPage {
 
-	peripheral: any = {};
-	sw: number;
-	device;
-	infoUser;
+	exercises;
 	resposeData: any;
-	name;
-	typeClient;
+	resposeData2: any;
+	resposeData3: any;
+	id;
+	exercise;
+	device;
+	sw;
+	peripheral;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
-					public toastCtrl: ToastController,
-					public alertCtrl: AlertController,
 					public api: ApiProvider,
-					private ble: BLE) {
+					public toastCtrl: ToastController,
+					private ble: BLE,
+					private alertCtrl: AlertController) {
 
 		this.device = navParams.get('device');
 
@@ -38,7 +38,7 @@ export class HomePage {
 			this.showToast('No está conectado');
 			this.sw = 0;
 		} else {
-			console.log('Conectando a ' + this.device.name || this.device.id);
+			console.log('PlanPage1:' + 'Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
 				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
@@ -47,79 +47,38 @@ export class HomePage {
 
 	}
 
+	ionViewDidLoad() {
+		console.log('ionViewDidLoad PlanPage');
+		this.exercises = [];
+	}
+
 	ionViewWillEnter(){
 		this.api.getUser().then((user) => {
 			// console.log('user: ' + JSON.stringify(user));
 			var data = {'usuario':user['usuario']};
 			this.api.getDataClient(data).then((result) => {
 				this.resposeData = result[0];
-				this.name = this.resposeData['nombre'];
-				switch (parseInt(this.resposeData['cod_tipo_cliente'])) {
-					case 1:
-						this.typeClient = 'CLIENTE GENERAL';
-						break;
-					case 2:
-						this.typeClient = 'DEPORTISTA';
-						break;
-					case 3:
-						this.typeClient = 'AFICIONADO';
-						break;
-					default:
-						break;
-				}
+				this.id = this.resposeData['id'];
+				var data2 = {'cod_cliente': this.id, 'id': this.id};
+				this.api.getExerciseClient(data2).then((exercise) => {
+					this.resposeData2 = exercise[0];
+					this.exercises = this.resposeData2;
+				},(err) => {
+					this.showToast(err);
+				});
 			});
 		});
 	}
 
-	ionViewDidLoad() {
-		console.log('ionViewDidLoad HomePage');
+	exerciseSelected(exercise){
+		this.navCtrl.push(RoutinePage,{
+			routine: exercise,
+			device: this.device
+		});
 	}
 
-	ionViewWillUnload(){
-		console.log('ionViewWillUnload HomePage');
-		if (this.device != null) {
-			this.ble.disconnect(this.device.id).then(() => {
-				console.log('desconectado de ' + this.device.name || this.device.id)
-			});
-		}
-	}
-
-	goToTrain(){
-		if (this.device == null) {
-			this.navCtrl.push(ScanQrPage);
-		} else {
-			this.navCtrl.push(ScanQrPage,{
-				device: this.device
-			})
-		}
-	}
-
-	GoToPlan(){
-		if (this.device == null) {
-			this.navCtrl.push(PlanPage);
-		} else {
-			this.navCtrl.push(PlanPage,{
-				device: this.device
-			})
-		}
-	}
-
-	goToLink(){
-		if (this.device == null) {
-			this.navCtrl.push(BluetoothPage);
-		} else {
-			this.navCtrl.push(BluetoothPage,{
-				device: this.device
-			})
-		}
-	}
-
-	goToPerformance(){
-
-	}
-
-	goToProfile(){
-		this.navCtrl.push(ProfilePage);
+	goBack(){
+		this.navCtrl.pop();
 	}
 
 	onConnected(peripheral){
@@ -161,6 +120,10 @@ export class HomePage {
 			buttons: ['OK']
 		});
 		alert.present();
+	}
+
+	goToPlan(){
+		this.navCtrl.push(ExercisePage);
 	}
 
 }

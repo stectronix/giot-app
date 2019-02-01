@@ -25,6 +25,9 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { ApiProvider } from '../providers/api/api';
+import { MatchPasswordProvider } from '../providers/api/match-password';
+import { PlanPage } from '../pages/plan/plan';
+import { ExercisePage } from '../pages/exercise/exercise';
 
 @NgModule({
 	declarations: [
@@ -39,6 +42,8 @@ import { ApiProvider } from '../providers/api/api';
 		WorkoutPage,
 		EditProfilePage,
 		AboutPage,
+		PlanPage,
+		ExercisePage
 	],
 	imports: [
 		BrowserModule,
@@ -59,7 +64,9 @@ import { ApiProvider } from '../providers/api/api';
 		RoutinePage,
 		WorkoutPage,
 		EditProfilePage,
-		AboutPage
+		AboutPage,
+		PlanPage,
+		ExercisePage
 	],
 	providers: [
 		StatusBar,
@@ -71,7 +78,8 @@ import { ApiProvider } from '../providers/api/api';
 		InAppBrowser,
 		DatePicker,
 		Camera,
-		ApiProvider
+		ApiProvider,
+    	MatchPasswordProvider
   ]
 })
 export class AppModule {}

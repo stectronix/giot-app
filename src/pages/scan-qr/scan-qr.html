@@ -16,12 +16,8 @@
 	</div>
 	<div class="div-select">
 		<p class="p-select">También la puedes seleccionar</p>
-		<ion-item color="grayDark">
-			<ion-label color="light">Ejercicio:</ion-label>
-			<ion-select (ionChange)="machineSelected()" [(ngModel)]="getSelectedValue">
-				<ion-option *ngFor="let machine of machines" value="{{ machine.code }}">{{ machine.name }}</ion-option>
-			</ion-select>
-		</ion-item>
+		<ion-label color="light">Máquina:</ion-label>
+		<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" id="machine" name="machine"><option value="0">-- SELECCIONE --</option></select>
 	</div>
 	<div class="div-button">
 		<button class="btn-next" ion-button (click)="goToRoutine()">SIGUIENTE</button>

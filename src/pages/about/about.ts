@@ -12,7 +12,7 @@ export class AboutPage {
 	socialUrls = {
 		'website': 'https://www.giot.cl/',
 		'facebook': 'https://www.facebook.com/giotfit/',
-		'instagram': 'https://www.instagram.com/giot/'
+		'instagram': 'https://www.instagram.com/giot_fit/'
 	}
 
 	constructor(public navCtrl: NavController,

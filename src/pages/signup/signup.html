@@ -21,7 +21,7 @@
 				<p color="danger" ion-text *ngIf="todo.get('name').hasError('minlength')">Mínimo 3 caracteres</p>
 			</div>
 		</div>
-		<div class="div-item">
+		<!-- <div class="div-item">
 			<ion-item>
 				<ion-avatar item-start>
 					<img src="../../assets/imgs/user.png" alt="ícono usuario">
@@ -32,7 +32,7 @@
 				<p color="danger" ion-text *ngIf="todo.get('lastName').hasError('required')">Campo es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('lastName').hasError('minlength')">Mínimo 3 caracteres</p>
 			</div>
-		</div>
+		</div> -->
 		<div class="div-item">
 			<ion-item>
 				<ion-avatar item-start>
@@ -43,6 +43,18 @@
 			<div *ngIf="todo.get('email').errors && todo.get('email').dirty">
 				<p color="danger" ion-text *ngIf="todo.get('email').hasError('required')">Campo es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('email').hasError('email')">Debe ingresar formato válido</p>
+			</div>
+		</div>
+		<div class="div-item">
+			<ion-item>
+				<ion-avatar item-start>
+					<img src="../../assets/imgs/user.png" alt="ícono usuario">
+				</ion-avatar>
+				<ion-input type="text" formControlName="user" placeholder="Usuario"></ion-input>
+			</ion-item>
+			<div *ngIf="todo.get('user').errors && todo.get('user').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('user').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('user').hasError('minlength')">Mínimo 4 carcteres</p>
 			</div>
 		</div>
 		<div class="div-item">
@@ -70,7 +82,7 @@
 				<p color="danger" ion-text *ngIf="todo.get('confirmPassword').hasError('required')">Campo es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('confirmPassword').hasError('minlength')">Mínimo 4 caracteres</p>
 			</div>
-			<p color="danger" ion-text>{{ notMatch }}</p>
+			<p color="danger" ion-text *ngIf="todo.get('confirmPassword').errors?.MatchPassword">Contraseñas no coinciden</p>
 		</div>
 		<div align="center">
 			<h5>Haciendo click sobre el botón

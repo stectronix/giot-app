@@ -7,13 +7,13 @@
 <ion-content>
 	<div style="text-align: center; margin-top: 12px;">
 		<img style="height: 80px;" src="../../assets/imgs/profile_default.png" alt="">
-		<ion-label><b>Juan Torres Ramirez</b></ion-label>
-		<ion-label>jtorresramirez.19@gmail.com</ion-label>
-		<ion-label>26 años</ion-label>
-		<ion-label>19/09/1992</ion-label>
-		<ion-label>Peso: 68 Kg.</ion-label>
-		<ion-label>Género: Masculino</ion-label>
-		<ion-label>Altura: 170 Cm.</ion-label>
+		<ion-label><b>{{ name }}</b></ion-label>
+		<ion-label>{{ email }}</ion-label>
+		<ion-label>{{ age }} años</ion-label>
+		<ion-label>{{ birthday }}</ion-label>
+		<ion-label>Peso: {{ weight }} Kg.</ion-label>
+		<ion-label>Género: {{ gender }}</ion-label>
+		<ion-label>Altura: {{ height }} Cm.</ion-label>
 	</div>
 	<div style="text-align: center">
 		<button style="border-radius: 8px; margin: 20px 16px 0px 0px; padding: 12px; height: 36px;" ion-button color="dark" (click)="goBack()">VOLVER</button>

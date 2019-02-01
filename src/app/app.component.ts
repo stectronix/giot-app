@@ -12,7 +12,6 @@ import { BluetoothPage } from '../pages/bluetooth/bluetooth';
 })
 export class MyApp {
 	rootPage: any;
-
 	constructor(platform: Platform,
 					statusBar: StatusBar,
 					splashScreen: SplashScreen,
@@ -23,6 +22,7 @@ export class MyApp {
 				console.log('user: ' + JSON.stringify(user));
 				if (user != null) {
 					this.rootPage = BluetoothPage;
+					// this.rootPage = PlanPage;
 				} else {
 					this.rootPage = LoginPage;
 				}

@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, ToastController, AlertController }
 import { BarcodeScanner, BarcodeScannerOptions, BarcodeScanResult } from '@ionic-native/barcode-scanner';
 import { RoutinePage } from '../routine/routine';
 import { BLE } from '@ionic-native/ble';
+import { ApiProvider } from '../../providers/api/api';
+import * as $ from "jquery";
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -15,6 +17,7 @@ const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 export class ScanQrPage {
 
 	result: BarcodeScanResult;
+	resposeData: any;
 	machines: any[] = [];
 	getSelectedValue: any;
 	array: any[];
@@ -24,37 +27,34 @@ export class ScanQrPage {
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
+					public toastCtrl: ToastController,
+					public api: ApiProvider,
 					private barcode: BarcodeScanner,
 					private ble: BLE,
-					private alertCtrl: AlertController,
-					public toastCtrl: ToastController) {
+					private alertCtrl: AlertController) {
 
-		this.machines = [
-			{
-				'code': '01',
-				'name': 'Prensa 45°'
+		$.ajax({
+			type:'GET',
+			contentType: 'application/json',
+			dataType: "json",
+				crossDomain: true,
+			headers: {
+				'Content-Type': 'application/json'
 			},
+			url: "http://giot.cl/panelgym/public/maquina",
+			success: function(dados)
 			{
-				'code': '02',
-				'name': 'Banco Scott'
-			},
-			{
-				'code': '03',
-				'name': 'Multifuncional'
-			},
-			{
-				'code': '04',
-				'name': 'Polea'
-			},
-			{
-				'code': '05',
-				'name': 'Jaula'
-			},
-			{
-				'code': '06',
-				'name': 'Camilla Femoral'
-			},
-		]
+				var i,j
+				for (i=0;i<dados.length;i++){
+					for (j=0;j<dados[i].length;j++){
+						$('#machine').append($('<option>', {
+							value: dados[i][j].id,
+							text : dados[i][j].descripcion
+						}));
+					}
+				}
+			}
+		});
 
 		this.device = navParams.get('device');
 
@@ -75,6 +75,10 @@ export class ScanQrPage {
 		console.log('ionViewDidLoad ScanQrPage');
 	}
 
+	ionViewWillEnter(){
+
+	}
+
 	async scanBarcode(){
 		try {
 			const option: BarcodeScannerOptions = {
@@ -92,21 +96,21 @@ export class ScanQrPage {
 	}
 
 	machineSelected(){
-		this.array = this.machines.filter(select => select.code == this.getSelectedValue);
+		this.array = this.machines.filter(select => select.id == this.getSelectedValue);
 		console.log('id es ' + this.getSelectedValue);
-		console.log('valor es ' + this.array[0].name);
+		console.log('valor es ' + this.array[0].descripcion);
 	}
 
 	goToRoutine(){
-		if (this.array == null) {
-			this.showToast('Debe seleccionar una máquina o escanear el QR');
-		} else {
-			console.log(this.array[0].code + ' ' + this.array[0].name)
+		// if (this.array == null) {
+		// 	this.showToast('Debe seleccionar una máquina o escanear el QR');
+		// } else {
+			// console.log(this.array[0].id + ' ' + this.array[0].descripcion)
 			this.navCtrl.push(RoutinePage,{
 				select: this.array,
 				device: this.device
 			});
-		}
+		// }
 	}
 
 	onConnected(peripheral){

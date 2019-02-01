@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, ToastController, AlertController }
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WorkoutPage } from '../workout/workout';
 import { BLE } from '@ionic-native/ble';
+import { ApiProvider } from '../../providers/api/api';
+import * as $ from "jquery";
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -14,10 +16,12 @@ const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 })
 export class RoutinePage {
 
-	select: any[];
+	resposeData;
+	select;
 	code;
 	machine;
 	barcode;
+	plan;
 	private todo: FormGroup;
 	exercises: any[] = [];
 	getSelectedValue: any;
@@ -25,47 +29,80 @@ export class RoutinePage {
 	peripheral: any = {};
 	device;
 	sw;
+	routine;
+	exercise;
+	repeticion;
+	serie;
+	peso;
+	descanso;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
 					public toastCtrl: ToastController,
+					public api: ApiProvider,
 					private formBuilder: FormBuilder,
 					private ble: BLE,
 					private alertCtrl: AlertController,
 					private ngZone: NgZone) {
 
-		this.exercises = [
-			{
-				'id': '01',
-				'name': 'curl de bicep'
+		$.ajax({
+			type:'GET',
+			contentType: 'application/json',
+			dataType: "json",
+				crossDomain: true,
+			headers: {
+				'Content-Type': 'application/json'
 			},
+			url: "http://giot.cl/panelgym/public/maquina",
+			success: function(dados)
 			{
-				'id': '02',
-				'name': 'extensión de cuadricep'
+				var i,j
+				for (i=0;i<dados.length;i++){
+					for (j=0;j<dados[i].length;j++){
+						$('#machine').append($('<option>', {
+							value: dados[i][j].id,
+							text : dados[i][j].descripcion
+						}));
+					}
+				}
+			}
+		});
+
+		$.ajax({
+			type:'GET',
+			contentType: 'application/json',
+			dataType: "json",
+				crossDomain: true,
+			headers: {
+				'Content-Type': 'application/json'
 			},
+			url: "http://giot.cl/panelgym/public/tipoejercicio",
+			success: function(dados)
 			{
-				'id': '03',
-				'name': 'jalones de polea'
-			},
-			{
-				'id': '04',
-				'name': 'curl de bicep femoral'
-			},
-			{
-				'id': '05',
-				'name': 'estocada estacionaria'
-			},
-		];
+				var i,j
+				for (i=0;i<dados.length;i++){
+					for (j=0;j<dados[i].length;j++){
+						$('#exercise').append($('<option>', {
+							value: dados[i][j].id,
+							text : dados[i][j].descripcion
+						}));
+					}
+				}
+			}
+		});
 
 		this.select = navParams.get('select');
 		this.barcode = navParams.get('barcode');
 		this.device = navParams.get('device');
+		this.routine = navParams.get('routine');
+		this.exercise = navParams.get('exercise');
+
 
 		if (this.device == null) {
 			this.showToast('No está conectado');
 			this.sw = 0;
 		} else {
-			console.log('Conectando a ' + this.device.name || this.device.id);
+			console.log('RoutinePage1: ' + 'Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
 				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
@@ -73,7 +110,7 @@ export class RoutinePage {
 		}
 
 		this.todo = this.formBuilder.group({
-			exercise: ['', Validators.required],
+			// exercise: ['', Validators.required],
 			series: ['', Validators.required],
 			repetitions: ['', Validators.required],
 			weight: ['', Validators.required],
@@ -96,16 +133,39 @@ export class RoutinePage {
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad RoutinePage');
-		if (this.select == null) {
+		if (this.select == null && this.barcode != null) {
 			console.log(this.barcode);
-			this.ngZone.run(() => {
-				this.machine = this.barcode.text
+			var data = {'id': this.barcode.text};
+			this.api.getMachine(data).then((machine) => {
+				this.resposeData = machine[0];
+				this.machine = this.resposeData['descripcion']
+			},(err) =>{
+				this.showToast(err);
 			});
-		} else {
-			console.log(this.select[0].code + ' ' + this.select[0].name);
+			/* this.ngZone.run(() => {
+				this.machine = this.barcode.text
+			}); */
+		} /* else if (this.select != null && this.barcode == null){
+			console.log(this.select[0].id + ' ' + this.select[0].descripcion);
 			this.ngZone.run(() => {
-				this.code = this.select[0].code,
-				this.machine = this.select[0].name
+				this.code = this.select[0].id,
+				this.machine = this.select[0].descripcion
+			});
+		} */else if(this.routine != null){
+			/* var data = {'id':this.routine.cod_maquina};
+			this.api.getMachine(data).then((machine) => {
+				this.resposeData = machine;
+				this.machine = this.resposeData[0]['descripcion'];
+				console.log('RoutinePage2: ' + JSON.stringify(this.resposeData));
+			},(err) => {
+				this.showToast(err);
+			}); */
+			this.ngZone.run(() => {
+				// this.machine = this.routine.maquina;
+				this.repeticion = this.routine.repeticion,
+				this.serie = this.routine.descripcion,
+				this.peso = this.routine.indicacion,
+				this.descanso = this.routine.descanso
 			});
 		}
 

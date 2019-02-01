@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePicker } from '@ionic-native/date-picker';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ApiProvider } from '../../providers/api/api';
+import * as $ from "jquery";
 
 @IonicPage()
 @Component({
@@ -15,24 +17,66 @@ export class EditProfilePage {
 	private todo: FormGroup;
 	selectedDate;
 	photo: SafeResourceUrl;
+	resposeData: any;
+	id;
+	rut;
+	nombre;
+	altura;
+	peso;
+	telefono = 0;
+	email;
+	direccion;
+	cod_estado;
+	cod_tipo_cliente;
+	usuario;
+	contrasena;
+	fecha;
+	updateLoading;
+	gender;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
+					public api: ApiProvider,
 					private formBuilder: FormBuilder,
 					private datePicker: DatePicker,
 					private alertCtrl: AlertController,
 					private camera: Camera,
-					private sanitizer: DomSanitizer) {
+					private sanitizer: DomSanitizer,
+					private loadingController: LoadingController) {
 
 		this.todo = this.formBuilder.group({
 			name: ['', [Validators.required]],
-			lastName: ['', [Validators.required]],
+			// lastName: ['', [Validators.required]],
 			weight: ['', [Validators.required]],
 			height: ['', [Validators.required]],
 			birthday: ['',[Validators.required]],
 			gender: ['',[Validators.required]]
 		});
 
+	}
+
+	ionViewWillEnter(){
+		this.api.getUser().then((user) => {
+			// console.log('user: ' + JSON.stringify(user));
+			var data = {'usuario':user['usuario']};
+			this.api.getDataClient(data).then((result) => {
+				this.resposeData = result[0];
+				this.id = this.resposeData['id'];
+				this.nombre = this.resposeData['nombre'];
+				this.altura = this.resposeData['altura'];
+				this.peso = this.resposeData['peso'];
+				this.selectedDate = this.resposeData['fecha_nacimiento'];
+				this.rut = this.resposeData['rut'];
+				this.telefono = this.resposeData['telefono'];
+				this.email = this.resposeData['email'];
+				this.direccion = this.resposeData['direccion'];
+				this.cod_estado = this.resposeData['cod_estado'];
+				this.cod_tipo_cliente = this.resposeData['cod_tipo_cliente'];
+				this.usuario = this.resposeData['usuario'];
+				this.contrasena = this.resposeData['contrasena'];
+				this.fecha = this.resposeData['fecha'];
+			});
+		});
 	}
 
 	ionViewDidLoad() {
@@ -43,6 +87,74 @@ export class EditProfilePage {
 
 	updateForm(){
 		if (this.todo.valid) {
+		// 	this.updatingLoading();
+		// 	var data = {'id': this.id,
+		// 					'rut': this.rut,
+		// 					'nombre': this.todo.value.name,
+		// 					'fecha_nacimiento': this.todo.value.birthday ,
+		// 					'peso': parseInt(this.todo.value.weight),
+		// 					'genero': this.todo.value.gender,
+		// 					'altura': parseInt(this.todo.value.height),
+		// 					'telefono': this.telefono,
+		// 					'email': this.email,
+		// 					'direccion': this.direccion,
+		// 					'cod_estado': parseInt(this.cod_estado),
+		// 					'cod_tipo_cliente': parseInt(this.cod_tipo_cliente),
+		// 					'usuario': this.usuario,
+		// 					'contrasena': this.contrasena,
+		// 					'fecha': this.fecha,
+		// 	};
+		// 	console.log('edit-prfile1: ',JSON.stringify(data));
+		// 	this.api.postUpdateProfile(data).then((result) => {
+		// 		this.resposeData = result;
+		// 		if (this.resposeData != null) {
+		// 			this.updateLoading.dismiss();
+		// 			this.showToast('Datos actualzados correctamente');
+		// 			this.navCtrl.pop();
+		// 		}
+
+		// 	}, (err) => {
+		// 		//Connection failed message
+		// 	});
+
+		this.nombre = this.todo.value.name;
+		this.selectedDate = this.todo.value.birthday;
+		this.peso = this.todo.value.weight;
+		this.gender = this.todo.value.gender;
+		this.altura = this.todo.value.height;
+
+		$.ajax({
+			type:'PUT',
+			contentType: 'application/json',
+			dataType: "json",
+			crossDomain: true,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			url: "http://giot.cl/panelgym/public/actualizarcliente",
+			data : JSON.stringify({
+					id:$("#id2").val(),
+					rut:$("#rut2").val(),
+					nombre:$("#nombre2").val(),
+					fecha_nacimiento:$("#nac2").val(),
+					peso:$("#peso2").val(),
+					genero:$("#gender2").val(),
+					altura:$("#altura2").val(),
+					telefono:$("#telefono2").val(),
+					email:$("#email2").val(),
+					direccion:$("#direccion2").val(),
+					cod_estado:$("#cod_estado2").val(),
+					cod_tipo_cliente:$("#cod_tipo_cliente2").val(),
+					fecha:$("#fecha2").val(),
+					usuario:$("#usuario2").val(),
+					contrasena:$("#contrasena2").val()
+				}),
+
+		}).done(function(res){
+			alert("Registro actualizado exitosamente");
+		}).fail(function(err){
+			alert("Registro no actualizado");
+		});
 
 		}
 	}
@@ -55,8 +167,18 @@ export class EditProfilePage {
 		}).then(
 			date => {
 				var month = date.getMonth() + 1;
-				this.selectedDate = date.getDate().toString() + '/' + month + '/' + date.getFullYear();
-				console.log('Fecha2: ' + date.getDate().toString() + month + date.getFullYear());
+				if (month < 10) {
+					var monthAux = '0' + month;
+				}else{
+					monthAux = month.toString();
+				}
+				if(date.getDate() < 10){
+					var dayAux = '0' + date.getDate();
+				}else{
+					dayAux = date.getDate().toString();
+				}
+				this.selectedDate = date.getFullYear().toString() + '-' + monthAux + '-' + dayAux;
+				console.log('Fecha: ',this.selectedDate);
 			},
 			err => console.log('Error al obtener fecha',err)
 		);
@@ -122,6 +244,22 @@ export class EditProfilePage {
 
 	goBack(){
 		this.navCtrl.pop()
+	}
+
+	updatingLoading(){
+		this.updateLoading = this.loadingController.create({
+			spinner: 'hide',
+			content: `<div>
+							<img src="../../assets/imgs/icon_giot.png" />
+							<p>Actualizando...</p>
+						</div>`,
+			cssClass: 'loading',
+		});
+		this.updateLoading.present();
+	}
+
+	showToast(message){
+
 	}
 
 }
