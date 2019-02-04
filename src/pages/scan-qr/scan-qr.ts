@@ -18,9 +18,9 @@ export class ScanQrPage {
 
 	result: BarcodeScanResult;
 	resposeData: any;
-	machines: any[] = [];
+	machines;
 	getSelectedValue: any;
-	array: any[];
+	array;
 	peripheral: any = {};
 	device;
 	sw;
@@ -32,29 +32,6 @@ export class ScanQrPage {
 					private barcode: BarcodeScanner,
 					private ble: BLE,
 					private alertCtrl: AlertController) {
-
-		$.ajax({
-			type:'GET',
-			contentType: 'application/json',
-			dataType: "json",
-				crossDomain: true,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "http://giot.cl/panelgym/public/maquina",
-			success: function(dados)
-			{
-				var i,j
-				for (i=0;i<dados.length;i++){
-					for (j=0;j<dados[i].length;j++){
-						$('#machine').append($('<option>', {
-							value: dados[i][j].id,
-							text : dados[i][j].descripcion
-						}));
-					}
-				}
-			}
-		});
 
 		this.device = navParams.get('device');
 
@@ -73,10 +50,7 @@ export class ScanQrPage {
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad ScanQrPage');
-	}
-
-	ionViewWillEnter(){
-
+		this.getMachines();
 	}
 
 	async scanBarcode(){
@@ -95,13 +69,8 @@ export class ScanQrPage {
 		}
 	}
 
-	machineSelected(){
-		this.array = this.machines.filter(select => select.id == this.getSelectedValue);
-		console.log('id es ' + this.getSelectedValue);
-		console.log('valor es ' + this.array[0].descripcion);
-	}
-
 	goToRoutine(){
+		// console.log('ScanPage2: ' + JSON.stringify(this.array[0]));
 		// if (this.array == null) {
 		// 	this.showToast('Debe seleccionar una máquina o escanear el QR');
 		// } else {
@@ -154,4 +123,32 @@ export class ScanQrPage {
 		alert.present();
 	}
 
+	getSelectedMAchine(){
+		
+	}
+
+	getMachines(){
+		$.ajax({
+			type:'GET',
+			contentType: 'application/json',
+			dataType: "json",
+				crossDomain: true,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			url: "http://giot.cl/panelgym/public/maquina",
+			success: function(dados)
+			{
+				var i,j
+				for (i=0;i<dados.length;i++){
+					for (j=0;j<dados[i].length;j++){
+						$('#machine').append($('<option>', {
+							value: dados[i][j].id,
+							text : dados[i][j].descripcion
+						}));
+					}
+				}
+			}
+		});
+	}
 }

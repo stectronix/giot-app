@@ -23,7 +23,7 @@ export class EditProfilePage {
 	nombre;
 	altura;
 	peso;
-	telefono = 0;
+	telefono;
 	email;
 	direccion;
 	cod_estado;
@@ -87,75 +87,35 @@ export class EditProfilePage {
 
 	updateForm(){
 		if (this.todo.valid) {
-		// 	this.updatingLoading();
-		// 	var data = {'id': this.id,
-		// 					'rut': this.rut,
-		// 					'nombre': this.todo.value.name,
-		// 					'fecha_nacimiento': this.todo.value.birthday ,
-		// 					'peso': parseInt(this.todo.value.weight),
-		// 					'genero': this.todo.value.gender,
-		// 					'altura': parseInt(this.todo.value.height),
-		// 					'telefono': this.telefono,
-		// 					'email': this.email,
-		// 					'direccion': this.direccion,
-		// 					'cod_estado': parseInt(this.cod_estado),
-		// 					'cod_tipo_cliente': parseInt(this.cod_tipo_cliente),
-		// 					'usuario': this.usuario,
-		// 					'contrasena': this.contrasena,
-		// 					'fecha': this.fecha,
-		// 	};
-		// 	console.log('edit-prfile1: ',JSON.stringify(data));
-		// 	this.api.postUpdateProfile(data).then((result) => {
-		// 		this.resposeData = result;
-		// 		if (this.resposeData != null) {
-		// 			this.updateLoading.dismiss();
-		// 			this.showToast('Datos actualzados correctamente');
-		// 			this.navCtrl.pop();
-		// 		}
+			this.updatingLoading();
+			var data = {'id': this.id,
+							'rut': this.rut,
+							'nombre': this.todo.value.name,
+							'fecha_nacimiento': this.todo.value.birthday ,
+							'peso': parseInt(this.todo.value.weight),
+							'genero': this.todo.value.gender,
+							'altura': parseInt(this.todo.value.height),
+							'telefono': this.telefono,
+							'email': this.email,
+							'direccion': this.direccion,
+							'cod_estado': parseInt(this.cod_estado),
+							'cod_tipo_cliente': parseInt(this.cod_tipo_cliente),
+							'usuario': this.usuario,
+							'contrasena': this.contrasena,
+							'fecha': this.fecha,
+			};
+			console.log('EditProfile1: ',JSON.stringify(data));
+			this.api.updateProfile(data).then((result) => {
+				this.resposeData = result;
+				if (this.resposeData != null) {
+					this.updateLoading.dismiss();
+					this.showToast('Datos actualzados correctamente');
+					this.navCtrl.pop();
+				}
 
-		// 	}, (err) => {
-		// 		//Connection failed message
-		// 	});
-
-		this.nombre = this.todo.value.name;
-		this.selectedDate = this.todo.value.birthday;
-		this.peso = this.todo.value.weight;
-		this.gender = this.todo.value.gender;
-		this.altura = this.todo.value.height;
-
-		$.ajax({
-			type:'PUT',
-			contentType: 'application/json',
-			dataType: "json",
-			crossDomain: true,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "http://giot.cl/panelgym/public/actualizarcliente",
-			data : JSON.stringify({
-					id:$("#id2").val(),
-					rut:$("#rut2").val(),
-					nombre:$("#nombre2").val(),
-					fecha_nacimiento:$("#nac2").val(),
-					peso:$("#peso2").val(),
-					genero:$("#gender2").val(),
-					altura:$("#altura2").val(),
-					telefono:$("#telefono2").val(),
-					email:$("#email2").val(),
-					direccion:$("#direccion2").val(),
-					cod_estado:$("#cod_estado2").val(),
-					cod_tipo_cliente:$("#cod_tipo_cliente2").val(),
-					fecha:$("#fecha2").val(),
-					usuario:$("#usuario2").val(),
-					contrasena:$("#contrasena2").val()
-				}),
-
-		}).done(function(res){
-			alert("Registro actualizado exitosamente");
-		}).fail(function(err){
-			alert("Registro no actualizado");
-		});
-
+			}, (err) => {
+				//Connection failed message
+			});
 		}
 	}
 

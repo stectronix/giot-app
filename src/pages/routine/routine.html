@@ -8,14 +8,14 @@
 	<div style="background: #3e3d3d; margin: 24px; padding: 16px; border-radius: 8px;">
 		<div style="display: flex; margin: 12px 0px 12px 0px;">
 			<ion-label color="light">Máquina:</ion-label>
-			<div style="width: 200px;">
-					<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" class="form-control" id="machine" name="machine"><option value="0">-- SELECCIONE --</option></select>
+			<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
+				<ion-input type="text" value="{{ machine }}" readonly></ion-input>
 			</div>
 		</div>
 		<div style="margin: 12px 0px 12px 0px; display: flex;">
 			<ion-label color="light">Ejercicio:</ion-label>
 			<div style="width: 200px;">
-				<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" class="form-control" id="exercise" name="exercise"><option value="0">-- SELECCIONE --</option></select>
+				<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-top: 8px; margin-left: 36px; color: #FEE000;" class="form-control" id="exercise" name="exercise"><option value="0">-- SELECCIONE --</option></select>
 			</div>
 		</div>
 		<form [formGroup]="todo" (ngSubmit)="startRoutine()">

@@ -5,21 +5,6 @@
 </ion-header> -->
 
 <ion-content align="center" padding>
-	<input type="text" value="{{ id }}" id="id2" name="id2"hidden>
-	<input type="text" value="{{ nombre }}" id="nombre2" name="nombre2" hidden>
-	<input type="text" value="{{ selectedDate }}" id="nac2" name="nac2" hidden>
-	<input type="text" value="{{ rut }}" id="rut2" name="rut2"hidden >
-	<input type="text" value="{{ peso }}" id="peso2" name="peso2" hidden>
-	<input type="text" value="{{ altura }}" id="altura2" name="altura2" hidden>
-	<input type="text" value="{{ gender }}" id="gender2" name="gender2" hidden>
-	<input type="text" value="{{ telefono }}" id="telefono2" name="telefono2" hidden>
-	<input type="text" value="{{ email }}" id="email2" name="email2" hidden>
-	<input type="text" value="{{ direccion }}" id="direccion2" name="direccion2" hidden>
-	<input type="text" value="{{ cod_estado }}" id="cod_estado2" name="cod_estado2" hidden>
-	<input type="text" value="{{ cod_tipo_cliente }}" id="cod_tipo_cliente2" name="cod_tipo_cliente2" hidden>
-	<input type="text" value="{{ fecha }}" id="fecha2" name="fecha2" hidden>
-	<input type="text" value="{{ usuario }}" id="usuario2" name="usuario2" hidden>
-	<input type="text" value="{{ contrasena }}" id="contrasena2" name="contrasena2" hidden>
 	<img style="border-radius: 40px; height: 80px;" [src]="photo" alt="">
 	<p style="color: gray;" (click)="selectPhoto()">Cambiar Foto</p>
 	<form [formGroup]="todo" (ngSubmit)="updateForm()">
@@ -37,7 +22,7 @@
 		</div> -->
 		<div style="display: flex; margin: 20px 0px 20px 0px;">
 			<p style="width: 180px;" >Fecha de nacimiento:</p>
-			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; background: gray; width: 120px; height: 40px; border-radius: 8px" value="{{ selectedDate }}" formControlName="birthday" disabled id="nac" name="nac"></ion-input>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; background: gray; width: 120px; height: 40px; border-radius: 8px" value="{{ selectedDate }}" formControlName="birthday" disabled></ion-input>
 			<button style="margin: 0px; height: 40px; width: 40px;" ion-button color="light" clear icon-only (click)="showDatePicker()">
 				<img style="height: 24px; width: 24px; margin: 0px;" src="../../assets/imgs/icon_calendar.png" alt="">
 			</button>
@@ -47,7 +32,7 @@
 		</div>
 		<div style="display: flex; margin: 20px 0px 20px 0px">
 			<p style="width: 168px; text-align: right">Peso:</p>
-			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="text" formControlName="weight" placeholder="Peso" value="{{ peso }}" id="peso" name="peso"></ion-input>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="text" formControlName="weight" placeholder="Peso" value="{{ peso }}"></ion-input>
 			<p>[Kg]</p>
 		</div>
 		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
@@ -55,7 +40,7 @@
 		</div>
 		<div style="display: flex; margin: 20px 0px 20px 0px;">
 			<p style="width: 168px; text-align: right">Estatura:</p>
-			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="text" formControlName="height" placeholder="Altura" value="{{ altura }}" id="altura" name="altura"></ion-input>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="text" formControlName="height" placeholder="Altura" value="{{ altura }}"></ion-input>
 			<p>[Cm]</p>
 		</div>
 		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('height').errors && todo.get('height').dirty">
@@ -64,11 +49,11 @@
 		<div radio-group style="display: flex; margin: 20px 0px 20px 0px;">
 			<p style="width: 168px; text-align: right; margin-right: 8px;">Género:</p>
 			<div>
-				<input value="F" formControlName="gender" type="radio" id="gender" name="gender">
+				<input value="2" formControlName="gender" type="radio">
 				<ion-label style="font-size: 16px">Femenino</ion-label>
 			</div>
 			<div>
-				<input value="M" formControlName="gender" type="radio" id="gender" name="gender">
+				<input value="1" formControlName="gender" type="radio">
 				<ion-label style="font-size: 16px">Masculino</ion-label>
 			</div>
 		</div>

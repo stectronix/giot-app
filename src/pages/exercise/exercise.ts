@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiProvider } from '../../providers/api/api';
 import * as $ from "jquery";
+import { Observable } from 'rxjs/Observable';
+import { BLE } from '@ionic-native/ble';
+
+const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
+const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 
 @IonicPage()
 @Component({
@@ -29,103 +34,42 @@ export class ExercisePage {
 	peso;
 	descanso;
 	series;
+	rest;
+	timerVar;
+	device;
+	sw;
+	peripheral: any = {};
+	countDown;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
 					public api: ApiProvider,
+					private ble: BLE,
+					private alertCtrl: AlertController,
 					private formBuilder: FormBuilder,
 					private toastCtrl: ToastController) {
 
-		$.ajax({
-			type:'GET',
-			contentType: 'application/json',
-			dataType: "json",
-				crossDomain: true,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "http://giot.cl/panelgym/public/maquina",
-			success: function(dados)
-			{
-				var i,j
-				for (i=0;i<dados.length;i++){
-					for (j=0;j<dados[i].length;j++){
-						$('#machine').append($('<option>', {
-							value: dados[i][j].id,
-							text : dados[i][j].descripcion
-						}));
-					}
-				}
-			}
-		});
-
-		$.ajax({
-			type:'GET',
-			contentType: 'application/json',
-			dataType: "json",
-				crossDomain: true,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "http://giot.cl/panelgym/public/tipoejercicio",
-			success: function(dados)
-			{
-				var i,j
-				for (i=0;i<dados.length;i++){
-					for (j=0;j<dados[i].length;j++){
-						$('#exercise').append($('<option>', {
-							value: dados[i][j].id,
-							text : dados[i][j].descripcion
-						}));
-					}
-				}
-			}
-		});
-
-		// $("#machine").change(function () {
-		// 	$("#machine").val();
-	  	// });
-
-		// $('#exercise').empty();
-		// $.ajax({
-		// 	type:'POST',
-		// 	contentType: 'application/json',
-		// 	dataType: "json",
-		// 		crossDomain: true,
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	},
-		// 	url: "http://giot.cl/panelgym/public/ejerciciomaquina",
-		// 	data : JSON.stringify({
-		// 		// cod_maquina: maquina
-		// 	}),
-		// 	success: function(dados)
-		// 	{
-		// 		var i,j;
-		// 		for (i=0;i<dados.length;i++){
-		// 			for (j=0;j<dados[i].length;j++){
-		// 				$('#exercise').append($('<option>', {
-		// 					value: dados[i][j].id,
-		// 					text : dados[i][j].descripcion
-		// 				}));
-		// 			}
-		// 		}
-		// 	}
+		// this.todo = this.formBuilder.group({
+		// 	// machine: ['', Validators.required],
+		// 	// exercise: ['', Validators.required],
+		// 	series: ['', Validators.required],
+		// 	repetitions: ['', Validators.required],
+		// 	weight: ['', Validators.required],
+		// 	rest: ['', Validators.required]
 		// });
+		this.rest = navParams.get('rest');
+		this.device = navParams.get('device');
 
-		// $('#exercise').append($('<option>', {
-		// 	value: 0,
-		// 	text : '-- SELECCIONE --'
-		// }));
-
-		this.todo = this.formBuilder.group({
-			// machine: ['', Validators.required],
-			// exercise: ['', Validators.required],
-			series: ['', Validators.required],
-			repetitions: ['', Validators.required],
-			weight: ['', Validators.required],
-			rest: ['', Validators.required]
-		});
+		if (this.device == null) {
+			this.showToast('No está conectado');
+			this.sw = 0;
+		} else {
+			console.log('Exercise1: ' + 'Conectando a ' + this.device.name || this.device.id);
+			this.ble.connect(this.device.id).subscribe(
+				peripheral => this.onConnected(peripheral),
+				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+			);
+		}
 
 	}
 
@@ -134,14 +78,25 @@ export class ExercisePage {
 	}
 
 	ionViewWillEnter(){
-		this.cod_categoria = 1;
-		this.api.getUser().then((user) => {
-			var data = {'usuario':user['usuario']};
-			this.api.getDataClient(data).then((result) => {
-				this.resposeData = result[0];
-				this.id = this.resposeData['id'];
-			});
+		console.log('Exercise2: ' + this.rest);
+		this.timerVar = Observable.interval(1000).subscribe(x => {
+			console.log('Exercise3: ' + x);
+			if (x == parseInt(this.rest)) {
+				this.timerVar.unsubscribe();
+				this.navCtrl.pop();
+			} else {
+				this.countDown = this.rest - x;
+			}
 		});
+
+		// this.cod_categoria = 1;
+		// this.api.getUser().then((user) => {
+		// 	var data = {'usuario':user['usuario']};
+		// 	this.api.getDataClient(data).then((result) => {
+		// 		this.resposeData = result[0];
+		// 		this.id = this.resposeData['id'];
+		// 	});
+		// });
 		// this.api.getAllMachines().then((machine) => {
 		// 	this.resposeData2 = machine[0];
 		// },(err) => {
@@ -153,20 +108,43 @@ export class ExercisePage {
 		// 	this.showToast(err);
 		// });
 
-		var date = new Date()
-		var month = date.getMonth() + 1;
-		if (month < 10) {
-			var monthAux = '0' + month;
-		}else{
-			monthAux = month.toString();
-		}
-		if(date.getDate() < 10){
-			var dayAux = '0' + date.getDate();
-		}else{
-			dayAux = date.getDate().toString();
-		}
-		this.today = date.getFullYear().toString() + '-' + monthAux + '-' + dayAux;
-		console.log('Fecha: ',this.today);
+		// var date = new Date()
+		// var month = date.getMonth() + 1;
+		// if (month < 10) {
+		// 	var monthAux = '0' + month;
+		// }else{
+		// 	monthAux = month.toString();
+		// }
+		// if(date.getDate() < 10){
+		// 	var dayAux = '0' + date.getDate();
+		// }else{
+		// 	dayAux = date.getDate().toString();
+		// }
+		// this.today = date.getFullYear().toString() + '-' + monthAux + '-' + dayAux;
+		// console.log('Fecha: ',this.today);
+	}
+
+	onConnected(peripheral){
+		this.peripheral = peripheral;
+		this.sw = 1;
+		console.log(peripheral.id);
+		console.log('Conectado a ' + (peripheral.name || peripheral.id));
+
+		this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
+			data => this.onRepetitionsChange(data),
+			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
+		);
+
+	}
+
+	onRepetitionsChange(buffer: ArrayBuffer){
+
+		var data = new Uint8Array(buffer);
+
+		String.fromCharCode.apply(null, new Uint8Array(data));
+
+		//console.log(String.fromCharCode.apply(null, new Uint8Array(data)));
+
 	}
 
 	goBack(){
@@ -192,63 +170,34 @@ export class ExercisePage {
 			// },(err) => {
 			// 	this.showToast(err);
 			// });
-
-			$.ajax({
-				type:'POST',
-				contentType: 'application/json',
-				dataType: "json",
-				crossDomain: true,
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				url: "http://giot.cl/panelgym/public/ingresarejercicio",
-				data : JSON.stringify({
-					cod_categoria:$("#cod_categoria2").val(),
-					descripcion:$("#series2").val(),
-					repeticion:$("#repetitions2").val(),
-					descanso:$("#rest2").val(),
-					indicacion:$("#weight2").val(),
-					cod_cliente: $("#id2").val(),
-					cod_maquina:$("#machine2").val(),
-					cod_tipo_ejercicio:$("#exercise2").val(),
-					fecha:$("#today2").val()
-				})
-			}).done(function(res){
-				alert("Registro ingresado exitosamente" + JSON.stringify(res));
-			}).fail(function(err){
-				alert("Registro no ingresado" + JSON.stringify(err));
-			});
-	}
-
-	machineSelected(){
-		this.array = this.machines.filter(select => select.id == this.getSelectedValue);
-		console.log('id es ' + this.getSelectedValue);
-		console.log('valor es ' + this.array[0].descripcion);
-	}
-
-	exerciseSelected(){
-		this.array2 = this.exercises.filter(select => select.id == this.getSelectedValue2);
-		console.log('id es ' + this.getSelectedValue2);
-		console.log('valor es ' + this.array2[0].descripcion);
 	}
 
 	showToast(message){
-		let toast = this.toastCtrl.create({
-			position: 'middle',
-			message: message,
-			duration: 2000
-		});
-		toast.present();
+		// let toast = this.toastCtrl.create({
+		// 	position: 'middle',
+		// 	message: message,
+		// 	duration: 2000
+		// });
+		// toast.present();
 	}
 
 	saveCamp(){
-		if (this.todo.valid) {
-			this.series = this.todo.value.series;
-			this.repeticion = this.todo.value.repetitions;
-			this.descanso = this.todo.value.rest;
-			this.peso = this.todo.value.weight;
-			this.saveRoutine();
-		}
+		// if (this.todo.valid) {
+		// 	this.series = this.todo.value.series;
+		// 	this.repeticion = this.todo.value.repetitions;
+		// 	this.descanso = this.todo.value.rest;
+		// 	this.peso = this.todo.value.weight;
+		// 	this.saveRoutine();
+		// }
+	}
+
+	showAlert(title,message){
+		let alert = this.alertCtrl.create({
+			title: title,
+			subTitle: message,
+			buttons: ['OK']
+		});
+		alert.present();
 	}
 
 }

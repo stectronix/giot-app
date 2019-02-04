@@ -3,13 +3,15 @@
 		<ion-card color="dark">
 			<div style="display: flex">
 				<ion-card-header style="color: #FEEE00; padding-left: 32px;">RUTINAS</ion-card-header>
-				<ion-fab style="margin-left: 240px;">
+				<!-- <ion-fab style="margin-left: 240px;">
 					<button ion-fab mini style="background: #FEEE00" (click)="goToPlan()"><ion-icon name="add" color="dark"></ion-icon></button>
-				</ion-fab>
+				</ion-fab> -->
 			</div>
 			<ion-list inset>
 				<button style="background: #000000; color: #ffffff" ion-item *ngFor="let exercise of exercises" (click)="exerciseSelected(exercise)">
-					{{ exercise.id }}
+					<h2>Fecha: {{ exercise.fecha }}</h2>
+					<p>Máquina: {{ exercise.maquina }}</p>
+					<p>Ejercicios: {{ exercise.tipo_ejercicio }}</p>
 				</button>
 			</ion-list>
 		</ion-card>
@@ -18,3 +20,9 @@
 		<button ion-button style="border-radius: 8px; background: #FEEE00; color: #000000;" (click)="goBack()">VOLVER</button>
 	</div>
 </ion-content>
+
+<ion-footer>
+	<ion-toolbar color="dark" align="center">
+		<img class="logo-footer" src="../../assets/imgs/logo_giot.png">
+	</ion-toolbar>
+</ion-footer>

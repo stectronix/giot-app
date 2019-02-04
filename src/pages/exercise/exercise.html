@@ -1,84 +1,8 @@
 <ion-content style="background: #000000;">
-	<input style="color: #ffffff" type="text" value="{{ id }}" id="id2" name="id2" hidden>
-	<input style="color: #ffffff" type="text" value="{{ today }}" id="today2" name="today2" hidden>
-	<input style="color: #ffffff" type="text" value="{{ cod_categoria }}" id="cod_categoria2" name="cod_categoria2" hidden>
-	<input style="color: #ffffff" type="text" value="{{ series }}" id="series2" name="series2" hidden>
-	<input style="color: #ffffff" type="text" value="{{ repetitions }}" id="repeticion2" name="repeticion2" hidden>
-	<input style="color: #ffffff" type="text" value="{{ peso }}" id="peso2" name="peso2" hidden>
-	<input style="color: #ffffff" type="text" value="{{ descanso }}" id="descanso2" name="descanso2" hidden>
-	<div style="background: #3e3d3d; margin: 24px; padding: 16px; border-radius: 8px;">
-		<!-- <form [formGroup]="todo" (ngSubmit)="saveRoutine()"> -->
-			<div style="margin: 12px 0px 12px 0px; display: flex;">
-				<ion-label color="light">Maquina:</ion-label>
-					<!-- <ion-item color="grayDark">
-						<ion-select (ionChange)="machineSelected()" [(ngModel)]="getSelectedValue" formControlName="machine" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 16px; color: #FEE000;">
-							<ion-option *ngFor="let machine of machines" color="giot" value="{{ machine.id }}">{{ machine.descripcion }}</ion-option>
-						</ion-select>
-					</ion-item> -->
-					<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" id="machine" name="machine"><option value="0">-- SELECCIONE --</option></select>
-			</div>
-			<!-- <div *ngIf="todo.get('machine').errors && todo.get('machine').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('machine').hasError('required')">Campo es requerido</p>
-			</div> -->
-			<div style="margin: 12px 0px 12px 0px; display: flex;">
-				<ion-label color="light">Ejercicio:</ion-label>
-					<!-- <ion-item color="grayDark">
-						<ion-select (ionChange)="exerciseSelected()" [(ngModel)]="getSelectedValue" formControlName="exercise" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 16px; color: #FEE000;">
-							<ion-option *ngFor="let exercise of exercises" color="giot" value="{{ exercise.id }}">{{ exercise.descripcion }}</ion-option>
-						</ion-select>
-					</ion-item> -->
-				<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" class="form-control" id="exercise" name="exercise"><option value="0">-- SELECCIONE --</option></select>
-			</div>
-			<!-- <div *ngIf="todo.get('exercise').errors && todo.get('exercise').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('exercise').hasError('required')">Campo es requerido</p>
-			</div> -->
-		<form [formGroup]="todo" (ngSubmit)="saveRoutine()">
-			<div style="display: flex; margin: 12px 0px 12px 0px;">
-				<ion-label color="light">Series:</ion-label>
-				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
-					<ion-input type="text" formControlName="series" value="{{ serie }}" id="series" name="series"></ion-input>
-				</div>
-			</div>
-			<div *ngIf="todo.get('series').errors && todo.get('series').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('series').hasError('required')">Campo es requerido</p>
-			</div>
-			<div style="display: flex; margin: 12px 0px 12px 0px;">
-				<ion-label color="light">Repeticiones:</ion-label>
-				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
-					<ion-input type="text" formControlName="repetitions" value="{{ repeticion }}" id="repetitions" name="repetitions"></ion-input>
-				</div>
-			</div>
-			<div *ngIf="todo.get('repetitions').errors && todo.get('repetitions').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('repetitions').hasError('required')">Campo es requerido</p>
-			</div>
-			<div style="display: flex; margin: 12px 0px 12px 0px;">
-				<ion-label color="light">Peso:</ion-label>
-				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px; display: flex;">
-					<ion-input type="text" formControlName="weight" value="{{ peso }}" id="weight" name="weight"></ion-input>
-					<h1 style="font-size: 12px; padding: 0px; margin: 16px 8px 0px 8px;">KGS</h1>
-				</div>
-			</div>
-			<div *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')">Campo es requerido</p>
-			</div>
-			<div style="display: flex; margin: 12px 0px 12px 0px;">
-				<ion-label color="light">Descanso:</ion-label>
-				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px; display: flex;">
-					<ion-input type="text" formControlName="rest" value="{{ descanso }}" id="rest" name="rest"></ion-input>
-					<h1 style="font-size: 12px; padding: 0px; margin: 16px 8px 0px 8px;">SEG</h1>
-				</div>
-			</div>
-			<div *ngIf="todo.get('rest').errors && todo.get('rest').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('rest').hasError('required')">Campo es requerido</p>
-			</div>
-		</form>
-	</div>
-	<div align="center">
-		<button style="border: 2px solid #ffffff; padding: 8px; margin: 20px 0px 20px 20px; border-radius: 8px; color: #ffffff; background: #000000" ion-button clear="true" (click)="goBack()">
-			CANCELAR
-		</button>
-		<button style="border: 2px solid #ffffff; padding: 8px; margin: 20px 0px 20px 20px; border-radius: 8px; color: #ffffff; background: #000000" type="submit" [disabled]="!todo.valid" ion-button clear="true" (click)="saveCamp()">
-			GUARDAR
-		</button>
+	<div align="center" style="margin-top: 200px;">
+		<p class="title">DESCANSO</p>
+		<div align="center" class="circle">
+			<p class="time">{{ this.countDown }}</p>
+		</div>
 	</div>
 </ion-content>

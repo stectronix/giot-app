@@ -39,7 +39,7 @@ export class ApiProvider {
 		});
 	}
 
-	postUpdateProfile(credentials){
+	updateProfile(credentials){
 		return new Promise((resolve,reject) => {
 			this.http.put(this.apiUrl + 'actualizarcliente', credentials).subscribe(data => {
 				console.log('api6: ', JSON.stringify(data));
@@ -128,7 +128,7 @@ export class ApiProvider {
 
 	getExerciseClient(credentials){
 		return new Promise((resolve,reject) => {
-			this.http.post(this.apiUrl + 'ejerciciocliente', credentials).subscribe(data => {
+			this.http.post(this.apiUrl + 'obtenerejerciciocliente', credentials).subscribe(data => {
 				console.log('api20: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {
@@ -169,6 +169,30 @@ export class ApiProvider {
 				resolve(data);
 			}, (err) => {
 				console.log('api27: ', JSON.stringify(err));
+				reject(err);
+			});
+		});
+	}
+
+	getRoutine(credentials){
+		return new Promise((resolve,reject) => {
+			this.http.post(this.apiUrl + 'obtenerejercicio',credentials).subscribe(data => {
+				console.log('api28: ', JSON.stringify(data));
+				resolve(data);
+			}, (err) => {
+				console.log('api29: ', JSON.stringify(err));
+				reject(err);
+			});
+		});
+	}
+
+	putRoutine(credentials){
+		return new Promise((resolve,reject) => {
+			this.http.put(this.apiUrl + 'actualizarejercicio',credentials).subscribe(data => {
+				console.log('api30: ', JSON.stringify(data));
+				resolve(data);
+			}, (err) => {
+				console.log('api31: ', JSON.stringify(err));
 				reject(err);
 			});
 		});

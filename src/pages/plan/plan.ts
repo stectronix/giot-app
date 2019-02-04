@@ -59,7 +59,20 @@ export class PlanPage {
 			this.api.getDataClient(data).then((result) => {
 				this.resposeData = result[0];
 				this.id = this.resposeData['id'];
-				var data2 = {'cod_cliente': this.id, 'id': this.id};
+				var date = new Date()
+				var month = date.getMonth() + 1;
+				if (month < 10) {
+					var monthAux = '0' + month;
+				}else{
+					monthAux = month.toString();
+				}
+				if(date.getDate() < 10){
+					var dayAux = '0' + date.getDate();
+				}else{
+					dayAux = date.getDate().toString();
+				}
+				var today = date.getFullYear() + '-' + monthAux + '-' + dayAux;
+				var data2 = {'id': this.id, 'fecha': today};
 				this.api.getExerciseClient(data2).then((exercise) => {
 					this.resposeData2 = exercise[0];
 					this.exercises = this.resposeData2;

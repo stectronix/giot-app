@@ -3,6 +3,9 @@ import { IonicPage, NavController, NavParams, ToastController, AlertController, 
 import { BLE } from '@ionic-native/ble';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
+import { ApiProvider } from '../../providers/api/api';
+import { ExercisePage } from '../exercise/exercise';
+import { RoutinePage } from '../routine/routine';
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -14,8 +17,11 @@ const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 })
 export class WorkoutPage {
 
+	device;
 	peripheral: any = {};
 	button;
+	routine;
+	resposeData;
 	countRepetitions: number;
 	countSeries: number = 1;
 	pause;
@@ -43,24 +49,26 @@ export class WorkoutPage {
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
 					public toastCtrl: ToastController,
+					public api:ApiProvider,
 					private ble: BLE,
 					private alertCtrl: AlertController,
 					private ngZone: NgZone,
 					private loadingController: LoadingController) {
 
-		let device = navParams.get('device');
+		this.device = navParams.get('device');
 		this.series = navParams.get('series');
 		this.repetitions = navParams.get('repetitions');
 		this.weight = navParams.get('weight');
 		this.rest = navParams.get('rest');
+		this.routine = navParams.get('routine');
 
-		if (device == null) {
+		if (this.device == null) {
 			this.showToast('No está conectado');
 			this.sw = 0;
 		} else {
-			console.log('Conectando a ' + device.name || device.id);
+			console.log('Conectando a ' + this.device.name || this.device.id);
 
-			this.ble.connect(device.id).subscribe(
+			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
 				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
 			);
@@ -167,7 +175,15 @@ export class WorkoutPage {
 				if (this.cont == 1) {
 					this.countSeries++;
 					if (this.countSeries <= this.series) {
-						this.restLoading();
+						if (this.routine != null) {
+							this.navCtrl.push(ExercisePage,{
+								rest: this.routine.descanso,
+							});
+						} else {
+							this.navCtrl.push(ExercisePage,{
+								rest: this.rest,
+							});
+						}
 					}
 				}
 				this.timerVar.unsubscribe();
@@ -198,6 +214,24 @@ export class WorkoutPage {
 					this.mili = '00';
 					this.sec = '00';
 					this.min = '00';
+			});
+			var info ={'id':this.routine.id,
+							'cod_categoria':this.routine.cod_categoria,
+							'descripcion':this.routine.descripcion,
+							'repeticion':this.routine.repeticion,
+							'descanso':this.routine.descanso,
+							'indicacion':this.routine.indicacion,
+							'cod_cliente':this.routine.cod_cliente,
+							'cod_maquina':this.routine.cod_maquina,
+							'cod_tipo_ejercicio':this.routine.cod_tipo_ejercicio,
+							'fecha':this.routine.fecha,
+							'planificado':this.routine.planificado,
+							'cod_profesional':this.routine.cod_profesional,
+							'terminada':1};
+			this.api.putRoutine(info).then((routine) => {
+				this.resposeData = routine[0];
+			},(err) => {
+				this.showToast(err)
 			});
 			if (this.sw == 1) {
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
@@ -279,6 +313,5 @@ export class WorkoutPage {
 		});
 		this.restLoad.present();
 	}
-
 
 }

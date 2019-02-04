@@ -17,6 +17,8 @@ const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 export class RoutinePage {
 
 	resposeData;
+	resposeData2;
+	resposeData3;
 	select;
 	code;
 	machine;
@@ -35,6 +37,7 @@ export class RoutinePage {
 	serie;
 	peso;
 	descanso;
+	qr;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
@@ -44,52 +47,6 @@ export class RoutinePage {
 					private ble: BLE,
 					private alertCtrl: AlertController,
 					private ngZone: NgZone) {
-
-		$.ajax({
-			type:'GET',
-			contentType: 'application/json',
-			dataType: "json",
-				crossDomain: true,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "http://giot.cl/panelgym/public/maquina",
-			success: function(dados)
-			{
-				var i,j
-				for (i=0;i<dados.length;i++){
-					for (j=0;j<dados[i].length;j++){
-						$('#machine').append($('<option>', {
-							value: dados[i][j].id,
-							text : dados[i][j].descripcion
-						}));
-					}
-				}
-			}
-		});
-
-		$.ajax({
-			type:'GET',
-			contentType: 'application/json',
-			dataType: "json",
-				crossDomain: true,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "http://giot.cl/panelgym/public/tipoejercicio",
-			success: function(dados)
-			{
-				var i,j
-				for (i=0;i<dados.length;i++){
-					for (j=0;j<dados[i].length;j++){
-						$('#exercise').append($('<option>', {
-							value: dados[i][j].id,
-							text : dados[i][j].descripcion
-						}));
-					}
-				}
-			}
-		});
 
 		this.select = navParams.get('select');
 		this.barcode = navParams.get('barcode');
@@ -120,21 +77,50 @@ export class RoutinePage {
 	}
 
 	startRoutine(){
-		// if (this.todo.valid) {
+		if (this.todo.valid && this.routine != null) {
+			var data3 ={'id':this.routine.id,
+							'cod_categoria':this.resposeData2.cod_categoria,
+							'descripcion':this.todo.value.series,
+							'repeticion':this.todo.value.repetitions,
+							'descanso':this.todo.value.rest,
+							'indicacion':this.todo.value.weight,
+							'cod_cliente':this.resposeData2['cod_cliente'],
+							'cod_maquina':this.resposeData2['cod_maquina'],
+							'cod_tipo_ejercicio':this.resposeData2['cod_tipo_ejercicio'],
+							'fecha':this.resposeData2['fecha'],
+							'planificado':this.resposeData2['planificado'],
+							'cod_profesional':this.resposeData2['cod_profesional'],
+							'terminada':this.resposeData2['terminada']};
+			this.api.putRoutine(data3).then((routine) => {
+				this.resposeData3 = routine[0];
+				this.navCtrl.push(WorkoutPage,{
+					device: this.device,
+					series: this.todo.value.series,
+					repetitions: this.todo.value.repetitions,
+					weight: this.todo.value.weight,
+					rest: this.todo.value.rest,
+					routine:this.resposeData3
+				});
+			},(err) => {
+				this.showToast(err)
+			});
+		}else{
 			this.navCtrl.push(WorkoutPage,{
 				device: this.device,
 				series: this.todo.value.series,
 				repetitions: this.todo.value.repetitions,
 				weight: this.todo.value.weight,
-				rest: this.todo.value.rest
+				rest: this.todo.value.rest,
 			});
-		// }
+		}
 	}
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad RoutinePage');
+		this.getExercises();
 		if (this.select == null && this.barcode != null) {
-			console.log(this.barcode);
+			this.qr = this.barcode.text;
+			console.log('RoutinePage2: ' + this.qr);
 			var data = {'id': this.barcode.text};
 			this.api.getMachine(data).then((machine) => {
 				this.resposeData = machine[0];
@@ -152,27 +138,23 @@ export class RoutinePage {
 				this.machine = this.select[0].descripcion
 			});
 		} */else if(this.routine != null){
-			/* var data = {'id':this.routine.cod_maquina};
-			this.api.getMachine(data).then((machine) => {
-				this.resposeData = machine;
-				this.machine = this.resposeData[0]['descripcion'];
-				console.log('RoutinePage2: ' + JSON.stringify(this.resposeData));
+			var data2 = {'id':this.routine.id};
+			console.log('RoutinePage3: ' + JSON.stringify(data2));
+			this.api.getRoutine(data2).then((routine) => {
+				this.resposeData2 = routine[0];
+				console.log('RoutinePage4: ' + JSON.stringify(this.resposeData2));
 			},(err) => {
 				this.showToast(err);
-			}); */
+			});
 			this.ngZone.run(() => {
-				// this.machine = this.routine.maquina;
+				this.machine = this.routine.maquina;
 				this.repeticion = this.routine.repeticion,
-				this.serie = this.routine.descripcion,
+				this.serie = this.routine.serie,
 				this.peso = this.routine.indicacion,
 				this.descanso = this.routine.descanso
 			});
 		}
 
-	}
-
-	exerciseSelected(){
-		this.array = this.exercises.filter(select => select.id == this.getSelectedValue);
 	}
 
 	onConnected(peripheral){
@@ -216,4 +198,32 @@ export class RoutinePage {
 		alert.present();
 	}
 
+	getExercises(){
+		$.ajax({
+			type:'GET',
+			contentType: 'application/json',
+			dataType: "json",
+				crossDomain: true,
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			url: "http://giot.cl/panelgym/public/tipoejercicio",
+			success: function(dados2)
+			{
+				var x,y
+				for (x=0;x<dados2.length;x++){
+					for (y=0;y<dados2[x].length;y++){
+						$('#exercise').append($('<option>', {
+							value: dados2[x][y].id,
+							text : dados2[x][y].descripcion
+						}));
+					}
+				}
+			}
+		});
+	}
+
+	loadSelect(){
+
+	}
 }

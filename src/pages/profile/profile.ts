@@ -19,6 +19,7 @@ export class ProfilePage {
 	weight;
 	gender;
 	height;
+	age;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
@@ -36,7 +37,7 @@ export class ProfilePage {
 				this.email = this.resposeData['email'];
 				this.birthday = this.resposeData['fecha_nacimiento'];
 				this.weight = this.resposeData['peso'];
-				if (this.resposeData['genero'] == 'F') {
+				if (this.resposeData['genero'] == '2') {
 					this.gender = 'FEMENINO';
 				} else {
 					this.gender = 'MASCULINO';
