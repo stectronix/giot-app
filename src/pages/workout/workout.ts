@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import { ApiProvider } from '../../providers/api/api';
 import { ExercisePage } from '../exercise/exercise';
+import { HomePage } from '../home/home';
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -231,6 +232,10 @@ export class WorkoutPage {
 				this.resposeData = routine[0];
 			},(err) => {
 				this.showToast(err)
+			});
+			this.navCtrl.push(HomePage).then(() => {
+				const index = this.navCtrl.getActive().index;
+				this.navCtrl.remove(0,index);
 			});
 			if (this.sw == 1) {
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
