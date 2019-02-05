@@ -59,6 +59,10 @@ export class SignupPage {
 			this.authenticationLoading();
 			var data = {'rut': '',
 							'nombre': this.todo.value.name,
+							'fecha_nacimiento': '',
+							'peso': '',
+							'genero': '',
+							'altura': '',
 							'telefono': '',
 							'email': this.todo.value.email,
 							'direccion': '',
@@ -66,7 +70,7 @@ export class SignupPage {
 							'cod_tipo_cliente': 2,
 							'usuario': this.todo.value.user,
 							'contrasena': this.todo.value.password,
-							'fecha': this.date};
+							/* 'fecha': this.date */};
 			var check = {'usuario': this.todo.value.user}
 			this.api.checkExistUser(check).then((result) => {
 				this.resposeData = result;

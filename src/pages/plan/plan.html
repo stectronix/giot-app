@@ -1,18 +1,36 @@
 <ion-content padding style="background: #000000">
-	<div style="height: 400px;">
+	<!-- <div style="height: 400px; padding: 0px 12px 0px 12px;">
 		<ion-card color="dark">
 			<div style="display: flex">
-				<ion-card-header style="color: #FEEE00; padding-left: 32px;">RUTINAS</ion-card-header>
-				<!-- <ion-fab style="margin-left: 240px;">
+			<ion-card-header style="color: #FEEE00; padding-left: 32px;">RUTINAS</ion-card-header>
+				<ion-fab style="margin-left: 240px;">
 					<button ion-fab mini style="background: #FEEE00" (click)="goToPlan()"><ion-icon name="add" color="dark"></ion-icon></button>
-				</ion-fab> -->
+				</ion-fab>
 			</div>
-			<ion-list inset>
-				<button style="background: #000000; color: #ffffff" ion-item *ngFor="let exercise of exercises" (click)="exerciseSelected(exercise)">
-					<h2>Fecha: {{ exercise.fecha }}</h2>
-					<p>Máquina: {{ exercise.maquina }}</p>
-					<p>Ejercicios: {{ exercise.tipo_ejercicio }}</p>
-				</button>
+			<ion-list>
+				<ion-scroll scrollY="true">
+					<button style="background: #000000; color: #ffffff" ion-item *ngFor="let exercise of exercises" (click)="exerciseSelected(exercise)">
+						<h2>Fecha: {{ exercise.fecha }}</h2>
+						<p>Máquina: {{ exercise.maquina }}</p>
+						<p>Ejercicios: {{ exercise.tipo_ejercicio }}</p>
+					</button>
+				</ion-scroll>
+			</ion-list>
+		</ion-card>
+	</div> -->
+	<div class="div-list">
+		<ion-card>
+			<ion-card-header style="background: #000000 ;color: #FEEE00; padding-left: 32px;" align="center">
+				<b>RUTINAS</b>
+			</ion-card-header>
+			<ion-list style="height: 400px; padding: 0px; background: #000000;">
+				<ion-scroll style="height: 400px; padding: 0px" scrollY="true">
+					<button style="background: #000000; color: #ffffff; padding: 0px;" ion-item *ngFor="let exercise of exercises" (click)="exerciseSelected(exercise)">
+						<h2 style="color: #ffffff">Fecha: {{ exercise.fecha }}</h2>
+						<p>Máquina: {{ exercise.maquina }}</p>
+						<p>Ejercicio: {{ exercise.tipo_ejercicio }}</p>
+					</button>
+				</ion-scroll>
 			</ion-list>
 		</ion-card>
 	</div>
