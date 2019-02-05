@@ -1,11 +1,9 @@
-import { Component/* , NgZone */ } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { BluetoothPage } from '../bluetooth/bluetooth';
 import { ApiProvider } from '../../providers/api/api';
-// import { Storage } from '@ionic/storage';
-// import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
 @Component({

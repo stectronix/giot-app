@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WorkoutPage } from '../workout/workout';
 import { BLE } from '@ionic-native/ble';
 import { ApiProvider } from '../../providers/api/api';
-import * as $ from "jquery";
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -19,6 +18,10 @@ export class RoutinePage {
 	resposeData;
 	resposeData2;
 	resposeData3;
+	resposeData4;
+	resposeData5;
+	resposeData6;
+	resposeData7;
 	select;
 	code;
 	machine;
@@ -27,7 +30,7 @@ export class RoutinePage {
 	private todo: FormGroup;
 	exercises: any[] = [];
 	getSelectedValue: any;
-	array: any;
+	array;
 	peripheral: any = {};
 	device;
 	sw;
@@ -38,6 +41,7 @@ export class RoutinePage {
 	peso;
 	descanso;
 	qr;
+	id;
 
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
@@ -62,7 +66,7 @@ export class RoutinePage {
 			console.log('RoutinePage1: ' + 'Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
 			);
 		}
 
@@ -77,84 +81,148 @@ export class RoutinePage {
 	}
 
 	startRoutine(){
-		if (this.todo.valid && this.routine != null) {
-			var data3 ={'id':this.routine.id,
-							'cod_categoria':this.resposeData2.cod_categoria,
+		if (this.todo.valid && this.routine != null && this.barcode == null && this.select == null) {
+			var data6 ={'id':this.routine.id,
+							'cod_categoria':this.resposeData4.cod_categoria,
 							'descripcion':this.todo.value.series,
 							'repeticion':this.todo.value.repetitions,
 							'descanso':this.todo.value.rest,
 							'indicacion':this.todo.value.weight,
-							'cod_cliente':this.resposeData2['cod_cliente'],
-							'cod_maquina':this.resposeData2['cod_maquina'],
-							'cod_tipo_ejercicio':this.resposeData2['cod_tipo_ejercicio'],
-							'fecha':this.resposeData2['fecha'],
-							'planificado':this.resposeData2['planificado'],
-							'cod_profesional':this.resposeData2['cod_profesional'],
-							'terminada':this.resposeData2['terminada']};
-			this.api.putRoutine(data3).then((routine) => {
-				this.resposeData3 = routine[0];
+							'cod_cliente':this.resposeData4['cod_cliente'],
+							'cod_maquina':this.resposeData4['cod_maquina'],
+							'cod_tipo_ejercicio':this.resposeData4['cod_tipo_ejercicio'],
+							'fecha':this.resposeData4['fecha'],
+							'planificado':this.resposeData4['planificado'],
+							'cod_profesional':this.resposeData4['cod_profesional'],
+							'terminada':this.resposeData4['terminada']};
+			this.api.putRoutine(data6).then((routine) => {
+				this.resposeData6 = routine[0];
 				this.navCtrl.push(WorkoutPage,{
 					device: this.device,
 					series: this.todo.value.series,
 					repetitions: this.todo.value.repetitions,
 					weight: this.todo.value.weight,
 					rest: this.todo.value.rest,
-					routine:this.resposeData3
+					routine:this.resposeData6
 				});
 			},(err) => {
 				this.showToast(err)
 			});
-		}else{
-			this.navCtrl.push(WorkoutPage,{
-				device: this.device,
-				series: this.todo.value.series,
-				repetitions: this.todo.value.repetitions,
-				weight: this.todo.value.weight,
-				rest: this.todo.value.rest,
+		}else if(this.getSelectedValue != null){
+			var date = new Date()
+			var month = date.getMonth() + 1;
+			if (month < 10) {
+				var monthAux = '0' + month;
+			}else{
+				monthAux = month.toString();
+			}
+			if(date.getDate() < 10){
+				var dayAux = '0' + date.getDate();
+			}else{
+				dayAux = date.getDate().toString();
+			}
+			var today = date.getFullYear() + '-' + monthAux + '-' + dayAux;
+			this.api.getUser().then((user) => {
+				var data7 = {'usuario':user['usuario']};
+				this.api.getDataClient(data7).then((result) => {
+					this.resposeData7 = result[0];
+					this.id = this.resposeData7['id'];
+					if (this.select != null) {
+						var cod_maquina = this.select[0].id
+					} else {
+						cod_maquina = this.barcode.text
+					}
+					var data5 ={'cod_categoria':1,
+							'descripcion':this.todo.value.series,
+							'repeticion':this.todo.value.repetitions,
+							'descanso':this.todo.value.rest,
+							'indicacion':this.todo.value.weight,
+							'cod_cliente':this.id,
+							'cod_maquina':cod_maquina,
+							'cod_tipo_ejercicio':this.getSelectedValue,
+							'fecha':today,
+							'planificado':0,
+							'cod_profesional':0,
+							'terminada':0};
+					this.api.postSaveExercise(data5).then((exercise) => {
+						this.resposeData5 = exercise[0];
+					},(err) => {
+						this.showToast(err)
+					});
+					this.navCtrl.push(WorkoutPage,{
+						device: this.device,
+						series: this.todo.value.series,
+						repetitions: this.todo.value.repetitions,
+						weight: this.todo.value.weight,
+						rest: this.todo.value.rest,
+					});
+				});
 			});
+		}else{
+			this.showToast('Debe Seleccionar un ejercicio');
 		}
 	}
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad RoutinePage');
-		this.getExercises();
-		if (this.select == null && this.barcode != null) {
+		if (this.select == null && this.barcode != null && this.routine == null) {
 			this.qr = this.barcode.text;
 			console.log('RoutinePage2: ' + this.qr);
 			var data = {'id': this.barcode.text};
 			this.api.getMachine(data).then((machine) => {
 				this.resposeData = machine[0];
 				this.machine = this.resposeData['descripcion']
+				var data2 = {'cod_maquina': this.barcode.text}
+				this.api.getExerciseByMachine(data2).then((exercise) => {
+					this.resposeData2 = exercise[0];
+					this.exercises = this.resposeData2
+				},(err) => {
+					this.showToast(err);
+				});
 			},(err) =>{
 				this.showToast(err);
 			});
-			/* this.ngZone.run(() => {
-				this.machine = this.barcode.text
-			}); */
-		} /* else if (this.select != null && this.barcode == null){
+		} else if (this.select != null && this.barcode == null && this.routine == null){
 			console.log(this.select[0].id + ' ' + this.select[0].descripcion);
 			this.ngZone.run(() => {
-				this.code = this.select[0].id,
 				this.machine = this.select[0].descripcion
 			});
-		} */else if(this.routine != null){
-			var data2 = {'id':this.routine.id};
-			console.log('RoutinePage3: ' + JSON.stringify(data2));
-			this.api.getRoutine(data2).then((routine) => {
-				this.resposeData2 = routine[0];
-				console.log('RoutinePage4: ' + JSON.stringify(this.resposeData2));
+			var data3 = {'cod_maquina': this.select[0].id}
+				this.api.getExerciseByMachine(data3).then((exercise) => {
+					this.resposeData3 = exercise[0];
+					this.exercises = this.resposeData3
+				},(err) => {
+					this.showToast(err);
+			});
+		}else if(this.routine != null && this.barcode == null && this.select == null){
+			var data4 = {'id':this.routine.id};
+			this.api.getRoutine(data4).then((routine) => {
+				this.resposeData4 = routine[0];
+				var data5 = {'cod_maquina': this.resposeData4['cod_maquina']}
+				this.api.getExerciseByMachine(data5).then((exercise) => {
+					this.resposeData5 = exercise[0];
+					this.exercises = this.resposeData5
+					this.ngZone.run(() => {
+						this.machine = this.routine.maquina;
+						this.repeticion = this.routine.repeticion,
+						this.serie = this.routine.serie,
+						this.peso = this.routine.indicacion,
+						this.descanso = this.routine.descanso,
+						this.getSelectedValue = this.resposeData4['cod_tipo_ejercicio']
+					});
+				},(err) => {
+					this.showToast(err);
+				});
 			},(err) => {
 				this.showToast(err);
 			});
-			this.ngZone.run(() => {
-				this.machine = this.routine.maquina;
-				this.repeticion = this.routine.repeticion,
-				this.serie = this.routine.serie,
-				this.peso = this.routine.indicacion,
-				this.descanso = this.routine.descanso
-			});
 		}
+	}
 
+	exerciseSelected(){
+		this.array = this.exercises.filter(select => select.id == this.getSelectedValue);
+		console.log('id es ' + this.getSelectedValue);
+		console.log('valor es ' + this.array[0].descripcion);
 	}
 
 	onConnected(peripheral){
@@ -196,34 +264,5 @@ export class RoutinePage {
 			buttons: ['OK']
 		});
 		alert.present();
-	}
-
-	getExercises(){
-		$.ajax({
-			type:'GET',
-			contentType: 'application/json',
-			dataType: "json",
-				crossDomain: true,
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			url: "http://giot.cl/panelgym/public/tipoejercicio",
-			success: function(dados2)
-			{
-				var x,y
-				for (x=0;x<dados2.length;x++){
-					for (y=0;y<dados2[x].length;y++){
-						$('#exercise').append($('<option>', {
-							value: dados2[x][y].id,
-							text : dados2[x][y].descripcion
-						}));
-					}
-				}
-			}
-		});
-	}
-
-	loadSelect(){
-
 	}
 }

@@ -15,7 +15,11 @@
 		<div style="margin: 12px 0px 12px 0px; display: flex;">
 			<ion-label color="light">Ejercicio:</ion-label>
 			<div style="width: 200px;">
-				<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-top: 8px; margin-left: 36px; color: #FEE000;" class="form-control" id="exercise" name="exercise"><option value="0">-- SELECCIONE --</option></select>
+				<ion-item style="padding: 0px;" color="grayDark">
+					<ion-select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 32px; color: #FEE000;" (ionChange)="exerciseSelected()" [(ngModel)]="getSelectedValue">
+						<ion-option *ngFor="let exercise of exercises" value="{{ exercise.id }}">{{ exercise.descripcion }}</ion-option>
+					</ion-select>
+				</ion-item>
 			</div>
 		</div>
 		<form [formGroup]="todo" (ngSubmit)="startRoutine()">
@@ -26,7 +30,7 @@
 				</div>
 			</div>
 			<div *ngIf="todo.get('series').errors && todo.get('series').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('series').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('series').hasError('required')"><b>SERIES</b> es requerido</p>
 			</div>
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Repeticiones:</ion-label>
@@ -35,7 +39,7 @@
 				</div>
 			</div>
 			<div *ngIf="todo.get('repetitions').errors && todo.get('repetitions').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('repetitions').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('repetitions').hasError('required')"><b>REPETICIONES</b> es requerido</p>
 			</div>
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Peso:</ion-label>
@@ -45,7 +49,7 @@
 				</div>
 			</div>
 			<div *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')"><b>PESO</b> es requerido</p>
 			</div>
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Descanso:</ion-label>
@@ -55,7 +59,7 @@
 				</div>
 			</div>
 			<div *ngIf="todo.get('rest').errors && todo.get('rest').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('rest').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('rest').hasError('required')"><b>DESCANSO</b> es requerido</p>
 			</div>
 		</form>
 	</div>

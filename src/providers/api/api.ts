@@ -77,7 +77,7 @@ export class ApiProvider {
 
 	getAllMachines(){
 		return new Promise((resolve,reject) => {
-			this.http.get(this.apiUrl + 'maquina').subscribe(data => {
+			this.http.get(this.apiUrl + 'maquina',{headers:{'Content-Type': 'application/json'}}).subscribe(data => {
 				console.log('api12: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {
@@ -164,7 +164,7 @@ export class ApiProvider {
 
 	getExercise(){
 		return new Promise((resolve,reject) => {
-			this.http.get(this.apiUrl + 'tipoejercicio').subscribe(data => {
+			this.http.get(this.apiUrl + 'tipoejercicio',{headers:{'Content-Type': 'application/json'}}).subscribe(data => {
 				console.log('api26: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {
@@ -193,6 +193,18 @@ export class ApiProvider {
 				resolve(data);
 			}, (err) => {
 				console.log('api31: ', JSON.stringify(err));
+				reject(err);
+			});
+		});
+	}
+
+	getExerciseByMachine(credentials){
+		return new Promise((resolve,reject) => {
+			this.http.post(this.apiUrl + 'ejerciciomaquina',credentials).subscribe(data => {
+				console.log('api32: ', JSON.stringify(data));
+				resolve(data);
+			}, (err) => {
+				console.log('api33: ', JSON.stringify(err));
 				reject(err);
 			});
 		});

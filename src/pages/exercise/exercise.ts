@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonicPage, NavController, NavParams,/*  ToastController,  */AlertController } from 'ionic-angular';
+// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiProvider } from '../../providers/api/api';
-import * as $ from "jquery";
+// import * as $ from "jquery";
 import { Observable } from 'rxjs/Observable';
 import { BLE } from '@ionic-native/ble';
 
@@ -18,7 +18,7 @@ export class ExercisePage {
 
 	array: any[];
 	array2: any[];
-	private todo: FormGroup;
+	// private todo: FormGroup;
 	getSelectedValue: any;
 	getSelectedValue2: any;
 	resposeData;
@@ -46,8 +46,8 @@ export class ExercisePage {
 					public api: ApiProvider,
 					private ble: BLE,
 					private alertCtrl: AlertController,
-					private formBuilder: FormBuilder,
-					private toastCtrl: ToastController) {
+					/* private formBuilder: FormBuilder,
+					private toastCtrl: ToastController */) {
 
 		// this.todo = this.formBuilder.group({
 		// 	// machine: ['', Validators.required],

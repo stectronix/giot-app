@@ -5,7 +5,6 @@ import { DatePicker } from '@ionic-native/date-picker';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ApiProvider } from '../../providers/api/api';
-import * as $ from "jquery";
 
 @IonicPage()
 @Component({

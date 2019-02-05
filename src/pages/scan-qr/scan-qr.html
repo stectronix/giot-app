@@ -5,7 +5,6 @@
 </ion-header> -->
 
 <ion-content style="background: black;">
-	<input style="color: #ffffff" type="text" value="{{ id }}" id="id2" name="id2" hidden>
 	<div class="div-button">
 		<p class="p-scan">Escanea el código QR de la máquina</p>
 		<button class="button-scan" ion-button (click)="scanBarcode()">
@@ -17,8 +16,20 @@
 	</div>
 	<div class="div-select">
 		<p class="p-select">También la puedes seleccionar</p>
-		<ion-label color="light">Máquina:</ion-label>
-		<select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 16px; color: #FEE000;" id="machine" name="machine"><option value="0">-- SELECCIONE --</option></select>
+		<!-- <div style="display: flex"> -->
+			<!-- <ion-label color="light">Máquina:</ion-label> -->
+			<ion-item color="grayDark">
+				<ion-label color="light">Máquina:</ion-label>
+				<ion-select (ionChange)="machineSelected()" [(ngModel)]="getSelectedValue">
+					<ion-option *ngFor="let machine of machines" value="{{ machine.id }}">{{ machine.descripcion }}</ion-option>
+				</ion-select>
+			</ion-item>
+			<!-- <ion-item style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 4px; color: #FEE000;">
+				<ion-select [(ngModel)]="machineSelected" (ionChange)="getMachine(machineSelected.value)">
+					<ion-option *ngFor="let machine of machines" value="{{ machine.id }}">{{ machine.descripcion }}</ion-option>
+				</ion-select>
+			</ion-item> -->
+		<!-- </div> -->
 	</div>
 	<div class="div-button">
 		<button class="btn-next" ion-button (click)="goToRoutine()">SIGUIENTE</button>
