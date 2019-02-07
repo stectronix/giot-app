@@ -6,6 +6,7 @@ import { ProfilePage } from '../profile/profile';
 import { BLE } from '@ionic-native/ble';
 import { ApiProvider } from '../../providers/api/api';
 import { PlanPage } from '../plan/plan';
+import { PerformancePage } from '../performance/performance';
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -115,7 +116,7 @@ export class HomePage {
 	}
 
 	goToPerformance(){
-
+		this.navCtrl.push(PerformancePage);
 	}
 
 	goToProfile(){

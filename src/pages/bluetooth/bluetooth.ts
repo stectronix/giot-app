@@ -89,7 +89,7 @@ export class BluetoothPage {
 			this.showToast('No se encuentra conectado a ningún dispositivo');
 		}else{
 			this.ble.isConnected(this.device.id).then(
-				success => {
+				() => {
 					this.ble.disconnect(this.device.id);
 					this.showToast((this.device.name || this.device.id) + ' Desconectado');
 				});

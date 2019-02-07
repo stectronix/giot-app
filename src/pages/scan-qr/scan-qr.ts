@@ -53,7 +53,6 @@ export class ScanQrPage {
 			this.resposeData = machines[0];
 			this.machines = this.resposeData;
 		});
-		// this.getMachines();
 	}
 
 	async scanBarcode(){

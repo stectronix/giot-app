@@ -12,7 +12,7 @@
 			<ion-input type="text" formControlName="name" placeholder="Nombre" value="{{ nombre }}" id="nombre" name="nombre"></ion-input>
 		</div>
 		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('name').errors && todo.get('name').dirty">
-			<p color="danger" ion-text *ngIf="todo.get('name').hasError('required')"><b>Nombre</b> es requerido</p>
+			<p color="danger" ion-text *ngIf="todo.get('name').hasError('required')"><b>NOMBRE</b> es requerido</p>
 		</div>
 		<!-- <div style="margin: 20px 0px 20px 0px; background: gray; border-radius: 8px;">
 			<ion-input type="text" formControlName="lastName" placeholder="Apellidos"></ion-input>
@@ -28,23 +28,23 @@
 			</button>
 		</div>
 		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('birthday').errors && todo.get('birthday').dirty">
-			<p color="danger" ion-text *ngIf="todo.get('birthday').hasError('required')">Campo es requerido</p>
+			<p color="danger" ion-text *ngIf="todo.get('birthday').hasError('required')"><b>FECHA DE NACIEMIENTO</b> es requerido</p>
 		</div>
 		<div style="display: flex; margin: 20px 0px 20px 0px">
 			<p style="width: 168px; text-align: right">Peso:</p>
-			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="text" formControlName="weight" placeholder="Peso" value="{{ peso }}"></ion-input>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="number" formControlName="weight" placeholder="Peso" value="{{ peso }}"></ion-input>
 			<p>[Kg]</p>
 		</div>
 		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
-			<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')"><b>Peso</b> es requerido</p>
+			<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')"><b>PESO</b> es requerido</p>
 		</div>
 		<div style="display: flex; margin: 20px 0px 20px 0px;">
 			<p style="width: 168px; text-align: right">Estatura:</p>
-			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="text" formControlName="height" placeholder="Altura" value="{{ altura }}"></ion-input>
+			<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; height: 40px; background: gray; border-radius: 8px;" type="number" formControlName="height" placeholder="Altura" value="{{ altura }}"></ion-input>
 			<p>[Cm]</p>
 		</div>
 		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('height').errors && todo.get('height').dirty">
-			<p color="danger" ion-text *ngIf="todo.get('height').hasError('required')"><b>Estatura</b> es requerido</p>
+			<p color="danger" ion-text *ngIf="todo.get('height').hasError('required')"><b>ESTATURA</b> es requerido</p>
 		</div>
 		<div radio-group style="display: flex; margin: 20px 0px 20px 0px;">
 			<p style="width: 168px; text-align: right; margin-right: 8px;">Género:</p>
@@ -58,7 +58,7 @@
 			</div>
 		</div>
 		<div style="align-content: initial; text-align: initial;" *ngIf="todo.get('gender').errors && todo.get('gender').dirty">
-			<p color="danger" ion-text *ngIf="todo.get('gender').hasError('required')"><b>Género</b> es requerido</p>
+			<p color="danger" ion-text *ngIf="todo.get('gender').hasError('required')"><b>GENERO</b> es requerido</p>
 		</div>
 		<button class="button" ion-button color="dark" (click)="goBack()">VOLVER</button>
 		<button type="submit" [disabled]="!todo.valid" class="button" ion-button color="dark">GUARDAR</button>

@@ -22,7 +22,6 @@ export class MyApp {
 				console.log('user: ' + JSON.stringify(user));
 				if (user != null) {
 					this.rootPage = BluetoothPage;
-					// this.rootPage = PlanPage;
 				} else {
 					this.rootPage = LoginPage;
 				}

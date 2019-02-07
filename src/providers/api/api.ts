@@ -138,9 +138,9 @@ export class ApiProvider {
 		});
 	}
 
-	getTypeExercise(credentials){
+	getExercise(credentials){
 		return new Promise((resolve,reject) => {
-			this.http.post(this.apiUrl + 'obtenertipoejercicio', credentials).subscribe(data => {
+			this.http.post(this.apiUrl + 'ejerciciocliente', credentials).subscribe(data => {
 				console.log('api22: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {
@@ -162,9 +162,9 @@ export class ApiProvider {
 		});
 	}
 
-	getExercise(){
+	getRoutine(credentials){
 		return new Promise((resolve,reject) => {
-			this.http.get(this.apiUrl + 'tipoejercicio',{headers:{'Content-Type': 'application/json'}}).subscribe(data => {
+			this.http.post(this.apiUrl + 'obtenerejercicio',credentials).subscribe(data => {
 				console.log('api26: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {
@@ -174,9 +174,9 @@ export class ApiProvider {
 		});
 	}
 
-	getRoutine(credentials){
+	putRoutine(credentials){
 		return new Promise((resolve,reject) => {
-			this.http.post(this.apiUrl + 'obtenerejercicio',credentials).subscribe(data => {
+			this.http.put(this.apiUrl + 'actualizarejercicio',credentials).subscribe(data => {
 				console.log('api28: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {
@@ -186,9 +186,9 @@ export class ApiProvider {
 		});
 	}
 
-	putRoutine(credentials){
+	getExerciseByMachine(credentials){
 		return new Promise((resolve,reject) => {
-			this.http.put(this.apiUrl + 'actualizarejercicio',credentials).subscribe(data => {
+			this.http.post(this.apiUrl + 'ejerciciomaquina',credentials).subscribe(data => {
 				console.log('api30: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {
@@ -198,9 +198,9 @@ export class ApiProvider {
 		});
 	}
 
-	getExerciseByMachine(credentials){
+	getPerformance(credentials){
 		return new Promise((resolve,reject) => {
-			this.http.post(this.apiUrl + 'ejerciciomaquina',credentials).subscribe(data => {
+			this.http.post(this.apiUrl + 'listarinformemaquinacliente',credentials).subscribe(data => {
 				console.log('api32: ', JSON.stringify(data));
 				resolve(data);
 			}, (err) => {

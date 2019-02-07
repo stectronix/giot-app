@@ -4,8 +4,8 @@ import { BLE } from '@ionic-native/ble';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import { ApiProvider } from '../../providers/api/api';
-import { ExercisePage } from '../exercise/exercise';
-import { HomePage } from '../home/home';
+import { RestPage } from '../rest/rest';
+import { FinishPage } from '../finish/finish';
 
 const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
 const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
@@ -23,6 +23,7 @@ export class WorkoutPage {
 	routine;
 	resposeData;
 	countRepetitions: number;
+	countRepetitions2: number;
 	countSeries: number = 1;
 	pause;
 	icon;
@@ -176,11 +177,11 @@ export class WorkoutPage {
 					this.countSeries++;
 					if (this.countSeries <= this.series) {
 						if (this.routine != null) {
-							this.navCtrl.push(ExercisePage,{
+							this.navCtrl.push(RestPage,{
 								rest: this.routine.descanso,
 							});
 						} else {
-							this.navCtrl.push(ExercisePage,{
+							this.navCtrl.push(RestPage,{
 								rest: this.rest,
 							});
 						}
@@ -196,18 +197,18 @@ export class WorkoutPage {
 					}
 				});
 			}
-		}else {
+		}else if(this.countSeries > this.series){
 			this.showToast('Felicitaciones!!! finalizó este ejercicio');
 			this.pause = 0;
 			this.contSec = 0;
 			this.contMin = 0;
+			this.countRepetitions2 = this.countRepetitions
 			this.timerVar.unsubscribe();
 				this.ngZone.run(() => {
 					this.button = 'COMENZAR';
 					this.icon = 'icon_play'
 					this.countRepetitions = 0;
 					this.countSeries = 1;
-					this.resume = 'Tiempo total del ejercicio: ';
 					this.mili2 = this.mili;
 					this.sec2 = this.sec + ':';
 					this.min2 = this.min + ':';
@@ -233,7 +234,12 @@ export class WorkoutPage {
 			},(err) => {
 				this.showToast(err)
 			});
-			this.navCtrl.push(HomePage).then(() => {
+			this.navCtrl.push(FinishPage,{
+				repetitions: this.countRepetitions2,
+				mili: this.mili2,
+				sec: this.sec2,
+				min: this.min2
+			}).then(() => {
 				const index = this.navCtrl.getActive().index;
 				this.navCtrl.remove(0,index);
 			});

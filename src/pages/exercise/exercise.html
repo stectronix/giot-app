@@ -1,8 +1,88 @@
-<ion-content style="background: #000000;">
-	<div align="center" style="margin-top: 200px;">
-		<p class="title">DESCANSO</p>
-		<div align="center" class="circle">
-			<p class="time">{{ this.countDown }}</p>
-		</div>
+<ion-content style="background: #000000">
+	<div style="background: #3e3d3d; margin: 24px; padding: 16px; border-radius: 8px;">
+		<form [formGroup]="todo" (ngSubmit)="saveRoutine()">
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Fecha:</ion-label>
+				<ion-input style="margin: 0px 4px 0px 4px; padding: 0px 4px 4px 4px; background: #312f2f; width: 120px; height: 40px; border-radius: 8px; color:#FEE000" value="{{ selectedDate }}" formControlName="date" disabled></ion-input>
+				<button style="margin: 0px; height: 40px; width: 40px;" ion-button color="light" clear icon-only (click)="showDatePicker()">
+					<img style="height: 24px; width: 24px; margin: 0px;" src="../../assets/imgs/icon_calendar.png" alt="">
+				</button>
+			</div>
+			<div *ngIf="todo.get('date').errors && todo.get('date').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('date').hasError('required')"><b>FECHA</b> es requerido</p>
+			</div>
+			<div style="margin: 12px 0px 12px 0px; display: flex;">
+				<ion-label style="font-size: 16px;" color="light">Máquina:</ion-label>
+				<div style="width: 200px;">
+					<ion-item style="padding: 0px;" color="grayDark">
+						<ion-select (ionChange)="machineSelected()" [(ngModel)]="getSelectedValue" formControlName="machine" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 32px; color: #FEE000;">
+							<ion-option *ngFor="let machine of machines" color="giot" value="{{ machine.id }}">{{ machine.descripcion }}</ion-option>
+						</ion-select>
+					</ion-item>
+				</div>
+			</div>
+			<div *ngIf="todo.get('machine').errors && todo.get('machine').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('machine').hasError('required')"><b>MAQUINA</b> es requerido</p>
+			</div>
+			<div style="margin: 12px 0px 12px 0px; display: flex;">
+				<ion-label color="light">Ejercicio:</ion-label>
+				<div style="width: 200px">
+					<ion-item style="padding: 0px;" color="grayDark">
+						<ion-select (ionChange)="exerciseSelected()" [(ngModel)]="getSelectedValue2" formControlName="exercise" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 32px; color: #FEE000;">
+							<ion-option *ngFor="let exercise of exercises" color="giot" value="{{ exercise.id }}">{{ exercise.descripcion }}</ion-option>
+						</ion-select>
+					</ion-item>
+				</div>
+			</div>
+			<div *ngIf="todo.get('exercise').errors && todo.get('exercise').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('exercise').hasError('required')"><b>EJERCICIO</b> es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Series:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
+					<ion-input type="number" formControlName="series" value="{{ serie }}"></ion-input>
+				</div>
+			</div>
+			<div *ngIf="todo.get('series').errors && todo.get('series').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('series').hasError('required')"><b>SERIES</b> es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Repeticiones:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
+					<ion-input type="number" formControlName="repetitions" value="{{ repeticion }}"></ion-input>
+				</div>
+			</div>
+			<div *ngIf="todo.get('repetitions').errors && todo.get('repetitions').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('repetitions').hasError('required')"><b>REPETICIONES</b> es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Peso:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px; display: flex;">
+					<ion-input type="number" formControlName="weight" value="{{ peso }}"></ion-input>
+					<h1 style="font-size: 12px; padding: 0px; margin: 16px 8px 0px 8px;">KGS</h1>
+				</div>
+			</div>
+			<div *ngIf="todo.get('weight').errors && todo.get('weight').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('weight').hasError('required')"><b>PESO</b> es requerido</p>
+			</div>
+			<div style="display: flex; margin: 12px 0px 12px 0px;">
+				<ion-label color="light">Descanso:</ion-label>
+				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px; display: flex;">
+					<ion-input type="number" formControlName="rest" value="{{ descanso }}"></ion-input>
+					<h1 style="font-size: 12px; padding: 0px; margin: 16px 8px 0px 8px;">SEG</h1>
+				</div>
+			</div>
+			<div *ngIf="todo.get('rest').errors && todo.get('rest').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('rest').hasError('required')"><b>DESCANSO</b> es requerido</p>
+			</div>
+		</form>
+	</div>
+	<div align="center">
+		<button style="border: 2px solid #ffffff; padding: 8px; margin: 20px 0px 20px 20px; border-radius: 8px; color: #ffffff; background: #000000" ion-button clear="true" (click)="goBack()">
+			CANCELAR
+		</button>
+		<button style="border: 2px solid #ffffff; padding: 8px; margin: 20px 0px 20px 20px; border-radius: 8px; color: #ffffff; background: #000000" type="submit" [disabled]="!todo.valid" ion-button clear="true" (click)="saveRoutine()">
+			GUARDAR
+		</button>
 	</div>
 </ion-content>

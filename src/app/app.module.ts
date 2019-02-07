@@ -28,6 +28,9 @@ import { ApiProvider } from '../providers/api/api';
 import { MatchPasswordProvider } from '../providers/api/match-password';
 import { PlanPage } from '../pages/plan/plan';
 import { ExercisePage } from '../pages/exercise/exercise';
+import { FinishPage } from '../pages/finish/finish';
+import { PerformancePage } from '../pages/performance/performance';
+import { RestPage } from '../pages/rest/rest';
 
 @NgModule({
 	declarations: [
@@ -43,7 +46,10 @@ import { ExercisePage } from '../pages/exercise/exercise';
 		EditProfilePage,
 		AboutPage,
 		PlanPage,
-		ExercisePage
+		ExercisePage,
+		FinishPage,
+		PerformancePage,
+		RestPage
 	],
 	imports: [
 		BrowserModule,
@@ -66,7 +72,10 @@ import { ExercisePage } from '../pages/exercise/exercise';
 		EditProfilePage,
 		AboutPage,
 		PlanPage,
-		ExercisePage
+		ExercisePage,
+		FinishPage,
+		PerformancePage,
+		RestPage
 	],
 	providers: [
 		StatusBar,

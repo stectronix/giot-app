@@ -8,10 +8,10 @@
 				<ion-avatar item-start>
 					<img src="../../assets/imgs/user.png" alt="ícono usuario">
 				</ion-avatar>
-				<ion-input type="text" formControlName="user" placeholder="Nombre de usuario o E-mail"></ion-input>
+				<ion-input type="text" formControlName="user" placeholder="Nombre de usuario"></ion-input>
 			</ion-item>
 			<div *ngIf="todo.get('user').errors && todo.get('user').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('user').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('user').hasError('required')"><b>NOMBRE DE USUARIO</b> es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('user').hasError('minlength')">Mínimo 4 caracteres</p>
 			</div>
 		</div>
@@ -24,13 +24,13 @@
 				<!-- <ion-icon name="eye" color="gray" (click)="togglePassword()" item-end></ion-icon> -->
 			</ion-item>
 			<div *ngIf="todo.get('password').errors && todo.get('password').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('password').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('password').hasError('required')"><b>CONTRASEÑA</b> es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('password').hasError('minlength')">Mínimo 4 caracteres</p>
 			</div>
 		</div>
 		<div align="center">
 			<button type="submit" [disabled]="!todo.valid" class="button" ion-button color="dark">INICIA SESIÓN</button>
-			<h5>¿Olvidó su contraseña?</h5>
+			<!-- <h5>¿Olvidó su contraseña?</h5> -->
 		</div>
 	</form>
 </ion-content>

@@ -1,0 +1,52 @@
+<ion-content padding style="background: #858585">
+	<div style="margin: 12px 0px 12px 0px; display: flex;">
+		<ion-label style="font-size: 16px;" color="light">Buscar máquina:</ion-label>
+		<div style="width: 200px;">
+			<ion-item style="padding: 0px; background: #858585">
+				<ion-select (ionChange)="machineSelected()" [(ngModel)]="getSelectedValue" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 32px; color: #FEE000;">
+					<ion-option *ngFor="let machine of machines" color="giot" value="{{ machine.id }}">{{ machine.descripcion }}</ion-option>
+				</ion-select>
+			</ion-item>
+		</div>
+	</div>
+	<ion-card style="margin-top: 16px;">
+		<ion-card-header style="padding: 0px;">
+			<ion-grid style="padding: 0px;">
+				<ion-row>
+					<ion-col style="border-top: groove; border-left: groove; border-bottom: groove; text-align: center" col-4>
+						<ion-label>Fecha</ion-label>
+					</ion-col>
+					<ion-col style="border: groove; text-align: center" col-4>
+						<ion-label>Peso</ion-label>
+					</ion-col>
+					<ion-col style="border-top: groove; border-right: groove; border-bottom: groove; text-align: center;" col-4>
+						<ion-label style="font-size: 16px;">Repetición</ion-label>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-card-header>
+		<ion-list style="height: 360px; padding: 0px;">
+			<ion-scroll style="height: 360px; padding: 0px; margin: 0px;" scrollY="true">
+				<ion-grid style="padding: 0px;">
+					<ion-row style="border-bottom: groove" *ngFor="let performance of performances">
+						<ion-col style="text-align: center" col-4>
+							<ion-label style="font-size: 12px;">{{ performance.fecha }}</ion-label>
+						</ion-col>
+						<ion-col style="text-align: center" col-4>
+							<ion-label>{{ performance.indicacion }}</ion-label>
+						</ion-col>
+						<ion-col style="text-align: center" col-4>
+							<ion-label>{{ performance.repeticion }}</ion-label>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-scroll>
+		</ion-list>
+	</ion-card>
+</ion-content>
+
+<ion-footer>
+	<ion-toolbar color="dark" align="center">
+		<img class="logo-footer" src="../../assets/imgs/logo_giot.png">
+	</ion-toolbar>
+</ion-footer>

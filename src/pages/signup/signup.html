@@ -17,7 +17,7 @@
 				<ion-input type="text" formControlName="name" placeholder="Nombre"></ion-input>
 			</ion-item>
 			<div *ngIf="todo.get('name').errors && todo.get('name').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('name').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('name').hasError('required')"><b>NOMBRE</b> es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('name').hasError('minlength')">Mínimo 3 caracteres</p>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 				<ion-input type="email" formControlName="email" placeholder="Correo electrónico"></ion-input>
 			</ion-item>
 			<div *ngIf="todo.get('email').errors && todo.get('email').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('email').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('email').hasError('required')"><b>CORREO ELECTRONICO</b> es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('email').hasError('email')">Debe ingresar formato válido</p>
 			</div>
 		</div>
@@ -53,7 +53,7 @@
 				<ion-input type="text" formControlName="user" placeholder="Usuario"></ion-input>
 			</ion-item>
 			<div *ngIf="todo.get('user').errors && todo.get('user').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('user').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('user').hasError('required')"><b>NOMBRE DE USUARIO</b> es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('user').hasError('minlength')">Mínimo 4 carcteres</p>
 			</div>
 		</div>
@@ -66,7 +66,7 @@
 				<!-- <ion-icon name="eye" color="gray" (click)="togglePassword()" item-end></ion-icon> -->
 			</ion-item>
 			<div *ngIf="todo.get('password').errors && todo.get('password').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('password').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('password').hasError('required')"><b>CONTRASEÑA</b> es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('password').hasError('minlength')">Mínimo 4 caracteres</p>
 			</div>
 		</div>
@@ -79,7 +79,7 @@
 				<!-- <ion-icon name="eye" color="gray" (click)="togglePassword()" item-end></ion-icon> -->
 			</ion-item>
 			<div *ngIf="todo.get('confirmPassword').errors && todo.get('confirmPassword').dirty">
-				<p color="danger" ion-text *ngIf="todo.get('confirmPassword').hasError('required')">Campo es requerido</p>
+				<p color="danger" ion-text *ngIf="todo.get('confirmPassword').hasError('required')"><b>REPETIR CONTRASEÑA</b> es requerido</p>
 				<p color="danger" ion-text *ngIf="todo.get('confirmPassword').hasError('minlength')">Mínimo 4 caracteres</p>
 			</div>
 			<p color="danger" ion-text *ngIf="todo.get('confirmPassword').errors?.MatchPassword">Contraseñas no coinciden</p>

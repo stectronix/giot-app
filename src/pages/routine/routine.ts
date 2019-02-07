@@ -71,7 +71,7 @@ export class RoutinePage {
 		}
 
 		this.todo = this.formBuilder.group({
-			// exercise: ['', Validators.required],
+			exercise: ['', Validators.required],
 			series: ['', Validators.required],
 			repetitions: ['', Validators.required],
 			weight: ['', Validators.required],
@@ -90,7 +90,7 @@ export class RoutinePage {
 							'indicacion':this.todo.value.weight,
 							'cod_cliente':this.resposeData4['cod_cliente'],
 							'cod_maquina':this.resposeData4['cod_maquina'],
-							'cod_tipo_ejercicio':this.resposeData4['cod_tipo_ejercicio'],
+							'cod_tipo_ejercicio':this.getSelectedValue,
 							'fecha':this.resposeData4['fecha'],
 							'planificado':this.resposeData4['planificado'],
 							'cod_profesional':this.resposeData4['cod_profesional'],
@@ -158,8 +158,6 @@ export class RoutinePage {
 					});
 				});
 			});
-		}else{
-			this.showToast('Debe Seleccionar un ejercicio');
 		}
 	}
 
@@ -205,7 +203,7 @@ export class RoutinePage {
 					this.ngZone.run(() => {
 						this.machine = this.routine.maquina;
 						this.repeticion = this.routine.repeticion,
-						this.serie = this.routine.serie,
+						this.serie = this.routine.descripcion,
 						this.peso = this.routine.indicacion,
 						this.descanso = this.routine.descanso,
 						this.getSelectedValue = this.resposeData4['cod_tipo_ejercicio']

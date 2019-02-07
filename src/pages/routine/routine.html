@@ -12,17 +12,20 @@
 				<ion-input type="text" value="{{ machine }}" readonly></ion-input>
 			</div>
 		</div>
-		<div style="margin: 12px 0px 12px 0px; display: flex;">
-			<ion-label color="light">Ejercicio:</ion-label>
-			<div style="width: 200px;">
-				<ion-item style="padding: 0px;" color="grayDark">
-					<ion-select style="background: #312f2f; border-radius: 8px; min-width: 164px; max-width: 164px; margin-left: 32px; color: #FEE000;" (ionChange)="exerciseSelected()" [(ngModel)]="getSelectedValue">
-						<ion-option *ngFor="let exercise of exercises" value="{{ exercise.id }}">{{ exercise.descripcion }}</ion-option>
-					</ion-select>
-				</ion-item>
-			</div>
-		</div>
 		<form [formGroup]="todo" (ngSubmit)="startRoutine()">
+			<div style="margin: 12px 0px 12px 0px; display: flex;">
+				<ion-label color="light">Ejercicio:</ion-label>
+				<div style="width: 200px">
+					<ion-item style="padding: 0px;" color="grayDark">
+						<ion-select (ionChange)="exerciseSelected()" [(ngModel)]="getSelectedValue" formControlName="exercise" style="background: #312f2f; border-radius: 8px; min-width: 158px; max-width: 160px; margin-left: 32px; color: #FEE000;">
+							<ion-option *ngFor="let exercise of exercises" color="giot" value="{{ exercise.id }}">{{ exercise.descripcion }}</ion-option>
+						</ion-select>
+					</ion-item>
+				</div>
+			</div>
+			<div *ngIf="todo.get('exercise').errors && todo.get('exercise').dirty">
+				<p color="danger" ion-text *ngIf="todo.get('exercise').hasError('required')"><b>EJERCICIO</b> es requerido</p>
+			</div>
 			<div style="display: flex; margin: 12px 0px 12px 0px;">
 				<ion-label color="light">Series:</ion-label>
 				<div style="color: #FEE000; padding: 4px; border-radius: 8px; background: #312f2f; min-width: 164px; max-width: 164px;">
