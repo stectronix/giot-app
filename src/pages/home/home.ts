@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, Platform, App } from 'ionic-angular';
 import { ScanQrPage } from '../scan-qr/scan-qr';
 import { BluetoothPage } from '../bluetooth/bluetooth';
 import { ProfilePage } from '../profile/profile';
@@ -31,6 +31,8 @@ export class HomePage {
 					public toastCtrl: ToastController,
 					public alertCtrl: AlertController,
 					public api: ApiProvider,
+					public platform: Platform,
+					public app: App,
 					private ble: BLE) {
 
 		this.device = navParams.get('device');
@@ -38,13 +40,38 @@ export class HomePage {
 		if (this.device == null) {
 			this.showToast('No está conectado');
 			this.sw = 0;
-		} else {
-			console.log('Conectando a ' + this.device.name || this.device.id);
+		} /* else {
+			console.log('HomePage1: Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				peripheral => this.showToast(JSON.stringify(peripheral))
 			);
-		}
+		} */
+
+		platform.registerBackButtonAction(() => {
+			let nav = app.getActiveNavs()[0];
+			if (nav.canGoBack()){ //Can we go back?
+				nav.pop();
+			} else {
+				const alert = this.alertCtrl.create({
+						title: 'Salir',
+						message: '¿Está seguro que desea salir de la aplicación?',
+						buttons: [{
+							text: 'Cancelar',
+							role: 'cancel',
+							handler: () => {
+								console.log('salida de la aplicacion cancelada!');
+							}
+						},{
+							text: 'Salir de la aplicación',
+							handler: () => {
+								this.platform.exitApp(); // Close this application
+							}
+						}]
+				});
+				alert.present();
+			}
+		});
 
 	}
 
@@ -147,6 +174,7 @@ export class HomePage {
 	}
 
 	showToast(message){
+		console.log(message);
 		let toast = this.toastCtrl.create({
 			position: 'middle',
 			message: message,

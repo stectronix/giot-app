@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController,LoadingController,ToastController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController,LoadingController,ToastController, NavParams, AlertController, Platform, App } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 import { HomePage } from '../home/home';
 
@@ -24,6 +24,8 @@ export class BluetoothPage {
 	constructor(public navCtrl: NavController,
 					public navParams: NavParams,
 					public alertCtrl: AlertController,
+					public platform: Platform,
+					public app: App,
 					private loadingController: LoadingController,
 					private toastCtrl: ToastController,
 					private ble: BLE,
@@ -35,10 +37,10 @@ export class BluetoothPage {
 			console.log('No está conectado');
 			this.sw = 0;
 		} else {
-			console.log('Conectando a ' + this.device.name || this.device.id);
+			console.log('BluetoothPage1: Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				peripheral => this.showToast(JSON.stringify(peripheral))
 			);
 		}
 

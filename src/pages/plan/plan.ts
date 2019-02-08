@@ -40,13 +40,13 @@ export class PlanPage {
 		if (this.device == null) {
 			this.showToast('No está conectado');
 			this.sw = 0;
-		} else {
+		} /* else {
 			console.log('PlanPage1:' + 'Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				// peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				peripheral => this.showToast(JSON.stringify(peripheral))
 			);
-		}
+		} */
 
 	}
 
@@ -139,6 +139,7 @@ export class PlanPage {
 	}
 
 	showToast(message){
+		console.log(message);
 		let toast = this.toastCtrl.create({
 			position: 'middle',
 			message: message,

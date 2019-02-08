@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.giot.tectronix.giot" version="0.0.11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.giot.tectronix.giot" version="0.0.12" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Smart Gym Giot</name>
     <description>Aplicación de monitoreo de ejercicio</description>
     <author email="cerianilolas@hotmail.com" href="http://giot.cl/">Cratus</author>
@@ -93,5 +93,4 @@
     <plugin name="cordova-plugin-datepicker" spec="0.9.3" />
     <plugin name="cordova-sqlite-storage" spec="2.6.0" />
     <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="~7.1.4" />
 </widget>

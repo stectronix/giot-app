@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, App, Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 @IonicPage()
@@ -13,8 +13,15 @@ export class RestPage {
   rest;
   countDown;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public app: App, public platform: Platform) {
     this.rest = navParams.get('rest');
+
+    this.platform.registerBackButtonAction(() => {
+      let nav = app.getActiveNavs()[0];
+      if (nav.canGoBack()){ //Can we go back?
+          // no hacer nada
+      }
+    });
   }
 
   ionViewDidLoad() {

@@ -67,11 +67,11 @@ export class WorkoutPage {
 			this.showToast('No está conectado');
 			this.sw = 0;
 		} else {
-			console.log('Conectando a ' + this.device.name || this.device.id);
+			console.log('WorkoutPage1: Conectando a ' + this.device.name || this.device.id);
 
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				peripheral => this.showAlert('Desconectado','El dispositivo de desconectó inesperadamente')
+				peripheral => this.showToast(JSON.stringify(peripheral))
 			);
 		}
 	}
@@ -185,6 +185,56 @@ export class WorkoutPage {
 								rest: this.rest,
 							});
 						}
+					}else{
+						this.showToast('Felicitaciones!!! finalizó este ejercicio');
+						var info ={'id':this.routine.id,
+										'cod_categoria':this.routine.cod_categoria,
+										'descripcion':this.routine.descripcion,
+										'repeticion':this.routine.repeticion,
+										'descanso':this.routine.descanso,
+										'indicacion':this.routine.indicacion,
+										'cod_cliente':this.routine.cod_cliente,
+										'cod_maquina':this.routine.cod_maquina,
+										'cod_tipo_ejercicio':this.routine.cod_tipo_ejercicio,
+										'fecha':this.routine.fecha,
+										'planificado':this.routine.planificado,
+										'cod_profesional':this.routine.cod_profesional,
+										'terminada':1};
+						this.api.putRoutine(info).then((routine) => {
+							this.resposeData = routine[0];
+						},(err) => {
+							this.showToast(err)
+						});
+						if (this.sw == 1) {
+							this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
+						}
+						this.pause = 0;
+						this.contSec = 0;
+						this.contMin = 0;
+						this.countRepetitions2 = this.countRepetitions
+						this.timerVar.unsubscribe();
+							this.ngZone.run(() => {
+								this.button = 'COMENZAR';
+								this.icon = 'icon_play'
+								this.countRepetitions = 0;
+								this.countSeries = 1;
+								this.mili2 = this.mili;
+								this.sec2 = this.sec + ':';
+								this.min2 = this.min + ':';
+								this.mili = '00';
+								this.sec = '00';
+								this.min = '00';
+						});
+						this.navCtrl.push(FinishPage,{
+							device: this.device,
+							repetitions: this.countRepetitions2,
+							mili: this.mili2,
+							sec: this.sec2,
+							min: this.min2
+						}).then(() => {
+							const index = this.navCtrl.getActive().index;
+							this.navCtrl.remove(0,index);
+						});
 					}
 				}
 				this.timerVar.unsubscribe();
@@ -197,8 +247,38 @@ export class WorkoutPage {
 					}
 				});
 			}
-		}else if(this.countSeries > this.series){
+		}/* else if(parseInt(this.countSeries.toString()) > parseInt(this.series.toString())){
 			this.showToast('Felicitaciones!!! finalizó este ejercicio');
+			var info2 ={'id':this.routine.id,
+							'cod_categoria':this.routine.cod_categoria,
+							'descripcion':this.routine.descripcion,
+							'repeticion':this.routine.repeticion,
+							'descanso':this.routine.descanso,
+							'indicacion':this.routine.indicacion,
+							'cod_cliente':this.routine.cod_cliente,
+							'cod_maquina':this.routine.cod_maquina,
+							'cod_tipo_ejercicio':this.routine.cod_tipo_ejercicio,
+							'fecha':this.routine.fecha,
+							'planificado':this.routine.planificado,
+							'cod_profesional':this.routine.cod_profesional,
+							'terminada':1};
+			this.api.putRoutine(info2).then((routine) => {
+				this.resposeData = routine[0];
+			},(err) => {
+				this.showToast(err)
+			});
+			if (this.sw == 1) {
+				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
+			}
+			this.navCtrl.push(FinishPage,{
+				repetitions: this.countRepetitions2,
+				mili: this.mili2,
+				sec: this.sec2,
+				min: this.min2
+			}).then(() => {
+				const index = this.navCtrl.getActive().index;
+				this.navCtrl.remove(0,index);
+			});
 			this.pause = 0;
 			this.contSec = 0;
 			this.contMin = 0;
@@ -216,40 +296,11 @@ export class WorkoutPage {
 					this.sec = '00';
 					this.min = '00';
 			});
-			var info ={'id':this.routine.id,
-							'cod_categoria':this.routine.cod_categoria,
-							'descripcion':this.routine.descripcion,
-							'repeticion':this.routine.repeticion,
-							'descanso':this.routine.descanso,
-							'indicacion':this.routine.indicacion,
-							'cod_cliente':this.routine.cod_cliente,
-							'cod_maquina':this.routine.cod_maquina,
-							'cod_tipo_ejercicio':this.routine.cod_tipo_ejercicio,
-							'fecha':this.routine.fecha,
-							'planificado':this.routine.planificado,
-							'cod_profesional':this.routine.cod_profesional,
-							'terminada':1};
-			this.api.putRoutine(info).then((routine) => {
-				this.resposeData = routine[0];
-			},(err) => {
-				this.showToast(err)
-			});
-			this.navCtrl.push(FinishPage,{
-				repetitions: this.countRepetitions2,
-				mili: this.mili2,
-				sec: this.sec2,
-				min: this.min2
-			}).then(() => {
-				const index = this.navCtrl.getActive().index;
-				this.navCtrl.remove(0,index);
-			});
-			if (this.sw == 1) {
-				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
-			}
-		}
+		} */
 	}
 
 	showToast(message){
+		console.log(message);
 		let toast = this.toastCtrl.create({
 			position: 'middle',
 			message: message,
