@@ -38,13 +38,7 @@ export class ScanQrPage {
 		if (this.device == null) {
 			this.showToast('No está conectado');
 			this.sw = 0;
-		} /* else {
-			console.log('ScanQrPage1: Conectando a ' + this.device.name || this.device.id);
-			this.ble.connect(this.device.id).subscribe(
-				peripheral => this.onConnected(peripheral),
-				peripheral => this.showToast(JSON.stringify(peripheral))
-			);
-		} */
+		}
 	}
 
 	ionViewDidLoad() {
@@ -86,29 +80,6 @@ export class ScanQrPage {
 		this.array = this.machines.filter(select => select.id == this.getSelectedValue);
 		console.log('id es ' + this.getSelectedValue);
 		console.log('valor es ' + this.array[0].descripcion);
-	}
-
-	onConnected(peripheral){
-		this.peripheral = peripheral;
-		this.sw = 1;
-		console.log(peripheral.id);
-		console.log('Conectado a ' + (peripheral.name || peripheral.id));
-
-		this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
-			data => this.onRepetitionsChange(data),
-			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
-		);
-
-	}
-
-	onRepetitionsChange(buffer: ArrayBuffer){
-
-		var data = new Uint8Array(buffer);
-
-		String.fromCharCode.apply(null, new Uint8Array(data));
-
-		console.log(String.fromCharCode.apply(null, new Uint8Array(data)));
-
 	}
 
 	showToast(message){

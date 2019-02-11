@@ -67,12 +67,16 @@ export class WorkoutPage {
 			this.showToast('No está conectado');
 			this.sw = 0;
 		} else {
-			console.log('WorkoutPage1: Conectando a ' + this.device.name || this.device.id);
-
-			this.ble.connect(this.device.id).subscribe(
-				peripheral => this.onConnected(peripheral),
-				peripheral => this.showToast(JSON.stringify(peripheral))
+			console.log('WorkoutPage1: Conectado a ' + this.device.name || this.device.id);
+			this.ble.startNotification(this.device.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
+				data => this.onRepetitionsChange(data),
+				() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
 			);
+
+			// this.ble.connect(this.device.id).subscribe(
+			// 	peripheral => this.onConnected(peripheral),
+			// 	peripheral => this.showToast(JSON.stringify(peripheral))
+			// );
 		}
 	}
 
@@ -145,18 +149,18 @@ export class WorkoutPage {
 		return this.array.buffer;
 	}
 
-	onConnected(peripheral){
-		this.peripheral = peripheral;
-		this.sw = 1;
-		console.log(peripheral.id);
-		console.log('Conectado a ' + (peripheral.name || peripheral.id));
+	// onConnected(peripheral){
+	// 	this.peripheral = peripheral;
+	// 	this.sw = 1;
+	// 	console.log(peripheral.id);
+	// 	console.log('Conectado a ' + (peripheral.name || peripheral.id));
 
-		this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
-			data => this.onRepetitionsChange(data),
-			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
-		);
+	// 	this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
+	// 		data => this.onRepetitionsChange(data),
+	// 		() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
+	// 	);
 
-	}
+	// }
 
 	onRepetitionsChange(buffer: ArrayBuffer){
 		var data = new Uint8Array(buffer);

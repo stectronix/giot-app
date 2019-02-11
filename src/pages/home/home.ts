@@ -8,9 +8,6 @@ import { ApiProvider } from '../../providers/api/api';
 import { PlanPage } from '../plan/plan';
 import { PerformancePage } from '../performance/performance';
 
-const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
-const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
-
 @IonicPage()
 @Component({
 	selector: 'page-home',
@@ -40,13 +37,7 @@ export class HomePage {
 		if (this.device == null) {
 			this.showToast('No está conectado');
 			this.sw = 0;
-		} /* else {
-			console.log('HomePage1: Conectando a ' + this.device.name || this.device.id);
-			this.ble.connect(this.device.id).subscribe(
-				peripheral => this.onConnected(peripheral),
-				peripheral => this.showToast(JSON.stringify(peripheral))
-			);
-		} */
+		}
 
 		platform.registerBackButtonAction(() => {
 			let nav = app.getActiveNavs()[0];
@@ -148,29 +139,6 @@ export class HomePage {
 
 	goToProfile(){
 		this.navCtrl.push(ProfilePage);
-	}
-
-	onConnected(peripheral){
-		this.peripheral = peripheral;
-		this.sw = 1;
-		console.log(peripheral.id);
-		console.log('Conectado a ' + (peripheral.name || peripheral.id));
-
-		this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
-			data => this.onRepetitionsChange(data),
-			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
-		);
-
-	}
-
-	onRepetitionsChange(buffer: ArrayBuffer){
-
-		var data = new Uint8Array(buffer);
-
-		String.fromCharCode.apply(null, new Uint8Array(data));
-
-		console.log(String.fromCharCode.apply(null, new Uint8Array(data)));
-
 	}
 
 	showToast(message){
