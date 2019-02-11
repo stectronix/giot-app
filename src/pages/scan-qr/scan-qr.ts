@@ -2,11 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { BarcodeScanner, BarcodeScannerOptions, BarcodeScanResult } from '@ionic-native/barcode-scanner';
 import { RoutinePage } from '../routine/routine';
-import { BLE } from '@ionic-native/ble';
 import { ApiProvider } from '../../providers/api/api';
-
-const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
-const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 
 @IonicPage()
 @Component({
@@ -30,7 +26,6 @@ export class ScanQrPage {
 					public toastCtrl: ToastController,
 					public api: ApiProvider,
 					private barcode: BarcodeScanner,
-					private ble: BLE,
 					private alertCtrl: AlertController) {
 
 		this.device = navParams.get('device');

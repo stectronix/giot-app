@@ -2,11 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WorkoutPage } from '../workout/workout';
-import { BLE } from '@ionic-native/ble';
 import { ApiProvider } from '../../providers/api/api';
-
-const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
-const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 
 @IonicPage()
 @Component({
@@ -48,7 +44,6 @@ export class RoutinePage {
 					public toastCtrl: ToastController,
 					public api: ApiProvider,
 					private formBuilder: FormBuilder,
-					private ble: BLE,
 					private alertCtrl: AlertController,
 					private ngZone: NgZone) {
 

@@ -45,6 +45,7 @@ export class WorkoutPage {
 	contMin = 0;
 	array;
 	cont = 0;
+	cont2 = 0;
 	count;
 
 	constructor(public navCtrl: NavController,
@@ -62,26 +63,27 @@ export class WorkoutPage {
 		this.weight = navParams.get('weight');
 		this.rest = navParams.get('rest');
 		this.routine = navParams.get('routine');
-
-		if (this.device == null) {
-			this.showToast('No está conectado');
-			this.sw = 0;
-		} else {
-			console.log('WorkoutPage1: Conectado a ' + this.device.name || this.device.id);
-			this.ble.startNotification(this.device.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
-				data => this.onRepetitionsChange(data),
-				() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
-			);
-
-			// this.ble.connect(this.device.id).subscribe(
-			// 	peripheral => this.onConnected(peripheral),
-			// 	peripheral => this.showToast(JSON.stringify(peripheral))
-			// );
-		}
 	}
 
 	ionViewDidLoad() {
 		console.log('ionViewDidLoad WorkoutPage');
+		if (this.device == null) {
+			this.showToast('No está conectado');
+			this.sw = 0;
+		} else if (this.cont2 == 0) {
+			// this.peripheral = this.device;
+			// this.sw = 1;
+			// console.log('WorkoutPage1: Conectado a ' + this.device.name || this.device.id);
+			// this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
+			// 	data => this.onRepetitionsChange(data),
+			// 	error => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones' + JSON.stringify(error))
+			// );
+			this.cont2 = this.cont2++;
+			this.ble.connect(this.device.id).subscribe(
+				peripheral => this.onConnected(peripheral),
+				peripheral => this.showToast(JSON.stringify(peripheral))
+			);
+		}
 		this.pause = 0;
 		this.sw = 0;
 		console.log('rest:' + this.rest)
@@ -95,47 +97,49 @@ export class WorkoutPage {
 	}
 
 	play(){
-		if (this.pause == 0) {
-			this.pause = 1;
-			this.cont = 0;
-			this.countLoading();
-			setTimeout(() => {
-				this.startTimer();
-			}, 5000);
-			this.ngZone.run(() => {
-				this.button = 'PAUSAR';
-				this.icon = 'icon_pause';
-				this.countRepetitions = 0;
-				this.mili;
-				this.sec;
-				this.min;
-				this.mili2 = '';
-				this.sec2 = '';
-				this.min2 = '';
-				this.resume = '';
-			});
-			if (this.sw == 1) {
+		setTimeout(() => {
+			if (this.pause == 0) {
+				this.pause = 1;
+				this.cont = 0;
+				this.countLoading();
 				setTimeout(() => {
-					this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
+					this.startTimer();
 				}, 5000);
+				this.ngZone.run(() => {
+					this.button = 'PAUSAR';
+					this.icon = 'icon_pause';
+					this.countRepetitions = 0;
+					this.mili;
+					this.sec;
+					this.min;
+					this.mili2 = '';
+					this.sec2 = '';
+					this.min2 = '';
+					this.resume = '';
+				});
+				if (this.sw == 1) {
+					setTimeout(() => {
+						this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("1"));
+					}, 5000);
+				}
+			} else {
+				this.pause = 0;
+				this.timerVar.unsubscribe();
+				this.contSec = 0;
+				this.contMin = 0;
+				this.ngZone.run(() => {
+					this.button = 'COMENZAR';
+					this.icon = 'icon_play';
+					this.countRepetitions = 0;
+					this.mili = '00';
+					this.sec = '00';
+					this.min = '00';
+				});
+				if (this.sw == 1) {
+					this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
+				}
 			}
-		} else {
-			this.pause = 0;
-			this.timerVar.unsubscribe();
-			this.contSec = 0;
-			this.contMin = 0;
-			this.ngZone.run(() => {
-				this.button = 'COMENZAR';
-				this.icon = 'icon_play';
-				this.countRepetitions = 0;
-				this.mili = '00';
-				this.sec = '00';
-				this.min = '00';
-			});
-			if (this.sw == 1) {
-				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
-			}
-		}
+		}, 1000);
 	}
 
 	// ASCII only
@@ -149,18 +153,18 @@ export class WorkoutPage {
 		return this.array.buffer;
 	}
 
-	// onConnected(peripheral){
-	// 	this.peripheral = peripheral;
-	// 	this.sw = 1;
-	// 	console.log(peripheral.id);
-	// 	console.log('Conectado a ' + (peripheral.name || peripheral.id));
+	onConnected(peripheral){
+		this.peripheral = peripheral;
+		this.sw = 1;
+		console.log(peripheral.id);
+		console.log('Conectado a ' + (peripheral.name || peripheral.id));
 
-	// 	this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
-	// 		data => this.onRepetitionsChange(data),
-	// 		() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
-	// 	);
+		this.ble.startNotification(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC).subscribe(
+			data => this.onRepetitionsChange(data),
+			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
+		);
 
-	// }
+	}
 
 	onRepetitionsChange(buffer: ArrayBuffer){
 		var data = new Uint8Array(buffer);
@@ -174,7 +178,7 @@ export class WorkoutPage {
 				});
 			}else{
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
-				this.showToast('Descanso!!! finalizó las repeticiones en esta serie');
+				// this.showToast('Descanso!!! finalizó las repeticiones en esta serie');
 				this.pause = 0;
 				this.cont++;
 				if (this.cont == 1) {
@@ -190,7 +194,7 @@ export class WorkoutPage {
 							});
 						}
 					}else{
-						this.showToast('Felicitaciones!!! finalizó este ejercicio');
+						// this.showToast('Felicitaciones!!! finalizó este ejercicio');
 						var info ={'id':this.routine.id,
 										'cod_categoria':this.routine.cod_categoria,
 										'descripcion':this.routine.descripcion,
@@ -251,56 +255,7 @@ export class WorkoutPage {
 					}
 				});
 			}
-		}/* else if(parseInt(this.countSeries.toString()) > parseInt(this.series.toString())){
-			this.showToast('Felicitaciones!!! finalizó este ejercicio');
-			var info2 ={'id':this.routine.id,
-							'cod_categoria':this.routine.cod_categoria,
-							'descripcion':this.routine.descripcion,
-							'repeticion':this.routine.repeticion,
-							'descanso':this.routine.descanso,
-							'indicacion':this.routine.indicacion,
-							'cod_cliente':this.routine.cod_cliente,
-							'cod_maquina':this.routine.cod_maquina,
-							'cod_tipo_ejercicio':this.routine.cod_tipo_ejercicio,
-							'fecha':this.routine.fecha,
-							'planificado':this.routine.planificado,
-							'cod_profesional':this.routine.cod_profesional,
-							'terminada':1};
-			this.api.putRoutine(info2).then((routine) => {
-				this.resposeData = routine[0];
-			},(err) => {
-				this.showToast(err)
-			});
-			if (this.sw == 1) {
-				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
-			}
-			this.navCtrl.push(FinishPage,{
-				repetitions: this.countRepetitions2,
-				mili: this.mili2,
-				sec: this.sec2,
-				min: this.min2
-			}).then(() => {
-				const index = this.navCtrl.getActive().index;
-				this.navCtrl.remove(0,index);
-			});
-			this.pause = 0;
-			this.contSec = 0;
-			this.contMin = 0;
-			this.countRepetitions2 = this.countRepetitions
-			this.timerVar.unsubscribe();
-				this.ngZone.run(() => {
-					this.button = 'COMENZAR';
-					this.icon = 'icon_play'
-					this.countRepetitions = 0;
-					this.countSeries = 1;
-					this.mili2 = this.mili;
-					this.sec2 = this.sec + ':';
-					this.min2 = this.min + ':';
-					this.mili = '00';
-					this.sec = '00';
-					this.min = '00';
-			});
-		} */
+		}
 	}
 
 	showToast(message){
@@ -362,21 +317,6 @@ export class WorkoutPage {
 			cssClass: 'count'
 		});
 		this.count.present();
-	}
-
-	restLoading(){
-		this.restLoad = this.loadingController.create({
-			spinner: 'hide',
-			content: `<div>
-							<p class="title">DESCANSO</p>
-							<div class="circle">
-								<p class="time">this.rest</p>
-							</div>
-						</div>`,
-			cssClass: 'rest',
-			duration: this.rest * 1000
-		});
-		this.restLoad.present();
 	}
 
 }

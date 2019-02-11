@@ -2,12 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 import { RoutinePage } from '../routine/routine';
-import { BLE } from '@ionic-native/ble';
 import { ExercisePage } from '../exercise/exercise';
 import { DatePicker } from '@ionic-native/date-picker';
-
-const REPETITIONS_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
-const REPETITIONS_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 
 @IonicPage()
 @Component({
@@ -32,7 +28,6 @@ export class PlanPage {
 					public api: ApiProvider,
 					public toastCtrl: ToastController,
 					private datePicker: DatePicker,
-					private ble: BLE,
 					private alertCtrl: AlertController) {
 
 		this.device = navParams.get('device');
