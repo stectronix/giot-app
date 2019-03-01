@@ -81,7 +81,7 @@ export class WorkoutPage {
 			this.cont2 = this.cont2++;
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				peripheral => this.showToast(JSON.stringify(peripheral))
+				peripheral => this.showToast('Dispositivo desconectado inesperadamente'/* JSON.stringify(peripheral) */)
 			);
 		}
 		this.pause = 0;
@@ -164,6 +164,7 @@ export class WorkoutPage {
 			() => this.showAlert('Error inesperado', 'Falla al suscribirse al conteo de repeticones')
 		);
 
+		this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
 	}
 
 	onRepetitionsChange(buffer: ArrayBuffer){
@@ -178,12 +179,11 @@ export class WorkoutPage {
 				});
 			}else{
 				this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
-				// this.showToast('Descanso!!! finalizó las repeticiones en esta serie');
 				this.pause = 0;
 				this.cont++;
 				if (this.cont == 1) {
 					this.countSeries++;
-					if (this.countSeries <= this.series) {
+					if (parseInt(this.countSeries.toString()) <= parseInt(this.series.toString())) {
 						if (this.routine != null) {
 							this.navCtrl.push(RestPage,{
 								rest: this.routine.descanso,
@@ -194,8 +194,8 @@ export class WorkoutPage {
 							});
 						}
 					}else{
-						// this.showToast('Felicitaciones!!! finalizó este ejercicio');
-						var info ={'id':this.routine.id,
+						if (this.routine != null){
+							var info ={'id':this.routine.id,
 										'cod_categoria':this.routine.cod_categoria,
 										'descripcion':this.routine.descripcion,
 										'repeticion':this.routine.repeticion,
@@ -208,11 +208,12 @@ export class WorkoutPage {
 										'planificado':this.routine.planificado,
 										'cod_profesional':this.routine.cod_profesional,
 										'terminada':1};
-						this.api.putRoutine(info).then((routine) => {
-							this.resposeData = routine[0];
-						},(err) => {
-							this.showToast(err)
-						});
+							this.api.putRoutine(info).then((routine) => {
+								this.resposeData = routine[0];
+							},(err) => {
+								this.showToast(err)
+							});
+						}
 						if (this.sw == 1) {
 							this.ble.write(this.peripheral.id, REPETITIONS_SERVICE, REPETITIONS_CHARACTERISTIC, this.stringToBytes("0"));
 						}
@@ -250,7 +251,7 @@ export class WorkoutPage {
 					this.button = 'COMENZAR';
 					this.icon = 'icon_play'
 					this.countRepetitions = 0;
-					if (this.countSeries < this.series) {
+					if (parseInt(this.countSeries.toString()) < parseInt(this.series.toString())) {
 						this.countSeries;
 					}
 				});

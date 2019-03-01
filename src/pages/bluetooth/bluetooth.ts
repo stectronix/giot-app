@@ -40,7 +40,7 @@ export class BluetoothPage {
 			console.log('BluetoothPage1: Conectando a ' + this.device.name || this.device.id);
 			this.ble.connect(this.device.id).subscribe(
 				peripheral => this.onConnected(peripheral),
-				peripheral => this.showToast(JSON.stringify(peripheral))
+				peripheral => this.showToast('Dispositivo desconectado inesperadamente'/* JSON.stringify(peripheral) */)
 			);
 		}
 

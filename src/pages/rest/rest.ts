@@ -30,7 +30,10 @@ export class RestPage {
 			console.log('Exercise3: ' + x);
 			if (x == parseInt(this.rest)) {
 				this.timerVar.unsubscribe();
-				this.navCtrl.pop();
+				this.navCtrl.pop().then(() => {
+          const index = this.navCtrl.getActive().index;
+          this.navCtrl.remove(0,index);
+        });;
 			} else {
 				this.countDown = this.rest - x;
 			}

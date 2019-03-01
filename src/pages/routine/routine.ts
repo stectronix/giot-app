@@ -97,7 +97,7 @@ export class RoutinePage {
 			},(err) => {
 				this.showToast(err)
 			});
-		}else if(this.getSelectedValue != null){
+		}else {
 			var date = new Date()
 			var month = date.getMonth() + 1;
 			if (month < 10) {
@@ -132,7 +132,7 @@ export class RoutinePage {
 							'fecha':today,
 							'planificado':0,
 							'cod_profesional':0,
-							'terminada':0};
+							'terminada':1};
 					this.api.postSaveExercise(data5).then((exercise) => {
 						this.resposeData5 = exercise[0];
 					},(err) => {
